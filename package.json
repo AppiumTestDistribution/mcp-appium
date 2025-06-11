@@ -1,0 +1,38 @@
+{
+  "name": "mobile-agent",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/index.ts",
+  "bin": {
+    "mobile-agent": "src/index.js"
+  },
+  "scripts": {
+    "build": "rimraf dist && tsc && chmod +x dist/index.js",
+    "start": "node src/index.js",
+    "start:stdio": "node src/index.js",
+    "start:sse": "node src/index.js --sse",
+    "start:sse:port": "node src/index.js --sse --port=",
+    "dev": "npx fastmcp dev src/index.js",
+    "inspect": "npx fastmcp inspect src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "description": "MCP server providing resources and tools for Appium mobile gestures",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.11.0",
+    "@xmldom/xmldom": "^0.9.8",
+    "appium-uiautomator2-driver": "^4.2.3",
+    "fast-xml-parser": "^5.2.3",
+    "fastmcp": "^1.23.2",
+    "lodash": "^4.17.21",
+    "rimraf": "^6.0.1",
+    "xpath": "^0.0.34",
+    "zod": "^3.24.3"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.17.17",
+    "@types/node": "^22.15.18",
+    "typescript": "^5.8.3"
+  }
+}

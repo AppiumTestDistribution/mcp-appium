@@ -1,0 +1,10 @@
+node_modules
+dist
+build
+./coverage
+./logs
+./temp
+./test-results
+./test-reports
+./test-results
+.DS_Store
