@@ -1,24 +1,24 @@
 #!/usr/bin/env node
 
-import server from "./server.js";
+import server from './server.js';
 
 // Parse command line arguments
 const args = process.argv.slice(2);
-const useSSE = args.includes("--sse");
+const useSSE = args.includes('--sse');
 const port =
-  args.find((arg) => arg.startsWith("--port="))?.split("=")[1] || "8080";
+  args.find(arg => arg.startsWith('--port='))?.split('=')[1] || '8080';
 
 // Start the server with the appropriate transport
 async function startServer(): Promise<void> {
-  console.log("Starting Appium Gestures MCP Server...");
+  console.log('Starting Appium Gestures MCP Server...');
 
   try {
     if (useSSE) {
       // Start with SSE transport
       server.start({
-        transportType: "sse",
+        transportType: 'sse',
         sse: {
-          endpoint: "/sse",
+          endpoint: '/sse',
           port: parseInt(port, 10),
         },
       });
@@ -26,18 +26,18 @@ async function startServer(): Promise<void> {
       console.log(
         `Server started with SSE transport on http://localhost:${port}/sse`
       );
-      console.log("Waiting for client connections...");
+      console.log('Waiting for client connections...');
     } else {
       // Start with stdio transport
       server.start({
-        transportType: "stdio",
+        transportType: 'stdio',
       });
 
-      console.log("Server started with stdio transport");
-      console.log("Waiting for client connections...");
+      console.log('Server started with stdio transport');
+      console.log('Waiting for client connections...');
     }
   } catch (error: any) {
-    console.error("Error starting server:", error);
+    console.error('Error starting server:', error);
     process.exit(1);
   }
 }

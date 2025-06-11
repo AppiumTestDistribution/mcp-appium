@@ -34,7 +34,7 @@ function generateAllElementLocators(
 ): ElementWithLocators[] {
   const {
     includeTagNames = [],
-    excludeTagNames = ["hierarchy"],
+    excludeTagNames = ['hierarchy'],
     requireAttributes = [],
     minAttributeCount = 0,
     fetchableOnly = false,
@@ -59,7 +59,7 @@ function generateAllElementLocators(
 
     if (requireAttributes.length > 0) {
       const hasRequiredAttr = requireAttributes.some(
-        (attr) => element.attributes && element.attributes[attr]
+        attr => element.attributes && element.attributes[attr]
       );
       if (!hasRequiredAttr) return false;
     }
@@ -76,30 +76,33 @@ function generateAllElementLocators(
     }
 
     if (fetchableOnly) {
-      const interactableTags = isNative && automationName === 'uiautomator2' ? [
-        "EditText",
-        "Button", 
-        "ImageButton",
-        "CheckBox",
-        "RadioButton",
-        "Switch",
-        "ToggleButton",
-        "TextView",
-      ] : [
-        "XCUIElementTypeTextField",
-        "XCUIElementTypeSecureTextField",
-        "XCUIElementTypeButton",
-        "XCUIElementTypeImage",
-        "XCUIElementTypeSwitch",
-        "XCUIElementTypeStaticText",
-        "XCUIElementTypeTextView",
-        "XCUIElementTypeCell",
-        "XCUIElementTypeLink"
-      ];
+      const interactableTags =
+        isNative && automationName === 'uiautomator2'
+          ? [
+              'EditText',
+              'Button',
+              'ImageButton',
+              'CheckBox',
+              'RadioButton',
+              'Switch',
+              'ToggleButton',
+              'TextView',
+            ]
+          : [
+              'XCUIElementTypeTextField',
+              'XCUIElementTypeSecureTextField',
+              'XCUIElementTypeButton',
+              'XCUIElementTypeImage',
+              'XCUIElementTypeSwitch',
+              'XCUIElementTypeStaticText',
+              'XCUIElementTypeTextView',
+              'XCUIElementTypeCell',
+              'XCUIElementTypeLink',
+            ];
       const isInteractable =
-        interactableTags.some((tag) => element.tagName.includes(tag)) ||
-        element.attributes?.clickable === "true" ||
-        element.attributes?.focusable === "true";
+        interactableTags.some(tag => element.tagName.includes(tag)) ||
+        element.attributes?.clickable === 'true' ||
+        element.attributes?.focusable === 'true';
 
       if (!isInteractable) return false;
     }
@@ -111,7 +114,7 @@ function generateAllElementLocators(
     if (!element || !shouldIncludeElement(element)) {
       // Still traverse children even if parent is filtered out
       if (element && element.children) {
-        element.children.forEach((child) => traverseElements(child));
+        element.children.forEach(child => traverseElements(child));
       }
       return;
     }
@@ -145,7 +148,7 @@ function generateAllElementLocators(
 
     // Recursively process children
     if (element.children && element.children.length > 0) {
-      element.children.forEach((child) => traverseElements(child));
+      element.children.forEach(child => traverseElements(child));
     }
   }
 
@@ -158,7 +161,11 @@ function generateAllElementLocators(
 }
 
 // Export results to different formats
-function exportResults(results: ElementWithLocators[], format: string = 'json', filename: string = 'all-locators'): string {
+function exportResults(
+  results: ElementWithLocators[],
+  format: string = 'json',
+  filename: string = 'all-locators'
+): string {
   let content: string;
   let extension: string;
 
@@ -182,7 +189,7 @@ function exportResults(results: ElementWithLocators[], format: string = 'json', 
         'AccessibilityId',
         'UiAutomator',
       ];
-      const rows = results.map((item) => [
+      const rows = results.map(item => [
         item.tagName,
         item.text,
         item.contentDesc,
@@ -195,7 +202,7 @@ function exportResults(results: ElementWithLocators[], format: string = 'json', 
         item.locators['-android uiautomator'] || '',
       ]);
       content = [headers, ...rows]
-        .map((row) => row.map((cell) => `"${cell}"`).join(','))
+        .map(row => row.map(cell => `"${cell}"`).join(','))
         .join('\n');
       extension = 'csv';
       break;
@@ -214,5 +221,5 @@ export {
   generateAllElementLocators,
   exportResults,
   type FilterOptions,
-  type ElementWithLocators
+  type ElementWithLocators,
 };

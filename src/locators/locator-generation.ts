@@ -222,7 +222,6 @@ function determineXpathUniqueness(
 
   // If the XPath does not parse, move to the next unique attribute
   try {
-    // eslint-disable-next-line import/no-named-as-default-member -- needed for Vitest spy functionality
     const result = XPath.select(xpath, doc as any);
     othersWithAttr = Array.isArray(result)
       ? (result as unknown as XMLNode[])
@@ -333,7 +332,7 @@ export function getOptimalXPath(
     ];
     const attrPairsPermutations: [string, string][] = attrsForPairs.flatMap(
       (v1, i) =>
-        attrsForPairs.slice(i + 1).map((v2) => [v1, v2] as [string, string])
+        attrsForPairs.slice(i + 1).map(v2 => [v1, v2] as [string, string])
     );
 
     const cases = [

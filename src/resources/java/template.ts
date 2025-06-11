@@ -3,18 +3,18 @@
  */
 export default function javaTemplatesResource(server: any) {
   server.addResource({
-    uri: "generate://code-with-locators",
-    name: "Generate Code With Locators",
+    uri: 'generate://code-with-locators',
+    name: 'Generate Code With Locators',
     description: `Generate code for the current page with locators which was retrieved from generate_locators tool. 
     which follows the page factory pattern.`,
-    mimeType: "text/plain",
+    mimeType: 'text/plain',
     async load() {
       // Return all content directly without templates object
       return {
         message:
-          "Java templates for mobile automation, use this and generate code for the current page",
+          'Java templates for mobile automation, use this and generate code for the current page',
         instruction:
-          "Use these templates to generate code for the current page",
+          'Use these templates to generate code for the current page',
         text: `
 package templates;
 
