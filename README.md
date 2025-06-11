@@ -2,6 +2,36 @@
 
 MCP server providing resources and tools for Appium mobile gestures.
 
+## Installation
+
+```
+    "mcp-locators": {
+      "disabled": false,
+      "timeout": 100,
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "./dist/index.js"
+      ],
+      "env": {
+        "ANDROID_HOME": "",
+        "CAPABILITIES_CONFIG": "/Users/xx/Documents/git/n8n/caps.json"
+      }
+    },
+
+caps.json // additional appium capabilites
+{
+  "android": {
+    "appium:app": "/app/path"
+  },
+  "ios": {
+    "appium:deviceName": "iPhone 16 Pro",
+    "appium:platformVersion": "18.2",
+    "appium:udid": ""
+  }
+}
+```
+
 ## Development
 
 ### Code Quality
