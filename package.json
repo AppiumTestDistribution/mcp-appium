@@ -23,6 +23,7 @@
     "@modelcontextprotocol/sdk": "^1.11.0",
     "@xmldom/xmldom": "^0.9.8",
     "appium-uiautomator2-driver": "^4.2.3",
+    "appium-xcuitest-driver": "^9.6.0",
     "fast-xml-parser": "^5.2.3",
     "fastmcp": "^1.23.2",
     "lodash": "^4.17.21",

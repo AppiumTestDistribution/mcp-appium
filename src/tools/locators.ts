@@ -32,24 +32,20 @@ export default function generateLocators(server: any): void {
         try {
           // Get the page source from the driver
           const pageSource = await driver.getPageSource();
-          console.log(pageSource);
-          console.log(
-            "Page source received, length:",
-            pageSource ? pageSource.length : 0
-          );
-
+          const driverName = (await driver.caps.automationName).toLowerCase();
           if (!pageSource) {
             throw new Error("Page source is empty or null");
           }
-
-          // Main execution function
-          // get this from driver.getSource()
           const sampleXML = pageSource;
-          const allElements = generateAllElementLocators(sampleXML, true, "uiautomator2");
+          const allElements = generateAllElementLocators(
+            sampleXML,
+            true,
+            driverName
+          );
           const interactableElements = generateAllElementLocators(
             sampleXML,
             true,
-            "uiautomator2",
+            driverName,
             {
               fetchableOnly: true,
             }

@@ -1,9 +1,11 @@
 /**
- * Tool to create a new Android session
+ * Tool to create a new mobile session (Android or iOS)
  */
 import { z } from "zod";
 import { AndroidUiautomator2Driver } from "appium-uiautomator2-driver";
+import { XCUITestDriver } from "appium-xcuitest-driver";
 import { setSession, getDriver, getSessionId } from "./sessionStore.js";
+
 // Define capabilities type
 interface Capabilities {
   platformName: string;
@@ -15,15 +17,15 @@ interface Capabilities {
 export default function createSession(server: any): void {
   server.addTool({
     name: "create_session",
-    description: "Create a new session with the Android device",
+    description: "Create a new mobile session with Android or iOS device (use select_platform first to choose your platform)",
     parameters: z.object({
+      platform: z
+        .enum(["ios", "android"])
+        .describe("REQUIRED: Specify the platform - 'android' for Android devices or 'ios' for iOS devices. Use select_platform tool first if you haven't chosen yet."),
       capabilities: z
         .object({})
-        .default({
-          platformName: "Android",
-          "appium:automationName": "UiAutomator2",
-        })
-        .describe("Desired capabilities for the Android session (W3C format)"),
+        .optional()
+        .describe("Optional custom capabilities for the session (W3C format). If not provided, default capabilities will be used based on the selected platform"),
     }),
     annotations: {
       readOnlyHint: false,
@@ -31,33 +33,57 @@ export default function createSession(server: any): void {
     },
     execute: async (args: any, context: any): Promise<any> => {
       try {
-        const capabilities = args.capabilities as Capabilities;
-        console.log(
-          "Creating new Android session with capabilities:",
-          JSON.stringify(capabilities, null, 2)
-        );
-
-        const driver = new AndroidUiautomator2Driver();
-
-        // @ts-ignore
-        const sessionId = await driver.createSession(null, {
-          alwaysMatch: {
+        const { platform, capabilities: customCapabilities } = args;
+        
+        let defaultCapabilities: Capabilities;
+        let driver: any;
+        
+        if (platform === "android") {
+          defaultCapabilities = {
             platformName: "Android",
             "appium:automationName": "UiAutomator2",
             "appium:deviceName": "Android Device",
-          },
+          };
+          driver = new AndroidUiautomator2Driver();
+        } else if (platform === "ios") {
+            defaultCapabilities = {
+              platformName: "iOS",
+              "appium:automationName": "XCUITest",
+              "appium:deviceName": "iPhone 16 Pro",
+              "appium:platformVersion": "18.2",
+              "appium:udid": "E9F10A3E-58E6-4506-B273-B22AF836014E",
+            };
+          driver = new XCUITestDriver();
+        } else {
+          throw new Error(`Unsupported platform: ${platform}. Please choose 'android' or 'ios'.`);
+        }
+
+        // Merge custom capabilities with defaults
+        const finalCapabilities = {
+          ...defaultCapabilities,
+          ...customCapabilities,
+        };
+
+        console.log(
+          `Creating new ${platform.toUpperCase()} session with capabilities:`,
+          JSON.stringify(finalCapabilities, null, 2)
+        );
+
+        // @ts-ignore
+        const sessionId = await driver.createSession(null, {
+          alwaysMatch: finalCapabilities,
           firstMatch: [{}],
         });
 
         setSession(driver, sessionId);
 
-        console.log(`Session created successfully with ID: ${sessionId}`);
+        console.log(`${platform.toUpperCase()} session created successfully with ID: ${sessionId}`);
 
         return {
           content: [
             {
               type: "text",
-              text: `Session created successfully with ID: ${sessionId}`,
+              text: `${platform.toUpperCase()} session created successfully with ID: ${sessionId}\nPlatform: ${finalCapabilities.platformName}\nAutomation: ${finalCapabilities["appium:automationName"]}\nDevice: ${finalCapabilities["appium:deviceName"]}`,
             },
           ],
         };

@@ -29,7 +29,7 @@ interface ElementWithLocators {
 function generateAllElementLocators(
   sourceXML: string,
   isNative: boolean = true,
-  automationName: string = 'uiautomator2',
+  automationName: string,
   filters: FilterOptions = {}
 ): ElementWithLocators[] {
   const {
@@ -76,15 +76,25 @@ function generateAllElementLocators(
     }
 
     if (fetchableOnly) {
-      const interactableTags = [
+      const interactableTags = isNative && automationName === 'uiautomator2' ? [
         "EditText",
-        "Button",
+        "Button", 
         "ImageButton",
         "CheckBox",
         "RadioButton",
         "Switch",
         "ToggleButton",
         "TextView",
+      ] : [
+        "XCUIElementTypeTextField",
+        "XCUIElementTypeSecureTextField",
+        "XCUIElementTypeButton",
+        "XCUIElementTypeImage",
+        "XCUIElementTypeSwitch",
+        "XCUIElementTypeStaticText",
+        "XCUIElementTypeTextView",
+        "XCUIElementTypeCell",
+        "XCUIElementTypeLink"
       ];
       const isInteractable =
         interactableTags.some((tag) => element.tagName.includes(tag)) ||

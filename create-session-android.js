@@ -13,11 +13,12 @@ console.log(
 // Create a new UiAutomator2Driver instance
 
 const driver = new AndroidUiautomator2Driver();
-
 // @ts-ignore
 const sessionId = await driver.createSession(null, {
   alwaysMatch: capabilities,
   firstMatch: [{}],
 });
+
+console.log(driver.caps.automationName);
 
 console.log(`Session created successfully with ID: ${sessionId}`);
