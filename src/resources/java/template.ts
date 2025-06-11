@@ -6,7 +6,7 @@ export default function javaTemplatesResource(server: any) {
     uri: 'generate://code-with-locators',
     name: 'Generate Code With Locators',
     description: `Generate code for the current page with locators which was retrieved from generate_locators tool. 
-    which follows the page factory pattern.`,
+    which follows the page factory pattern. Dont not strictly create test cases, just generate the code for locators.`,
     mimeType: 'text/plain',
     async load() {
       // Return all content directly without templates object
