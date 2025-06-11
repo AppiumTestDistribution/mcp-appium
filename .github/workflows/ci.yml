@@ -1,4 +1,4 @@
-name: Code Quality Checks
+name: Code Quality and Tests
 
 on:
   push:
@@ -7,16 +7,16 @@ on:
     branches: [ main ]
 
 jobs:
-  lint-and-format:
-    name: ESLint and Prettier Check
+  lint-format-and-test:
+    name: ESLint, Prettier, and Tests
     runs-on: ubuntu-latest
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       
     - name: Setup Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: '18'
         cache: 'npm'
@@ -29,3 +29,6 @@ jobs:
       
     - name: Run Prettier check
       run: npm run format:check
+      
+    - name: Run Locator Tests
+      run: npm run test:locators

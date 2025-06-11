@@ -15,6 +15,8 @@ This project uses ESLint for linting and Prettier for code formatting.
 - `npm run format` - Format all code using Prettier
 - `npm run format:check` - Check if code is properly formatted
 - `npm run check` - Run both linting and format checking
+- `npm test` - Run all tests
+- `npm run test:locators` - Run tests for locator generation functionality
 
 #### Configuration
 
@@ -28,9 +30,21 @@ Before committing code, run:
 
 ```bash
 npm run check
+npm test
 ```
 
-This will ensure your code passes both linting and formatting checks.
+This will ensure your code passes linting, formatting checks, and all tests.
+
+### Testing
+
+This project uses Jest for unit testing. Tests are located in the `src/tests` directory.
+
+#### Running Tests
+
+- `npm test` - Run all tests
+- `npm run test:locators` - Run tests for locator generation functionality
+
+For more details about the testing approach and how to add new tests, see [src/tests/README.md](src/tests/README.md).
 
 ## Build and Run
 
