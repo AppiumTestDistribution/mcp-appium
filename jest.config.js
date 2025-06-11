@@ -1,5 +1,5 @@
 export default {
-  preset: 'ts-jest',
+  preset: 'ts-jest/presets/js-with-ts-esm',
   testEnvironment: 'node',
   extensionsToTreatAsEsm: ['.ts'],
   moduleNameMapper: {
@@ -13,4 +13,8 @@ export default {
       },
     ],
   },
+  // Add this to ensure Jest can handle ESM
+  transformIgnorePatterns: [
+    'node_modules/(?!(@xmldom|fast-xml-parser|xpath)/)'
+  ],
 };
