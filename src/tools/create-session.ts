@@ -37,7 +37,7 @@ export default function createSession(server: any): void {
         .object({})
         .optional()
         .describe(
-          'Optional custom capabilities for the session (W3C format). If not provided, default capabilities will be used based on the selected platform'
+          'Optional custom capabilities for the session (W3C format).'
         ),
     }),
     annotations: {
