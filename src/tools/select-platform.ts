@@ -7,9 +7,7 @@ export default function selectPlatform(server: any): void {
   server.addTool({
     name: 'select_platform',
     description:
-      `REQUIRED: First select the mobile platform (Android or iOS) you want to work with before creating a session, 
-       strictly and do not assume anything.
-       This is mandatory and you must select one before proceeding to use the create_session tool.`,
+      'REQUIRED: First select the mobile platform (Android or iOS) you want to work with before creating a session, strictly and do not assume anything. This is mandatory and you must select one before proceeding to use the create_session tool.',
     parameters: z.object({
       platform: z
         .enum(['ios', 'android'])

@@ -36,9 +36,7 @@ export default function createSession(server: any): void {
       capabilities: z
         .object({})
         .optional()
-        .describe(
-          'Optional custom capabilities for the session (W3C format).'
-        ),
+        .describe('Optional custom capabilities for the session (W3C format).'),
     }),
     annotations: {
       readOnlyHint: false,
