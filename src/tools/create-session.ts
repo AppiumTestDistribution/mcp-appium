@@ -51,11 +51,11 @@ export default function createSession(server: any): void {
         let defaultCapabilities: Capabilities;
         let driver: any;
         let finalCapabilities: Capabilities;
-        
+
         // Load capabilities from config file
         let configCapabilities: CapabilitiesConfig = { android: {}, ios: {} };
         const configPath = process.env.CAPABILITIES_CONFIG;
-        
+
         if (configPath && fs.existsSync(configPath)) {
           try {
             const configContent = fs.readFileSync(configPath, 'utf8');
@@ -64,14 +64,14 @@ export default function createSession(server: any): void {
             console.warn(`Failed to parse capabilities config: ${error}`);
           }
         }
-        
+
         if (platform === 'android') {
           defaultCapabilities = {
             platformName: 'Android',
             'appium:automationName': 'UiAutomator2',
             'appium:deviceName': 'Android Device',
           };
-          
+
           // Get platform-specific capabilities from config
           const androidCaps = configCapabilities.android || {};
 
@@ -81,7 +81,7 @@ export default function createSession(server: any): void {
             ...androidCaps,
             ...customCapabilities,
           };
-          
+
           driver = new AndroidUiautomator2Driver();
         } else if (platform === 'ios') {
           defaultCapabilities = {
@@ -89,17 +89,17 @@ export default function createSession(server: any): void {
             'appium:automationName': 'XCUITest',
             'appium:deviceName': 'iPhone Simulator',
           };
-          
+
           // Get platform-specific capabilities from config
           const iosCaps = configCapabilities.ios || {};
-              
+
           // Merge custom capabilities with defaults and config capabilities
           finalCapabilities = {
             ...defaultCapabilities,
             ...iosCaps,
             ...customCapabilities,
           };
-          
+
           driver = new XCUITestDriver();
         } else {
           throw new Error(
