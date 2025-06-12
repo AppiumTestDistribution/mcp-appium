@@ -1,6 +1,7 @@
 import { FastMCP } from 'fastmcp/dist/FastMCP.js';
 import { z } from 'zod';
 import { getDriver } from '../sessionStore.js';
+import { checkIsValidElementId } from '../../utils.js';
 
 export default function findElement(server: FastMCP): void {
   const findElementSchema = z.object({
@@ -20,7 +21,8 @@ export default function findElement(server: FastMCP): void {
 
   server.addTool({
     name: 'appium_find_element',
-    description: 'Find an element with the given strategy and selector',
+    description:
+      'Find an element with the given strategy and selector which will return a uuid that can be used while interaction',
     parameters: findElementSchema,
     annotations: {
       readOnlyHint: false,

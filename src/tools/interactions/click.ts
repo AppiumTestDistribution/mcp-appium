@@ -1,12 +1,12 @@
 import { FastMCP } from 'fastmcp/dist/FastMCP.js';
 import { z } from 'zod';
 import { getDriver } from '../sessionStore.js';
+import { checkIsValidElementId } from '../../utils.js';
+import { elementUUIDScheme } from '../../schema.js';
 
 export default function generateTest(server: FastMCP): void {
   const clickActionSchema = z.object({
-    elementId: z
-      .string()
-      .describe('The id of the element returned by findelement to click'),
+    elementUUID: elementUUIDScheme,
   });
 
   server.addTool({
@@ -24,12 +24,13 @@ export default function generateTest(server: FastMCP): void {
       }
 
       try {
-        await driver.click(args.elementId);
+        checkIsValidElementId(args.elementUUID);
+        await driver.click(args.elementUUID);
         return {
           content: [
             {
               type: 'text',
-              text: `Successfully clicked on element ${args.elementId}`,
+              text: `Successfully clicked on element ${args.elementUUID}`,
             },
           ],
         };
@@ -38,7 +39,7 @@ export default function generateTest(server: FastMCP): void {
           content: [
             {
               type: 'text',
-              text: `Failed to click on element ${args.elementId}. err: ${err.toString()}`,
+              text: `Failed to click on element ${args.elementUUID}. err: ${err.toString()}`,
             },
           ],
         };

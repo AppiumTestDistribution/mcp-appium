@@ -1,12 +1,12 @@
 import { FastMCP } from 'fastmcp/dist/FastMCP.js';
 import { z } from 'zod';
 import { getDriver } from '../sessionStore.js';
+import { elementUUIDScheme } from '../../schema.js';
+import { checkIsValidElementId } from '../../utils.js';
 
 export default function setValue(server: FastMCP): void {
   const setValueSchema = z.object({
-    elementId: z
-      .string()
-      .describe('The id of the element returned by findelement to enter text'),
+    elementUUID: elementUUIDScheme,
     text: z.string().describe('The text to enter'),
   });
 
@@ -25,12 +25,13 @@ export default function setValue(server: FastMCP): void {
       }
 
       try {
-        await driver.setValue(args.text, args.elementId);
+        checkIsValidElementId(args.elementUUID);
+        await driver.setValue(args.text, args.elementUUID);
         return {
           content: [
             {
               type: 'text',
-              text: `Successfully set value ${args.text} into element ${args.elementId}`,
+              text: `Successfully set value ${args.text} into element ${args.elementUUID}`,
             },
           ],
         };
@@ -39,7 +40,7 @@ export default function setValue(server: FastMCP): void {
           content: [
             {
               type: 'text',
-              text: `Failed to set value ${args.text} into element ${args.elementId}. err: ${err.toString()}`,
+              text: `Failed to set value ${args.text} into element ${args.elementUUID}. err: ${err.toString()}`,
             },
           ],
         };
