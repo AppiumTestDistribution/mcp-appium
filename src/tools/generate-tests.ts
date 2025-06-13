@@ -9,7 +9,7 @@ export default function generateTest(server: FastMCP): void {
   const instructions = (params: { steps: string[] }) =>
     [
       `## Instructions`,
-      `- You are a Appium test generator.`,
+      `- You are an Appium test generator.`,
       `- You are given a scenario and you need to generate a appium test for it.`,
       `- Request user to select the platform first using select_platform tool and create a session`,
       `- Use generate_locators tool to fetch all interactable elements from the current screen and use it to generate the tests`,
