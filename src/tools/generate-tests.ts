@@ -21,7 +21,7 @@ export default function generateTest(server: FastMCP): void {
       '- Only after all steps are completed, emit a Appium test based on message history',
       '- Save generated test file in the tests directory',
       `- Use generate://code-with-locators resource as reference for code generation`,
-      `- Alaways call find_element_tool to retrieve the element UUID before interacting with the element`,
+      `- Always call find_element_tool to retrieve the element UUID before interacting with the element`,
       `Steps:`,
       ...params.steps.map((step, index) => `- ${index + 1}. ${step}`),
     ].join('\n');
