@@ -1,10 +1,10 @@
 {
-  "name": "mobile-agent",
+  "name": "jarvis-appium",
   "version": "1.0.0",
   "type": "module",
   "main": "src/index.ts",
   "bin": {
-    "mobile-agent": "src/index.js"
+    "jarvis-appium": "src/index.js"
   },
   "scripts": {
     "build": "rimraf dist && tsc && chmod +x dist/index.js",
@@ -24,7 +24,7 @@
   },
   "author": "",
   "license": "MIT",
-  "description": "MCP server providing resources and tools for Appium mobile gestures",
+  "description": "Intelligent MCP server providing AI assistants with powerful tools and resources for Appium mobile automation",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.11.0",
     "@xmldom/xmldom": "^0.9.8",

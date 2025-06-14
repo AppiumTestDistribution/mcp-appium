@@ -3,9 +3,10 @@ import registerTools from './tools/index.js';
 import registerResources from './resources/index.js';
 
 const server = new FastMCP({
-  name: 'Appium Gestures',
+  name: 'Jarvis Appium',
   version: '1.0.0',
-  instructions: 'MCP server providing resources and tools for Mobile Agent',
+  instructions:
+    'Intelligent MCP server providing AI assistants with powerful tools and resources for Appium mobile automation',
 });
 
 registerResources(server);
