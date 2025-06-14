@@ -206,7 +206,7 @@ export function getSuggestedLocators(
     }
   }
 
-  return sortedLocators;
+  return [sortedLocators[0]];
 }
 
 /**
