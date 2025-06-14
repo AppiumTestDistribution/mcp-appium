@@ -5,9 +5,11 @@ An intelligent MCP (Model Context Protocol) server that provides AI assistants w
 ## 🚀 Features
 
 - **Cross-Platform Support**: Android (UiAutomator2) and iOS (XCUITest) automation
+- **Cloud Integration**: Native LambdaTest cloud platform support for scalable testing
 - **Intelligent Locator Generation**: AI-powered element identification with priority-based strategies
-- **Interactive Session Management**: Create and manage mobile device sessions
+- **Interactive Session Management**: Create and manage local and cloud mobile device sessions
 - **Smart Element Interactions**: Click, text input, screenshot, and element finding capabilities
+- **App Management**: Upload and manage mobile apps on cloud platforms
 - **Automated Test Generation**: Generate Java/TestNG test code from natural language descriptions
 - **Page Object Model Support**: Built-in templates following best practices
 - **Flexible Configuration**: Environment-specific capabilities and settings
@@ -108,6 +110,28 @@ Create a new mobile automation session with specified capabilities.
   - `platform`: "android" or "ios"
   - `capabilities`: Optional custom W3C capabilities
 
+#### `create_lambdatest_session`
+
+Create a new mobile automation session on LambdaTest cloud platform.
+
+- **Parameters**:
+  - `platform`: "android" or "ios"
+  - `deviceName`: Device name (e.g., "Galaxy S21", "iPhone 13 Pro")
+  - `platformVersion`: Platform version (e.g., "11.0", "15.0")
+  - `app`: Optional app URL from LambdaTest (lt://APP_ID format)
+  - `buildName`: Optional build name for organizing tests
+  - `testName`: Optional test name for this session
+  - `ltOptions`: Optional LambdaTest-specific settings (video, logs, etc.)
+  - `capabilities`: Optional additional W3C capabilities
+
+#### `upload_app_lambdatest`
+
+Upload a mobile app to LambdaTest cloud storage for testing.
+
+- **Parameters**:
+  - `appPath`: Local path to the app file (APK/IPA)
+  - `appName`: Optional custom name for the app
+
 ### Element Interaction
 
 #### `generate_locators`
@@ -203,6 +227,32 @@ Use appium_generate_tests with steps:
 - "Verify dashboard is displayed"
 ```
 
+### LambdaTest Cloud Testing Workflow
+
+#### 1. Upload Your App (if needed)
+```
+Use upload_app_lambdatest with:
+- appPath: "/path/to/your/app.apk"
+- appName: "My Test App"
+```
+
+#### 2. Create Cloud Session
+```
+Use create_lambdatest_session with:
+- platform: "android"
+- deviceName: "Galaxy S21"
+- platformVersion: "11.0"
+- app: "lt://APP_ID_FROM_UPLOAD"
+- buildName: "Sprint 1 Testing"
+- testName: "Login Flow Test"
+```
+
+#### 3. Continue with Normal Testing
+```
+Use generate_locators, appium_find_element, appium_click, etc.
+View your test execution at: https://automation.lambdatest.com
+```
+
 ### Example Test Scenarios
 
 #### Gmail Automation
@@ -224,4 +274,14 @@ Steps:
 3. Set due date to June 25, 2025
 4. Add to personal list
 5. Mark as completed
+```
+
+#### LambdaTest Cloud Testing Example
+
+```
+Steps:
+1. Upload app: upload_app_lambdatest("/path/to/app.apk", "MyApp")
+2. Create session: create_lambdatest_session("android", "Pixel 6", "12.0", "lt://APP123")
+3. Generate locators and interact with elements
+4. View results in LambdaTest dashboard
 ```

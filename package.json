@@ -32,6 +32,7 @@
     "appium-xcuitest-driver": "^9.6.0",
     "fast-xml-parser": "^5.2.3",
     "fastmcp": "^1.23.2",
+    "form-data": "^4.0.3",
     "lodash": "^4.17.21",
     "rimraf": "^6.0.1",
     "xpath": "^0.0.34",
@@ -39,6 +40,7 @@
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
+    "@types/form-data": "^2.2.1",
     "@types/jest": "^29.5.12",
     "@types/lodash": "^4.17.17",
     "@types/node": "^22.15.18",
