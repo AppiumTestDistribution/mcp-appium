@@ -409,7 +409,7 @@ export async function indexAllMarkdownFiles(
  */
 export async function queryVectorStore(
   query: string,
-  topK: number = 50
+  topK: number = 25
 ): Promise<Document[]> {
   try {
     // Check if the vector store has been initialized in memory
