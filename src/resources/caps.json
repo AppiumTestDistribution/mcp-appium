@@ -1,0 +1,697 @@
+{
+  "platformName": {
+    "value": "iOS",
+    "description": "The type of platform hosting the app or browser (iOS, Android, Windows, etc.)"
+  },
+  "browserName": {
+    "value": "Safari",
+    "description": "The name of the browser to launch and automate (Safari, Chrome, Firefox, etc.)"
+  },
+  "browserVersion": {
+    "value": "16.0",
+    "description": "The specific version of the browser to use"
+  },
+  "appium:automationName": {
+    "value": "XCUITest",
+    "description": "The name of the Appium driver to use (XCUITest for iOS, UiAutomator2 for Android, etc.)"
+  },
+  "appium:app": {
+    "value": "/path/to/your/app.ipa",
+    "description": "The path to an installable application (.ipa for iOS, .apk for Android)"
+  },
+  "appium:deviceName": {
+    "value": "iPhone 14",
+    "description": "The name of a particular device to automate (mainly for iOS simulators)"
+  },
+  "appium:platformVersion": {
+    "value": "16.0",
+    "description": "The version of the platform/OS (e.g., iOS 16.0, Android 13)"
+  },
+  "appium:newCommandTimeout": {
+    "value": 60,
+    "description": "Seconds to wait for commands before timing out session (default: 60, 0 disables)"
+  },
+  "appium:noReset": {
+    "value": false,
+    "description": "If true, skip usual reset logic during session start/cleanup (default: false)"
+  },
+  "appium:fullReset": {
+    "value": false,
+    "description": "If true, perform additional reset steps for maximum reproducibility (default: false)"
+  },
+  "appium:eventTimings": {
+    "value": false,
+    "description": "If true, collect event timings for performance analysis (default: false)"
+  },
+  "appium:printPageSourceOnFindFailure": {
+    "value": false,
+    "description": "If true, print page source to log when element finding fails (default: false)"
+  },
+  "webSocketUrl": {
+    "value": true,
+    "description": "Enable WebDriver BiDi protocol support for advanced features"
+  },
+  "appium:options": {
+    "value": {
+      "bundleId": {
+        "value": "com.example.app",
+        "description": "iOS app bundle identifier (alternative to app path)"
+      },
+      "udid": {
+        "value": "device-specific-id",
+        "description": "Unique device identifier for targeting specific devices"
+      },
+      "wdaLocalPort": {
+        "value": 8100,
+        "description": "Port for WebDriverAgent communication (iOS automation)"
+      },
+      "clearSystemFiles": {
+        "value": false,
+        "description": "Whether to clear system files before session start"
+      },
+      "language": {
+        "value": "en",
+        "description": "Device language setting"
+      },
+      "locale": {
+        "value": "US",
+        "description": "Device locale/region setting"
+      },
+      "autoAcceptAlerts": {
+        "value": false,
+        "description": "Automatically accept system alerts"
+      },
+      "autoDismissAlerts": {
+        "value": false,
+        "description": "Automatically dismiss system alerts"
+      },
+      "safariInitialUrl": {
+        "value": "about:blank",
+        "description": "Initial URL when launching Safari"
+      },
+      "safariAllowPopups": {
+        "value": false,
+        "description": "Allow popup windows in Safari"
+      },
+      "safariIgnoreFraudWarning": {
+        "value": false,
+        "description": "Ignore fraud warnings in Safari"
+      },
+      "safariOpenLinksInBackground": {
+        "value": false,
+        "description": "Open links in background tabs"
+      },
+      "keepKeyChains": {
+        "value": false,
+        "description": "Preserve keychain data between sessions"
+      },
+      "keychainPath": {
+        "value": "/path/to/keychain",
+        "description": "Path to custom keychain file"
+      },
+      "keychainPassword": {
+        "value": "password",
+        "description": "Password for custom keychain"
+      },
+      "xcodeOrgId": {
+        "value": "team-id",
+        "description": "Xcode team ID for app signing"
+      },
+      "xcodeSigningId": {
+        "value": "iPhone Developer",
+        "description": "Code signing identity"
+      },
+      "updatedWDABundleId": {
+        "value": "com.example.WebDriverAgentRunner",
+        "description": "Custom bundle ID for WebDriverAgent"
+      },
+      "appPushTimeout": {
+        "value": 30000,
+        "description": "Timeout for app installation in milliseconds"
+      },
+      "wdaConnectionTimeout": {
+        "value": 60000,
+        "description": "WebDriverAgent connection timeout in milliseconds"
+      },
+      "wdaStartupRetries": {
+        "value": 2,
+        "description": "Number of WebDriverAgent startup retry attempts"
+      },
+      "wdaStartupRetryInterval": {
+        "value": 10000,
+        "description": "Delay between WebDriverAgent startup retries in milliseconds"
+      },
+      "screenshotWaitTimeout": {
+        "value": 10,
+        "description": "Timeout for screenshot capture in seconds"
+      },
+      "derivedDataPath": {
+        "value": "/path/to/derived/data",
+        "description": "Custom path for Xcode derived data"
+      },
+      "usePrebuiltWDA": {
+        "value": false,
+        "description": "Use pre-built WebDriverAgent instead of building from source"
+      },
+      "useNewWDA": {
+        "value": false,
+        "description": "Force creation of new WebDriverAgent session"
+      },
+      "wdaBaseUrl": {
+        "value": "http://localhost:8100",
+        "description": "Base URL for WebDriverAgent server"
+      },
+      "wdaEventloopIdleDelay": {
+        "value": 0,
+        "description": "Delay in WebDriverAgent event loop when idle"
+      },
+      "useXctestrunFile": {
+        "value": false,
+        "description": "Use custom xctestrun file for test execution"
+      },
+      "xctestrunFile": {
+        "value": "/path/to/xctestrun/file",
+        "description": "Path to custom xctestrun file"
+      },
+      "waitForAppScript": {
+        "value": "$.delay(1000);",
+        "description": "JavaScript to wait for app readiness"
+      },
+      "sendKeyStrategy": {
+        "value": "grouped",
+        "description": "Strategy for sending keystrokes (grouped, oneByOne, setValue)"
+      },
+      "processArguments": {
+        "value": {
+          "args": {
+            "value": [],
+            "description": "Command line arguments for the app"
+          },
+          "env": {
+            "value": {},
+            "description": "Environment variables for the app"
+          }
+        },
+        "description": "Process arguments and environment variables for the app"
+      },
+      "showIOSLog": {
+        "value": false,
+        "description": "Show iOS system logs in Appium logs"
+      },
+      "safariGarbageCollect": {
+        "value": false,
+        "description": "Force garbage collection in Safari"
+      },
+      "nativeWebScreenshot": {
+        "value": false,
+        "description": "Use native screenshot method for web contexts"
+      },
+      "webviewConnectRetries": {
+        "value": 8,
+        "description": "Number of retries for webview connection"
+      },
+      "iosWebviewDebugProxyPort": {
+        "value": 27753,
+        "description": "Port for iOS webview debug proxy"
+      },
+      "nativeInstrumentsLib": {
+        "value": false,
+        "description": "Use native instruments library for interactions"
+      },
+      "nativeWebTap": {
+        "value": false,
+        "description": "Use native tap for web elements"
+      },
+      "scaleFactor": {
+        "value": "1.0",
+        "description": "UI scaling factor for interactions"
+      },
+      "prelaunchApp": {
+        "value": false,
+        "description": "Pre-launch the app before starting automation"
+      },
+      "iosInstallPause": {
+        "value": 0,
+        "description": "Pause duration after app installation in milliseconds"
+      },
+      "localizableStringsDir": {
+        "value": "/path/to/localizable/strings",
+        "description": "Directory containing localization files"
+      }
+    },
+    "description": "Grouped iOS-specific and advanced Appium options"
+  },
+  "appium:systemPort": {
+    "description": "The number of the port on the host machine used for the UiAutomator2 server. By default the first free port from 8200..8299 range is selected. It is recommended to set this value if you are running parallel tests on the same machine."
+  },
+  "appium:skipServerInstallation": {
+    "description": "Skip the UiAutomator2 Server component installation on the device under test and all the related checks if set to true. This could help to speed up the session startup if you know for sure the correct server version is installed on the device. In case the server is not installed or an incorrect version of it is installed then you may get an unexpected error later. false by default."
+  },
+  "appium:uiautomator2ServerLaunchTimeout": {
+    "description": "The maximum number of milliseconds to wait util UiAutomator2Server is listening on the device. 30000 ms by default."
+  },
+  "appium:uiautomator2ServerInstallTimeout": {
+    "description": "The maximum number of milliseconds to wait util UiAutomator2Server is installed on the device. 20000 ms by default."
+  },
+  "appium:uiautomator2ServerReadTimeout": {
+    "description": "The maximum number of milliseconds to wait for a HTTP response from UiAutomator2Server. Only values greater than zero are accepted. If the given value is too low then expect driver commands to fail with timeout of Xms exceeded error. 240000 ms by default."
+  },
+  "appium:disableWindowAnimation": {
+    "description": "Whether to disable window animations when starting the instrumentation process. The animation scale will be restored automatically after the instrumentation process ends for API level 26 and higher. The animation scale could remain if the session ends unexpectedly for API level 25 and lower. false by default."
+  },
+  "appium:skipDeviceInitialization": {
+    "description": "If set to true then device startup checks (whether it is ready and whether Settings app is installed) will be canceled on session creation. Could speed up the session creation if you know what you are doing. false by default."
+  },
+  "appium:appPackage": {
+    "description": "Application package identifier to be started. If not provided then UiAutomator2 will try to detect it automatically from the package provided by the app capability."
+  },
+  "appium:appActivity": {
+    "description": "Main application activity identifier. If not provided then UiAutomator2 will try to detect it automatically from the package provided by the app capability."
+  },
+  "appium:appWaitActivity": {
+    "description": "Identifier of the first activity that the application invokes. If not provided then equals to appium:appActivity."
+  },
+  "appium:appWaitPackage": {
+    "description": "Identifier of the first package that is invoked first. If not provided then equals to appium:appPackage."
+  },
+  "appium:appWaitDuration": {
+    "description": "Maximum amount of milliseconds to wait until the application under test is started (e. g. an activity returns the control to the caller). 20000 ms by default."
+  },
+  "appium:androidInstallTimeout": {
+    "description": "Maximum amount of milliseconds to wait until the application under test is installed. 90000 ms by default."
+  },
+  "appium:appWaitForLaunch": {
+    "description": "Whether to block until the app under test returns the control to the caller after its activity has been started by Activity Manager (true, the default value) or to continue the test without waiting for that (false)."
+  },
+  "appium:intentCategory": {
+    "description": "Set an optional intent category to be applied when starting the given appActivity by Activity Manager. Defaults to android.intent.category.LAUNCHER."
+  },
+  "appium:intentAction": {
+    "description": "Set an optional intent action to be applied when starting the given appActivity by Activity Manager. Defaults to android.intent.action.MAIN."
+  },
+  "appium:intentFlags": {
+    "description": "Set an optional intent flags to be applied when starting the given appActivity by Activity Manager. Defaults to 0x10200000 (FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)."
+  },
+  "appium:optionalIntentArguments": {
+    "description": "Set an optional intent arguments to be applied when starting the given appActivity by Activity Manager."
+  },
+  "appium:dontStopAppOnReset": {
+    "description": "Set it to true if you don't want the application to be restarted if it was already running. If appium:noReset is falsy, then the app under test is going to be restarted if either this capability is falsy (the default behavior) or appium:forceAppLaunch is set to true. false by default."
+  },
+  "appium:forceAppLaunch": {
+    "description": "Set it to true if you want the application under test to be always forcefully restarted on session startup even if appium:noReset is true, and the app was already running. If noReset is falsy, then the app under test is going to be restarted if either this capability set to true or appium:dontStopAppOnReset is falsy (the default behavior). false by default."
+  },
+  "appium:shouldTerminateApp": {
+    "description": "Set it to true if you want the application under test to be always terminated on session end even if appium:noReset is true. If noReset is falsy, then the app under test is going to be terminated if appium:dontStopAppOnReset is also falsy (the default behavior). false by default."
+  },
+  "appium:autoLaunch": {
+    "description": "Whether to launch the application under test automatically (true, the default value) after a test starts."
+  },
+  "appium:autoGrantPermissions": {
+    "description": "Whether to grant all the requested application permissions automatically when a test starts(true). The targetSdkVersion in the application manifest must be greater or equal to 23 and the Android version on the device under test must be greater or equal to Android 6 (API level 23) to grant permissions. Applications whose targetSdkVersion is lower than or equal to 22 must be reinstalled to grant permissions, for example, by setting the appium:fullReset capability as true for Android 6+ devices. If your app needs some special security permissions, like access to notifications or media recording, consider using mobile: changePermissions extension with appops target. false by default."
+  },
+  "appium:otherApps": {
+    "description": "Allows to set one or more comma-separated paths to Android packages that are going to be installed along with the main application under test. This might be useful if the tested app has dependencies."
+  },
+  "appium:uninstallOtherPackages": {
+    "description": "Allows to set one or more comma-separated package identifiers to be uninstalled from the device before a test starts."
+  },
+  "appium:allowTestPackages": {
+    "description": "If set to true then it would be possible to use packages built with the test flag for the automated testing (literally adds -t flag to the adb install command). false by default."
+  },
+  "appium:remoteAppsCacheLimit": {
+    "description": "Sets the maximum amount of application packages to be cached on the device under test. This is needed for devices that don't support streamed installs (Android 7 and below), because ADB must push app packages to the device first in order to install them, which takes some time. Setting this capability to zero disables apps caching. 10 by default."
+  },
+  "appium:enforceAppInstall": {
+    "description": "If set to true then the application under test is always reinstalled even if a newer version of it already exists on the device under test. This capability has no effect if appium:noReset is set to true. false by default."
+  },
+  "appium:localeScript": {
+    "description": "Canonical name of the locale to be set for the app under test, for example Hans in zh-Hans-CN."
+  },
+  "appium:adbPort": {
+    "description": "Number of the port on the host machine where ADB is running. 5037 by default."
+  },
+  "appium:remoteAdbHost": {
+    "description": "Address of the host where ADB is running (the value of -H ADB command line option). Unset by default."
+  },
+  "appium:adbExecTimeout": {
+    "description": "Maximum number of milliseconds to wait until single ADB command is executed. 20000 ms by default."
+  },
+  "appium:clearDeviceLogsOnStart": {
+    "description": "If set to true then UiAutomator2 deletes all the existing logs in the device buffer before starting a new test."
+  },
+  "appium:buildToolsVersion": {
+    "description": "The version of Android build tools to use. By default UiAutomator2 driver uses the most recent version of build tools installed on the machine, but sometimes it might be necessary to give it a hint (let say if there is a known bug in the most recent tools version). Example: 28.0.3."
+  },
+  "appium:skipLogcatCapture": {
+    "description": "Being set to true disables automatic logcat output collection during the test run. false by default."
+  },
+  "appium:suppressKillServer": {
+    "description": "Being set to true prevents the driver from ever killing the ADB server explicitly. Could be useful if ADB is connected wirelessly. false by default."
+  },
+  "appium:ignoreHiddenApiPolicyError": {
+    "description": "Being set to true ignores a failure while changing hidden API access policies to enable access to non-SDK interfaces. Could be useful on some devices, where access to these policies has been locked by its vendor. false by default."
+  },
+  "appium:hideKeyboard": {
+    "description": "Being set to true hides the on-screen keyboard while the session is running. Use it instead of the legacy appium:unicodeKeyboard one (which will be dropped in the future). This effect is achieved by assigning a custom 'artificial' input method. Only use this feature for special/exploratory cases as it violates the way your application under test is normally interacted with by a human. Setting this capability explicitly to false enforces adb shell ime reset call on session startup, which resets the currently selected/enabled IMEs to the default ones as if the device is initially booted with the current locale. undefined by default."
+  },
+  "appium:mockLocationApp": {
+    "description": "Sets the package identifier of the app, which is used as a system mock location provider since Appium 1.18.0+. This capability has no effect on emulators. If the value is set to null or an empty string, then the driver will reset the mocked location provider, e.g. the location won't be mocked anymore. Defaults to Appium Setting package identifier (io.appium.settings). Termination of a mock location provider application resets the mocked location data."
+  },
+  "appium:logcatFormat": {
+    "description": "The log print format, where format is one of: brief process tag thread raw time threadtime long. threadtime is the default value."
+  },
+  "appium:logcatFilterSpecs": {
+    "description": "Series of tag[:priority] where tag is a log component tag (or _ for all) and priority is: V Verbose, D Debug, I Info, W Warn, E Error, F Fatal, S Silent (supress all output). '_' means '_:d' and tag by itself means 'tag:v'. If not specified on the commandline, filterspec is set from ANDROID_LOG_TAGS. If no filterspec is found, filter defaults to '_:I'."
+  },
+  "appium:allowDelayAdb": {
+    "description": "Being set to false prevents emulator to use -delay-adb feature to detect its startup."
+  },
+  "appium:avd": {
+    "description": "The name of Android emulator to run the test on. The names of currently installed emulators could be listed using avdmanager list avd command. If the emulator with the given name is not running then it is going to be launched on automated session startup."
+  },
+  "appium:avdLaunchTimeout": {
+    "description": "Maximum number of milliseconds to wait until Android Emulator is started. 60000 ms by default."
+  },
+  "appium:avdReadyTimeout": {
+    "description": "Maximum number of milliseconds to wait until Android Emulator is fully booted and is ready for usage. 60000 ms by default."
+  },
+  "appium:avdArgs": {
+    "description": "Either a string or an array of emulator command line arguments. If arguments contain the -wipe-data one then the emulator is going to be killed on automated session startup in order to wipe its data."
+  },
+  "appium:avdEnv": {
+    "description": "Mapping of emulator environment variables."
+  },
+  "appium:networkSpeed": {
+    "description": "Sets the desired network speed limit for the emulator. It is only applied if the emulator is not running before the test starts."
+  },
+  "appium:gpsEnabled": {
+    "description": "Sets whether to enable (true) or disable (false) GPS service in the Emulator. Unset by default, which means to not change the current value."
+  },
+  "appium:isHeadless": {
+    "description": "If set to true then emulator starts in headless mode (e.g. no UI is shown). It is only applied if the emulator is not running before the test starts. false by default."
+  },
+  "appium:injectedImageProperties": {
+    "description": "Allows adjusting of injected image properties, like size, position or rotation. The image itself is expected to be injected by mobile: injectEmulatorCameraImage extension."
+  },
+  "appium:useKeystore": {
+    "description": "Whether to use a custom keystore to sign the app under test. false by default, which means apps are always signed with the default Appium debug certificate (unless canceled by noSign capability). This capability is used in combination with keystorePath, keystorePassword, keyAlias and keyPassword capabilities."
+  },
+  "appium:keystorePath": {
+    "description": "The full path to the keystore file on the server filesystem. This capability is used in combination with useKeystore, keystorePath, keystorePassword, keyAlias and keyPassword capabilities. Unset by default."
+  },
+  "appium:keystorePassword": {
+    "description": "The password to the keystore file provided in keystorePath capability. This capability is used in combination with useKeystore, keystorePath, keystorePassword, keyAlias and keyPassword capabilities. Unset by default."
+  },
+  "appium:keyAlias": {
+    "description": "The alias of the key in the keystore file provided in keystorePath capability. This capability is used in combination with useKeystore, keystorePath, keystorePassword, keyAlias and keyPassword capabilities. Unset by default."
+  },
+  "appium:keyPassword": {
+    "description": "The password of the key in the keystore file provided in keystorePath capability. This capability is used in combination with useKeystore, keystorePath, keystorePassword, keyAlias and keyPassword capabilities. Unset by default."
+  },
+  "appium:noSign": {
+    "description": "Set it to true in order to skip application signing. By default all apps are always signed with the default Appium debug signature if they don't have any. This capability cancels all the signing checks and makes the driver to use the application package as is. This capability does not affect .apks packages as these are expected to be already signed."
+  },
+  "appium:skipUnlock": {
+    "description": "Whether to skip the check for lock screen presence (true). The default driver behaviour is to verify the presence of the screen lock (e.g. 'false' value of the capability) before starting the test and to unlock that (which sometimes might be unstable). Note, that this operation takes some time, so it is highly recommended to set this capability to true and disable screen locking on device(s) under test."
+  },
+  "appium:unlockType": {
+    "description": "Set one of the possible types of Android lock screens to unlock."
+  },
+  "appium:unlockKey": {
+    "description": "Allows to set an unlock key."
+  },
+  "appium:unlockStrategy": {
+    "description": "Either 'locksettings' (default) or 'uiautomator'."
+  },
+  "appium:unlockSuccessTimeout": {
+    "description": "Maximum number of milliseconds to wait until the device is unlocked. 2000 ms by default."
+  },
+  "appium:mjpegServerPort": {
+    "description": "The number of the port on the host machine that UiAutomator2 server starts the MJPEG server on. If not provided then the screenshots broadcasting service on the remote device does not get exposed to a local port (e.g. no adb port forwarding is happening)"
+  },
+  "appium:mjpegScreenshotUrl": {
+    "description": "The URL of a service that provides realtime device screenshots in MJPEG format. If provided then the actual command to retrieve a screenshot will be requesting pictures from this service rather than directly from the server"
+  },
+  "appium:autoWebview": {
+    "description": "If set to true then UiAutomator2 driver will try to switch to the web view with name WEBVIEW_ + appium:appPackage after the session is started. For example, if appium:appPackage capability is set to com.mypackage then WEBVIEW_com.mypackage will be used. false by default."
+  },
+  "appium:autoWebviewName": {
+    "description": "Set the name of webview context in which UiAutomator2 driver will try to switch if autoWebview capability is set to true (available since driver version 2.9.1). Has priority over using the appium:appPackage value in webview name. For example, if appium:autoWebviewName capability is set to myWebviewName then WEBVIEW_myWebviewName will be used. Unset by default."
+  },
+  "appium:autoWebviewTimeout": {
+    "description": "Set the maximum number of milliseconds to wait until a web view is available if autoWebview capability is set to true. 2000 ms by default."
+  },
+  "appium:webviewDevtoolsPort": {
+    "description": "The local port number to use for devtools communication. By default the first free port from 10900..11000 range is selected. Consider setting the custom value if you are running parallel tests."
+  },
+  "appium:ensureWebviewsHavePages": {
+    "description": "Whether to skip web views that have no pages from being shown in getContexts output. The driver uses devtools connection to retrieve the information about existing pages. true by default since Appium 1.19.0, false if lower than 1.19.0."
+  },
+  "appium:enableWebviewDetailsCollection": {
+    "description": "Whether to retrieve extended web views information using devtools protocol. Enabling this capability helps to detect the necessary chromedriver version more precisely. true by default since Appium 1.22.0, false if lower than 1.22.0."
+  },
+  "appium:chromedriverPort": {
+    "description": "The port number to use for Chromedriver communication. Any free port number is selected by default if unset."
+  },
+  "appium:chromedriverPorts": {
+    "description": "Array of possible port numbers to assign for Chromedriver communication. If none of the port in this array is free then an error is thrown."
+  },
+  "appium:chromedriverArgs": {
+    "description": "Array of chromedriver command line arguments, listed with chromedriver --help. Note that not all command line arguments available for the desktop browser are also available for the mobile one."
+  },
+  "appium:chromedriverExecutable": {
+    "description": "Full path to the chromedriver executable on the server file system."
+  },
+  "appium:chromedriverExecutableDir": {
+    "description": "Full path to the folder where chromedriver executables are located. This folder is used then to store the downloaded chromedriver executables if automatic download is enabled."
+  },
+  "appium:chromedriverChromeMappingFile": {
+    "description": "Full path to the chromedrivers mapping file. This file is used to statically map webview/browser versions to the chromedriver versions that are capable of automating them."
+  },
+  "appium:chromedriverUseSystemExecutable": {
+    "description": "Set it to true in order to enforce the usage of chromedriver, which gets downloaded by Appium automatically upon installation. This driver might not be compatible with the destination browser or a web view. false by default."
+  },
+  "appium:chromedriverDisableBuildCheck": {
+    "description": "Being set to true disables the compatibility validation between the current chromedriver and the destination browser/web view. Use it with care."
+  },
+  "appium:recreateChromeDriverSessions": {
+    "description": "If this capability is set to true then chromedriver session is always going to be killed and then recreated instead of just suspending it on context switching. false by default."
+  },
+  "appium:nativeWebScreenshot": {
+    "description": "Whether to use screenshoting endpoint provided by UiAutomator framework (true) rather than the one provided by chromedriver (false, the default value). Use it when you experience issues with the latter."
+  },
+  "appium:extractChromeAndroidPackageFromContextName": {
+    "description": "If set to true, tell chromedriver to attach to the android package we have associated with the context name, rather than the package of the application under test. false by default."
+  },
+  "appium:showChromedriverLog": {
+    "description": "If set to true then all the output from chromedriver binary will be forwarded to the Appium server log. false by default."
+  },
+  "pageLoadStrategy": {
+    "description": "One of the available page load strategies. See https://www.w3.org/TR/webdriver/#capabilities."
+  },
+  "appium:chromeOptions": {
+    "description": "A mapping, that allows to customize chromedriver options. See https://chromedriver.chromium.org/capabilities for the list of available entries."
+  },
+  "appium:chromeLoggingPrefs": {
+    "description": "Chrome logging preferences mapping. Basically the same as goog:loggingPrefs. It is set to {\"browser\": \"ALL\"} by default."
+  },
+  "appium:disableSuppressAccessibilityService": {
+    "description": "Being set to true tells the instrumentation process to not suppress accessibility services during the automated test. This might be useful if your automated test needs these services. false by default."
+  },
+  "appium:userProfile": {
+    "description": "Integer identifier of a user profile. By default the app under test is installed for the currently active user, but in case it is necessary to test how the app performs while being installed for a user profile, which is different from the current one, then this capability might come in handy."
+  },
+  "appium:timeZone": {
+    "description": "Overrides the current device's time zone since the driver version 3.1.0. This change is preserved until the next override. The time zone identifier must be a valid name from the list of available time zone identifiers, for example Europe/Kyiv."
+  },
+  "appium:includeDeviceCapsToSessionInfo": {
+    "description": "Whether to include screen information as the result of Get Session Capabilities. It includes pixelRatio, statBarHeight and viewportRect, but it causes an extra API call to WDA which may increase the response time. Defaults to true. This capability has no effect since driver version 5."
+  },
+  "appium:resetLocationService": {
+    "description": "Whether reset the location service in the session deletion on real device. Defaults to false."
+  },
+  "appium:customSSLCert": {
+    "description": "Adds a root SSL certificate to IOS Simulators and real devices. Real devices only work if py-ios-device tool is available on the server machine. The certificate content must be provided in PEM format."
+  },
+  "appium:initialDeeplinkUrl": {
+    "description": "A deeplink URL used to run either the application assigned to appium:bundleId, or the default application assigned to handle the particular deeplink protocol if appium:bundleId is not set. If provided in combination with browserName=safari then makes Safari to start with the given URL preloaded, which speeds up the session startup."
+  },
+  "appium:enforceAppInstall": {
+    "description": "If set to false it will make xcuitest driver to verify whether the app version currently installed on the device under test is older than the one, which is provided as appium:app value. No app reinstall is going to happen if the candidate app has the same or older version number than the already installed copy of it."
+  },
+  "appium:calendarFormat": {
+    "description": "Calendar format to set for iOS Simulator, for example gregorian or persian. Can only be set in conjunction with appium:locale."
+  },
+  "appium:appTimeZone": {
+    "description": "Defines the custom time zone override for the application under test. You can use UTC, PST, EST, as well as place-based timezone names such as America/Los_Angeles. The application must be (re)launched for the capability to take effect."
+  },
+  "appium:xcodeOrgId": {
+    "description": "Apple developer team identifier string. Must be used in conjunction with xcodeSigningId to take effect."
+  },
+  "appium:xcodeSigningId": {
+    "description": "String representing a signing certificate. Must be used in conjunction with xcodeOrgId. This is usually just Apple Development or iPhone Developer, so the default (if not included) is iPhone Developer."
+  },
+  "appium:xcodeConfigFile": {
+    "description": "Full path to an optional Xcode configuration file that specifies the code signing identity and team for running the WebDriverAgent on the real device."
+  },
+  "appium:wdaRemotePort": {
+    "description": "This value if specified, will be used as the port number to start WDA HTTP server on the remote device. This is only relevant for real devices, because Simulator shares ports with its host. If webDriverAgentUrl is provided then it might be used to provide a hint for the remote port number if it differs from the default one. Default value is 8100."
+  },
+  "appium:webDriverAgentUrl": {
+    "description": "If provided, Appium will connect to an existing WebDriverAgent instance at this URL instead of starting a new one."
+  },
+  "appium:prebuildWDA": {
+    "description": "Enables prebuilding if the WebDriverAgentRunner application before running the WDA app. With this capability, XCUITest driver builds the WDA project first, then it handles the session as appium:usePrebuiltWDA true behavior. Defaults to false."
+  },
+  "appium:prebuiltWDAPath": {
+    "description": "The full path to the prebuilt WebDriverAgent-Runner application package to be installed if appium:usePreinstalledWDA capability is enabled."
+  },
+  "appium:usePreinstalledWDA": {
+    "description": "Whether to launch a preinstalled WebDriverAgentRunner application using a custom XCTest API client (via com.apple.instruments service) instead of running xcodebuild for real devices or simulators via simctl tool."
+  },
+  "appium:updatedWDABundleIdSuffix": {
+    "description": "Add suffix for the bundle id provided by the appium:updatedWDABundleId capability value in appium:usePreinstalledWDA capability usage."
+  },
+  "appium:shouldUseSingletonTestManager": {
+    "description": "Use default proxy for test management within WebDriverAgent. Setting this to false sometimes helps with socket hangup problems. Defaults to true."
+  },
+  "appium:waitForIdleTimeout": {
+    "description": "The amount of time in float seconds to wait until the application under test is idling. XCTest requires the app's main thread to be idling in order to execute any action on it, so WDA might not even start/freeze if the app under test is constantly hogging the main thread. The default value is 10 (seconds). Setting it to zero disables idling checks completely (not recommended) and has the same effect as setting waitForQuiescence to false."
+  },
+  "appium:useXctestrunFile": {
+    "description": "Use Xctestrun file to launch WDA. It will search for such file in bootstrapPath."
+  },
+  "appium:useSimpleBuildTest": {
+    "description": "Build with build and run test with test in xcodebuild for all Xcode version if this is true, or build with build-for-testing and run tests with test-without-building for over Xcode 8 if this is false. Defaults to false."
+  },
+  "appium:showXcodeLog": {
+    "description": "Whether to display the output of the Xcode command used to run the tests. If this is true, there will be lots of extra logging at startup. Defaults to false."
+  },
+  "appium:prelaunchApp": {
+    "description": "Pre-launch the app before starting automation."
+  },
+  "appium:simulatorWindowCenter": {
+    "description": "Allows to explicitly set the coordinates of Simulator window center for Xcode9+ SDK."
+  },
+  "appium:simulatorStartupTimeout": {
+    "description": "Allows to change the default timeout for Simulator startup. By default this value is set to 120000ms (2 minutes)."
+  },
+  "appium:simulatorTracePointer": {
+    "description": "Whether to highlight pointer moves in the Simulator window."
+  },
+  "appium:shutdownOtherSimulators": {
+    "description": "If this capability set to true and the current device under test is an iOS Simulator then Appium will try to shutdown all the other running Simulators before to start a new session."
+  },
+  "appium:enforceFreshSimulatorCreation": {
+    "description": "Creates a new simulator in session creation and deletes it in session deletion."
+  },
+  "appium:keychainsExcludePatterns": {
+    "description": "This capability accepts comma-separated path patterns, which are going to be excluded from keychains restore while full reset is being performed on Simulator."
+  },
+  "appium:reduceMotion": {
+    "description": "It allows to turn on/off reduce motion accessibility preference. Setting reduceMotion on helps to reduce flakiness during tests. Only on simulators."
+  },
+  "appium:reduceTransparency": {
+    "description": "It allows you to turn on/off reduce transparency accessibility preference. Setting reduceTransparency on helps to reduce screenshot image distortion during tests. Only on simulators."
+  },
+  "appium:autoFillPasswords": {
+    "description": "It allows you to turn on/off autofill passwords function when text field is foccused. Works only with iOS16.4+ simulators."
+  },
+  "appium:permissions": {
+    "description": "Allows to set permissions for the specified application bundle on Simulator only. The capability value is expected to be a valid JSON string."
+  },
+  "appium:iosSimulatorLogsPredicate": {
+    "description": "Set the --predicate flag in the ios simulator logs."
+  },
+  "appium:simulatorLogLevel": {
+    "description": "Allows to customize the minimum log level for logs collected from simulators. Possible values are default (the default value), info and debug."
+  },
+  "appium:simulatorPasteboardAutomaticSync": {
+    "description": "Handle the -PasteboardAutomaticSync flag when simulator process launches."
+  },
+  "appium:simulatorDevicesSetPath": {
+    "description": "This capability allows to set an alternative path to the simulator devices set in case you have multiple sets deployed on your local system."
+  },
+  "appium:safariGlobalPreferences": {
+    "description": "Allows changing of Mobile Safari's preferences at the session startup."
+  },
+  "appium:includeSafariInWebviews": {
+    "description": "Add Safari web contexts to the list of contexts available during a native/webview app test."
+  },
+  "appium:safariLogAllCommunication": {
+    "description": "Log all plists sent to and received from the Web Inspector, as plain text."
+  },
+  "appium:safariLogAllCommunicationHexDump": {
+    "description": "Log all communication sent to and received from the Web Inspector, as raw hex dump and printable characters."
+  },
+  "appium:safariSocketChunkSize": {
+    "description": "The size, in bytes, of the data to be sent to the Web Inspector on iOS 11+ real devices."
+  },
+  "appium:safariWebInspectorMaxFrameLength": {
+    "description": "The maximum size in bytes of a single data frame for the Web Inspector."
+  },
+  "appium:additionalWebviewBundleIds": {
+    "description": "Array (or JSON array) of possible bundle identifiers for webviews."
+  },
+  "appium:webviewAtomWaitTimeout": {
+    "description": "The time to wait, in ms, for each atom execution timeout of webviews in MobileSafari or hybrid apps."
+  },
+  "appium:safariIgnoreWebHostnames": {
+    "description": "Provide a list of hostnames (comma-separated) that the Safari automation tools should ignore."
+  },
+  "appium:nativeWebTapStrict": {
+    "description": "Enabling this capability would skip the additional logic that tries to match web view elements to native ones by using their textual descriptions."
+  },
+  "appium:webviewConnectRetries": {
+    "description": "The maximum number of retries before giving up on web view pages detection."
+  },
+  "appium:webviewConnectTimeout": {
+    "description": "The time to wait, in ms, for the presence of webviews in MobileSafari or hybrid apps."
+  },
+  "appium:enableAsyncExecuteFromHttps": {
+    "description": "Capability to allow simulators to execute asynchronous JavaScript on pages using HTTPS."
+  },
+  "appium:fullContextList": {
+    "description": "Returns the detailed information on contexts for the Get Contexts command."
+  },
+  "appium:enablePerformanceLogging": {
+    "description": "Enable Safari's performance logging."
+  },
+  "appium:skipTriggerInputEventAfterSendkeys": {
+    "description": "If this capability is set to true, then whenever you call the Send Keys method in a web context, the driver will not fire an additional input event on the input field used for the call."
+  },
+  "appium:sendKeyStrategy": {
+    "description": "If this capability is set to oneByOne, then whenever you call the Send Keys method in a web context, the driver will type each character the given string consists of in serial order to the element."
+  },
+  "appium:showSafariConsoleLog": {
+    "description": "Adds Safari JavaScript console events to Appium server logs (true) and writes fully serialized events into the safariConsole logs bucket (both true and false)."
+  },
+  "appium:showSafariNetworkLog": {
+    "description": "Adds Safari network events to Appium server logs (true) and writes fully serialized events into the safariNetwork logs bucket (both true and false)."
+  },
+  "appium:resetOnSessionStartOnly": {
+    "description": "Whether to perform reset on test session finish (false) or not (true)."
+  },
+  "appium:commandTimeouts": {
+    "description": "Custom timeout(s) in milliseconds for WDA backend commands execution."
+  },
+  "appium:useJSONSource": {
+    "description": "Get JSON source from WDA and transform it to XML on the Appium server side."
+  },
+  "appium:skipLogCapture": {
+    "description": "Skips to start capturing logs such as crash, system, safari console and safari network."
+  },
+  "appium:launchWithIDB": {
+    "description": "Launch WebDriverAgentRunner with idb instead of xcodebuild."
+  },
+  "appium:showIOSLog": {
+    "description": "Whether to show any logs captured from a device in the appium logs. Default false."
+  },
+  "appium:clearSystemFiles": {
+    "description": "Whether to clean temporary XCTest files (for example logs) when a testing session is closed. false by default."
+  },
+  "appium:newCommandTimeout": {
+    "description": "How long (in seconds) the driver should wait for a new command from the client before assuming the client has stopped sending requests. After the timeout the session is going to be deleted. 60 seconds by default. Setting it to zero disables the timer."
+  }
+}

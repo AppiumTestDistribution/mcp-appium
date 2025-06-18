@@ -10,6 +10,7 @@ import clickElement from './interactions/click.js';
 import setValue from './interactions/setValue.js';
 import getText from './interactions/getText.js';
 import screenshot from './interactions/screenshot.js';
+import answerAppium from './answerAppium.js';
 
 export default function registerTools(server: FastMCP): void {
   selectPlatform(server);
@@ -17,6 +18,7 @@ export default function registerTools(server: FastMCP): void {
   createCloudSession(server);
   uploadApp(server);
   generateLocators(server);
+  answerAppium(server);
 
   findElement(server);
   clickElement(server);
