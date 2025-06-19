@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="src/assets/jarvislogo.png" alt="Jarvis Appium Logo" width="500"/>
+</div>
+
 # Jarvis Appium
 
 An intelligent MCP (Model Context Protocol) server that provides AI assistants with powerful tools and resources for Appium mobile automation. Jarvis Appium enables seamless mobile app testing through natural language interactions, intelligent locator generation, and automated test creation.
