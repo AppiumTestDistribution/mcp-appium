@@ -56,8 +56,8 @@ Add Jarvis Appium to your MCP client configuration:
       "disabled": false,
       "timeout": 100,
       "type": "stdio",
-      "command": "node",
-      "args": ["./dist/index.js"],
+      "command": "npx",
+      "args": ["jarvis-appium"],
       "env": {
         "ANDROID_HOME": "/path/to/android/sdk",
         "CAPABILITIES_CONFIG": "/path/to/your/capabilities.json"
@@ -230,6 +230,7 @@ Use appium_generate_tests with steps:
 ### LambdaTest Cloud Testing Workflow
 
 #### 1. Upload Your App (if needed)
+
 ```
 Use upload_app_lambdatest with:
 - appPath: "/path/to/your/app.apk"
@@ -237,6 +238,7 @@ Use upload_app_lambdatest with:
 ```
 
 #### 2. Create Cloud Session
+
 ```
 Use create_lambdatest_session with:
 - platform: "android"
@@ -248,6 +250,7 @@ Use create_lambdatest_session with:
 ```
 
 #### 3. Continue with Normal Testing
+
 ```
 Use generate_locators, appium_find_element, appium_click, etc.
 View your test execution at: https://automation.lambdatest.com
