@@ -11,6 +11,7 @@ import setValue from './interactions/setValue.js';
 import getText from './interactions/getText.js';
 import screenshot from './interactions/screenshot.js';
 import answerAppium from './answerAppium.js';
+import activateApp from './interactions/activateApp.js';
 
 export default function registerTools(server: FastMCP): void {
   selectPlatform(server);
@@ -25,6 +26,7 @@ export default function registerTools(server: FastMCP): void {
   setValue(server);
   getText(server);
   screenshot(server);
+  activateApp(server);
 
   generateTest(server);
   console.log('All tools registered');
