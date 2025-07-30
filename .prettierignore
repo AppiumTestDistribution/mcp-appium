@@ -24,3 +24,6 @@ Thumbs.db
 
 # Generated files
 *.d.ts
+
+# Documents
+src/tools/documentation/uploads/documents.json

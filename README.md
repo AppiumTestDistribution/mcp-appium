@@ -136,6 +136,13 @@ Upload a mobile app to LambdaTest cloud storage for testing.
   - `appPath`: Local path to the app file (APK/IPA)
   - `appName`: Optional custom name for the app
 
+#### `activate_app`
+
+Activate the app passed as input
+
+- **Parameters**:
+  - `id`: Bundle ID or app-packge
+
 ### Element Interaction
 
 #### `generate_locators`

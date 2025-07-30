@@ -130,15 +130,59 @@ export default function scrollToElement(server: any): void {
               args.strategy,
               args.selector
             );
+            if (!element || !element.elementId) {
+              throw new Error(
+                'El elemento con selector no se encontró o no es scrollable.'
+              );
+            }
             await driver.execute('mobile: scroll', {
               element: element.ELEMENT,
               toVisible: true,
+              direct: true,
             });
-            // await driver.execute('mobile: scroll', [
-            //   {
-            //     direction: 'down',
-            //   },
-            // ]);
+            // let found = false;
+            // let scrollCount = 0;
+            // const maxScrolls = 3; // Máximo número de scrolls para evitar bucles infinitos
+            // let direction: 'down' | 'up' = 'down'; // Puedes alternar según la lógica
+
+            // while (!found && scrollCount < maxScrolls) {
+            //   try {
+            //     // Intentar encontrar el elemento primero
+            //     const element = await driver.findElement(
+            //       args.strategy,
+            //       args.selector
+            //     );
+            //     if (await element.isDisplayed()) {
+            //       found = true;
+            //       break;
+            //     }
+            //   } catch (error) {
+            //     // El elemento no se encuentra visible, continuar con scroll
+            //   }
+
+            //   // Ejecuta scroll hacia abajo
+            //   const { width, height } = await driver.getWindowSize();
+            //   const startX = width / 2;
+            //   const startY = direction === 'down' ? height * 0.7 : height * 0.3;
+            //   const endY = direction === 'down' ? height * 0.3 : height * 0.7;
+
+            //   await driver.execute('mobile: scroll', {
+            //     direction: direction,
+            //     startX: startX,
+            //     startY: startY,
+            //     endX: startX,
+            //     endY: endY,
+            //   });
+
+            //   scrollCount++;
+            // }
+
+            // if (!found) {
+            //   throw new Error(
+            //     `No se encontró el elemento después de ${maxScrolls} scrolls`
+            //   );
+            // }
+
             break;
           default:
             throw new Error(
@@ -166,3 +210,46 @@ export default function scrollToElement(server: any): void {
     },
   });
 }
+
+const scrollOniOSToElement = async (
+  driver: any,
+  strategy: string,
+  selector: string,
+  maxScrolls = 1
+) => {
+  let element = await driver.findElement(strategy, selector);
+  let found = await element.isDisplayed();
+  if (found) {
+    console.log(`Element ${selector} is already visible.`);
+    return;
+  }
+
+  try {
+    const elementId = element.elementId;
+    await driver.execute('mobile: scroll', {
+      elementId: elementId,
+      toVisible: true,
+      direct: true, // scroll directo al elemento si es posible
+    });
+  } catch (error) {
+    // Si falla el scroll directo, puedes intentar scroll manual con dirección
+    const { width, height } = await driver.getWindowSize();
+    await driver.execute('mobile: scroll', {
+      direction: 'down',
+      startX: width / 2,
+      startY: height * 0.7,
+      endX: width / 2,
+      endY: height * 0.3,
+    });
+  }
+
+  // Reintenta buscar y comprobar si el elemento es visible
+  element = await driver.findElement(strategy, selector);
+  found = await element.isDisplayed();
+
+  if (!found) {
+    throw new Error(
+      `Elemento '${selector}' no encontrado después de ${maxScrolls} intentos de scroll`
+    );
+  }
+};

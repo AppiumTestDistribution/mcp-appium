@@ -1,12 +1,6 @@
 import { z } from 'zod';
 import { getDriver, getPlatformName } from './sessionStore.js';
 
-const getDeviceScreenSize = async (
-  driver: any
-): Promise<{ width: number; height: number }> => {
-  const { width, height } = await driver.getWindowSize();
-  return { width, height };
-};
 export default function scroll(server: any): void {
   server.addTool({
     name: 'appium_scroll',
@@ -30,7 +24,7 @@ export default function scroll(server: any): void {
       }
 
       try {
-        const { width, height } = await getDeviceScreenSize(driver);
+        const { width, height } = await driver.getWindowSize();
         console.log('Device screen size:', { width, height });
         const startX = Math.floor(width / 2);
         // calculate start and end Y positions for scrolling depending on the direction
@@ -50,22 +44,36 @@ export default function scroll(server: any): void {
 
         console.log('Going to scroll from:', { startX, startY });
         console.log('Going to scroll to:', { startX, endY });
-        await driver.performActions([
-          {
-            type: 'pointer',
-            id: 'finger1',
-            parameters: { pointerType: 'touch' },
-            actions: [
-              { type: 'pointerMove', duration: 0, x: startX, y: startY },
-              { type: 'pointerDown', button: 0 },
-              { type: 'pause', duration: 250 },
-              { type: 'pointerMove', duration: 600, x: startX, y: endY },
-              { type: 'pointerUp', button: 0 },
-            ],
-          },
-        ]);
-        console.log('Scroll action completed successfully.');
 
+        if (getPlatformName(driver) === 'Android') {
+          await driver.performActions([
+            {
+              type: 'pointer',
+              id: 'finger1',
+              parameters: { pointerType: 'touch' },
+              actions: [
+                { type: 'pointerMove', duration: 0, x: startX, y: startY },
+                { type: 'pointerDown', button: 0 },
+                { type: 'pause', duration: 250 },
+                { type: 'pointerMove', duration: 600, x: startX, y: endY },
+                { type: 'pointerUp', button: 0 },
+              ],
+            },
+          ]);
+          console.log('Scroll action completed successfully.');
+        } else if (getPlatformName(driver) === 'iOS') {
+          await driver.execute('mobile: scroll', {
+            direction: args.direction,
+            startX: startX,
+            startY: startY,
+            endX: startX,
+            endY: endY,
+          });
+        } else {
+          throw new Error(
+            `Unsupported platform: ${getPlatformName(driver)}. Only Android and iOS are supported.`
+          );
+        }
         return {
           content: [
             {
