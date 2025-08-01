@@ -136,12 +136,19 @@ Upload a mobile app to LambdaTest cloud storage for testing.
   - `appPath`: Local path to the app file (APK/IPA)
   - `appName`: Optional custom name for the app
 
-#### `activate_app`
+#### `appium_activate_app`
 
 Activate the app passed as input
 
 - **Parameters**:
-  - `id`: Bundle ID or app-packge
+  - `id`: Bundle ID or app-package
+
+#### `appium_terminate_app`
+
+Terminate the app passed as input
+
+- **Parameters**:
+  - `id`: Bundle ID or app-package
 
 ### Element Interaction
 
@@ -185,6 +192,21 @@ Retrieve text content from an element.
 #### `appium_screenshot`
 
 Capture a screenshot of the current screen.
+
+#### `appium_scroll`
+
+Scrolls the screen vertically in a certain direction
+
+- **Parameters**:
+  - `direction`: up or down. Default down
+
+#### `appium_scroll_to_element`
+
+Scrolls up or down until finding certain element
+
+- **Parameters**:
+  - `strategy`: Locator strategy (id, xpath, accessibility id, etc.)
+  - `selector`: Element selector string
 
 ### Test Generation
 

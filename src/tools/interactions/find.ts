@@ -3,22 +3,22 @@ import { z } from 'zod';
 import { getDriver } from '../sessionStore.js';
 import { checkIsValidElementId } from '../../utils.js';
 
-export default function findElement(server: FastMCP): void {
-  const findElementSchema = z.object({
-    strategy: z.enum([
-      'xpath',
-      'id',
-      'name',
-      'class name',
-      'accessibility id',
-      'css selector',
-      '-android uiautomator',
-      '-ios predicate string',
-      '-ios class chain',
-    ]),
-    selector: z.string().describe('The selector to find the element'),
-  });
+export const findElementSchema = z.object({
+  strategy: z.enum([
+    'xpath',
+    'id',
+    'name',
+    'class name',
+    'accessibility id',
+    'css selector',
+    '-android uiautomator',
+    '-ios predicate string',
+    '-ios class chain',
+  ]),
+  selector: z.string().describe('The selector to find the element'),
+});
 
+export default function findElement(server: FastMCP): void {
   server.addTool({
     name: 'appium_find_element',
     description:

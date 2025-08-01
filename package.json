@@ -31,18 +31,18 @@
   "description": "Intelligent MCP server providing AI assistants with powerful tools and resources for Appium mobile automation",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.11.0",
+    "@xenova/transformers": "^2.17.2",
     "@xmldom/xmldom": "^0.9.8",
     "appium-uiautomator2-driver": "^4.2.3",
     "appium-xcuitest-driver": "^9.6.0",
     "fast-xml-parser": "^5.2.3",
     "fastmcp": "^1.23.2",
     "form-data": "^4.0.3",
+    "langchain": "^0.3.27",
     "lodash": "^4.17.21",
     "rimraf": "^6.0.1",
     "xpath": "^0.0.34",
-    "zod": "^3.24.3",
-    "@xenova/transformers": "^2.17.2",
-    "langchain": "^0.3.27"
+    "zod": "^3.24.3"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",

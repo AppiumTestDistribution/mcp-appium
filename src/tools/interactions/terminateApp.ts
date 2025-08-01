@@ -2,15 +2,15 @@ import { FastMCP } from 'fastmcp/dist/FastMCP.js';
 import { getDriver } from '../sessionStore.js';
 import { z } from 'zod';
 
-export default function activateApp(server: FastMCP): void {
-  const activateAppSchema = z.object({
+export default function terminateApp(server: FastMCP): void {
+  const terminateAppSchema = z.object({
     id: z.string().describe('The app id'),
   });
 
   server.addTool({
-    name: 'appium_activate_app',
-    description: 'Activate app by id',
-    parameters: activateAppSchema,
+    name: 'appium_terminate_app',
+    description: 'Terminate app by id',
+    parameters: terminateAppSchema,
     annotations: {
       readOnlyHint: false,
       openWorldHint: false,
@@ -22,12 +22,12 @@ export default function activateApp(server: FastMCP): void {
       }
 
       try {
-        await driver.activateApp(args.id);
+        await driver.terminateApp(args.id);
         return {
           content: [
             {
               type: 'text',
-              text: `App ${args.id} activated correctly.`,
+              text: `App ${args.id} terminated correctly.`,
             },
           ],
         };
@@ -36,7 +36,7 @@ export default function activateApp(server: FastMCP): void {
           content: [
             {
               type: 'text',
-              text: `Error activating the app ${args.id}: ${err.toString()}`,
+              text: `Error terminating the app ${args.id}: ${err.toString()}`,
             },
           ],
         };
