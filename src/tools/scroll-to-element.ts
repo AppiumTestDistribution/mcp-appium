@@ -1,5 +1,24 @@
 import { getDriver, getPlatformName } from './sessionStore.js';
-import { findElementSchema } from './interactions/find.js';
+import { z } from 'zod';
+
+const scrollToElementSchema = z.object({
+  strategy: z.enum([
+    'xpath',
+    'id',
+    'name',
+    'class name',
+    'accessibility id',
+    'css selector',
+    '-android uiautomator',
+    '-ios predicate string',
+    '-ios class chain',
+  ]),
+  selector: z.string().describe('The selector to find the element'),
+  direction: z
+    .enum(['up', 'down'])
+    .default('down')
+    .describe('Direction to scroll when searching for the element'),
+});
 
 const getValue = (xpath: string, expression: string): string => {
   // Extracts the value from an XPath expression.
@@ -51,11 +70,52 @@ const transformLocator = (
   return { strategy, selector };
 };
 
+async function performAndroidScroll(
+  driver: any,
+  args: any,
+  direction: string
+): Promise<void> {
+  // Use UiAutomator scroll gestures for Android
+  const scrollDirection =
+    direction === 'up' ? 'scrollBackward' : 'scrollForward';
+  const scrollCommand = `new UiScrollable(new UiSelector().scrollable(true)).${scrollDirection}()`;
+
+  try {
+    await driver.findElement('-android uiautomator', scrollCommand);
+  } catch (error) {
+    // If UiScrollable fails, try touch actions
+    const { width, height } = await driver.getWindowSize();
+    const startX = width / 2;
+    const startY = direction === 'up' ? height * 0.3 : height * 0.7;
+    const endY = direction === 'up' ? height * 0.7 : height * 0.3;
+
+    await driver.touchAction([
+      { action: 'press', x: startX, y: startY },
+      { action: 'wait', ms: 500 },
+      { action: 'moveTo', x: startX, y: endY },
+      { action: 'release' },
+    ]);
+  }
+}
+
+async function performiOSScroll(driver: any, direction: string): Promise<void> {
+  // Use iOS mobile commands for scrolling
+  const { width, height } = await driver.getWindowSize();
+
+  await driver.execute('mobile: scroll', {
+    direction: direction,
+    startX: width / 2,
+    startY: direction === 'up' ? height * 0.3 : height * 0.7,
+    endX: width / 2,
+    endY: direction === 'up' ? height * 0.7 : height * 0.3,
+  });
+}
+
 export default function scrollToElement(server: any): void {
   server.addTool({
     name: 'appium_scroll_to_element',
     description: 'Scrolls the current screen till a certain element is visible',
-    parameters: findElementSchema,
+    parameters: scrollToElementSchema,
     annotations: {
       readOnlyHint: false,
       openWorldHint: false,
@@ -69,44 +129,56 @@ export default function scrollToElement(server: any): void {
       }
 
       try {
-        switch (getPlatformName(driver)) {
-          case 'Android':
-            let { strategy, selector } = transformLocator(
-              args.strategy,
-              args.selector
-            );
-            const sel = `new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView(new UiSelector().${strategy}("${selector}"))`;
-            await driver.findElement('-android uiautomator', sel);
-            break;
-          case 'iOS':
-            const element = await driver.findElement(
-              args.strategy,
-              args.selector
-            );
-            await driver.execute('mobile: scroll', {
-              element: element.ELEMENT,
-              toVisible: true,
-            });
-            break;
-          default:
-            throw new Error(
-              'Unsupported driver type. This tool only supports Android and iOS drivers.'
-            );
+        const platform = getPlatformName(driver);
+
+        // First try to find the element directly (it might already be in viewport)
+        try {
+          const element = await driver.findElement(
+            args.strategy,
+            args.selector
+          );
+          return {
+            content: [
+              {
+                type: 'text',
+                text: `Element ${args.selector} is already visible on screen.`,
+              },
+            ],
+          };
+        } catch (error) {
+          const direction = args.direction || 'down';
+          switch (platform) {
+            case 'Android':
+              await performAndroidScroll(driver, args, direction);
+              break;
+            case 'iOS':
+              await performiOSScroll(driver, direction);
+              break;
+            default:
+              throw new Error(
+                'Unsupported driver type. This tool only supports Android and iOS drivers.'
+              );
+          }
+
+          const element = await driver.findElement(
+            args.strategy,
+            args.selector
+          );
+          return {
+            content: [
+              {
+                type: 'text',
+                text: `Successfully scrolled found element ${args.selector} after initial scroll.`,
+              },
+            ],
+          };
         }
-        return {
-          content: [
-            {
-              type: 'text',
-              text: 'Scrolled down successfully.',
-            },
-          ],
-        };
       } catch (err: any) {
         return {
           content: [
             {
               type: 'text',
-              text: `Failed to scroll down. Error: ${err.toString()}`,
+              text: `Failed to scroll and find element. Error: ${err.toString()}`,
             },
           ],
         };
