@@ -1,6 +1,7 @@
 import { FastMCP } from 'fastmcp/dist/FastMCP.js';
 import answerAppium from './answerAppium.js';
 import createSession from './create-session.js';
+import deleteSession from './delete-session.js';
 import createCloudSession from './create-cloud-session.js';
 import uploadApp from './upload-app.js';
 import generateLocators from './locators.js';
@@ -19,6 +20,7 @@ import terminateApp from './interactions/terminateApp.js';
 export default function registerTools(server: FastMCP): void {
   selectPlatform(server);
   createSession(server);
+  deleteSession(server);
   createCloudSession(server);
   uploadApp(server);
   generateLocators(server);

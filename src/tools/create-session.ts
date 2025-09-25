@@ -3,10 +3,9 @@
  */
 import { z } from 'zod';
 import fs from 'fs';
-import path from 'path';
 import { AndroidUiautomator2Driver } from 'appium-uiautomator2-driver';
 import { XCUITestDriver } from 'appium-xcuitest-driver';
-import { setSession, getDriver, getSessionId } from './sessionStore.js';
+import { setSession, hasActiveSession, safeDeleteSession } from './sessionStore.js';
 
 // Define capabilities type
 interface Capabilities {
@@ -44,6 +43,12 @@ export default function createSession(server: any): void {
     },
     execute: async (args: any, context: any): Promise<any> => {
       try {
+        // Check if there's an existing session and clean it up first
+        if (hasActiveSession()) {
+          console.log('Existing session detected, cleaning up before creating new session...');
+          await safeDeleteSession();
+        }
+
         const { platform, capabilities: customCapabilities } = args;
 
         let defaultCapabilities: Capabilities;
