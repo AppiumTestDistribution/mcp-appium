@@ -1,0 +1,10 @@
+{
+  "android": {
+    "appium:app": "/app/path"
+  },
+  "ios": {
+    "appium:deviceName": "iPhone 16 Pro",
+    "appium:platformVersion": "18.2",
+    "appium:udid": ""
+  }
+}
