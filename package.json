@@ -1,0 +1,45 @@
+{
+  "name": "jarvis-appium",
+  "version": "1.0.0",
+  "description": "AI-powered Appium MCP server with test healing and auto-recovery capabilities",
+  "main": "dist/index.js",
+  "type": "module",
+  "bin": {
+    "jarvis-appium": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc && node dist/index.js",
+    "start": "node dist/index.js",
+    "watch": "tsc --watch"
+  },
+  "keywords": [
+    "appium",
+    "mcp",
+    "mobile-testing",
+    "test-automation",
+    "ai",
+    "test-healing"
+  ],
+  "author": "AppiumTestDistribution",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "appium": "^2.18.2",
+    "webdriverio": "^9.2.13",
+    "openai": "^4.77.3",
+    "sharp": "^0.33.5",
+    "pixelmatch": "^6.0.0",
+    "lodash": "^4.17.21",
+    "winston": "^3.17.0",
+    "pngjs": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "@types/lodash": "^4.17.13",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
