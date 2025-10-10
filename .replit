@@ -1,2 +1,7 @@
+modules = ["nodejs-20"]
 [agent]
 expertMode = true
+integrations = ["javascript_openai:1.0.0"]
+
+[nix]
+channel = "stable-25_05"
