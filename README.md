@@ -11,6 +11,11 @@ An intelligent MCP (Model Context Protocol) server that provides AI assistants w
 - **Cross-Platform Support**: Android (UiAutomator2) and iOS (XCUITest) automation
 - **Cloud Integration**: Native LambdaTest cloud platform support for scalable testing
 - **Intelligent Locator Generation**: AI-powered element identification with priority-based strategies
+- **🔧 Test Healing & Auto-Recovery**: AI-powered automatic test fixing when elements fail (NEW!)
+  - Smart fallback strategies with cascading locator attempts
+  - Gemini Flash AI integration for intelligent element recovery
+  - Configurable healing modes (conservative, moderate, aggressive)
+  - Comprehensive healing analytics and reporting
 - **Interactive Session Management**: Create and manage local and cloud mobile device sessions
 - **Smart Element Interactions**: Click, text input, screenshot, and element finding capabilities
 - **App Management**: Upload and manage mobile apps on cloud platforms
@@ -208,6 +213,40 @@ Scrolls up or down until finding certain element
   - `strategy`: Locator strategy (id, xpath, accessibility id, etc.)
   - `selector`: Element selector string
 
+### Test Healing & Auto-Recovery
+
+#### `configure_healing`
+
+Configure the test healing and auto-recovery mode to automatically fix failing element locators.
+
+- **Parameters**:
+  - `mode`: Healing mode - `conservative`, `moderate`, `aggressive`, or `disabled`
+    - **Conservative**: Basic retry strategies with fallback locators (2 retries)
+    - **Moderate**: Retries + AI-powered locator suggestions using Gemini Flash (3 retries)
+    - **Aggressive**: Retries + AI + visual matching + auto-update locators (5 retries)
+    - **Disabled**: No healing, fail immediately
+
+#### `appium_find_element_with_healing`
+
+Find an element with automatic healing and recovery. If the element is not found with the primary locator, it will automatically try alternative strategies.
+
+- **Parameters**:
+  - `strategy`: Locator strategy (id, xpath, accessibility id, etc.)
+  - `selector`: Element selector string
+  - `elementDescription` (optional): Human-readable description (e.g., "login button") to help AI generate better alternatives
+
+**How it works:**
+1. Attempts to find element with the original locator
+2. If failed, tries cascading fallback strategies (ID → accessibility ID → XPath)
+3. If still failed and AI is enabled, analyzes screenshot with Gemini Flash to suggest new locators
+4. Logs all healing attempts for analytics
+
+#### `get_healing_report`
+
+Get a comprehensive report of all healing attempts in the current session.
+
+- Returns: Success rates, average healing time, detailed history of healing events
+
 ### Test Generation
 
 #### `appium_generate_tests`
@@ -310,6 +349,57 @@ Steps:
 3. Set due date to June 25, 2025
 4. Add to personal list
 5. Mark as completed
+```
+
+### Test Healing Workflow (NEW!)
+
+#### 1. Configure Healing Mode
+
+```
+Use configure_healing with mode: "moderate"
+```
+
+This enables AI-powered healing with Gemini Flash.
+
+#### 2. Use Healing-Enabled Element Finding
+
+```
+Use appium_find_element_with_healing with:
+- strategy: "id"
+- selector: "com.example:id/login_button"
+- elementDescription: "blue login button at the bottom"
+```
+
+If the element is not found:
+- System automatically tries accessibility ID
+- Then tries XPath alternatives
+- If still failed, Gemini Flash analyzes the screenshot
+- Suggests new locators based on visual understanding
+
+#### 3. Check Healing Report
+
+```
+Use get_healing_report to see:
+- Total healing attempts
+- Success rate
+- Average healing time
+- Detailed history of what was healed
+```
+
+#### Example Healing Scenario
+
+```
+Problem: Element locator "com.example:id/submit_btn" stopped working after app update
+
+Solution with Healing:
+1. configure_healing("moderate")
+2. appium_find_element_with_healing("id", "com.example:id/submit_btn", "submit button")
+3. System automatically:
+   ✓ Tries accessibility id "submit_btn"
+   ✗ Tries xpath "//*[@resource-id='submit_btn']"
+   ✓ AI analyzes screenshot and finds "//android.widget.Button[@text='Submit']"
+4. Element found successfully with new locator!
+5. get_healing_report shows healing history
 ```
 
 #### LambdaTest Cloud Testing Example
