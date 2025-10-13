@@ -14,25 +14,25 @@ registerResources(server);
 registerTools(server);
 
 // Handle client connection and disconnection events
-server.on("connect", (event) => {
-  console.log("Client connected:", event.session);
+server.on('connect', event => {
+  console.log('Client connected:', event.session);
 });
 
-server.on("disconnect", async (event) => {
-  console.log("Client disconnected:", event.session);
+server.on('disconnect', async event => {
+  console.log('Client disconnected:', event.session);
   // Only try to clean up if there's an active session
   if (hasActiveSession()) {
     try {
-      console.log("Active session detected on disconnect, cleaning up...");
+      console.log('Active session detected on disconnect, cleaning up...');
       const deleted = await safeDeleteSession();
       if (deleted) {
-        console.log("Session cleaned up successfully on disconnect.");
+        console.log('Session cleaned up successfully on disconnect.');
       }
     } catch (error) {
-      console.error("Error cleaning up session on disconnect:", error);
+      console.error('Error cleaning up session on disconnect:', error);
     }
   } else {
-    console.log("No active session to clean up on disconnect.");
+    console.log('No active session to clean up on disconnect.');
   }
 });
 

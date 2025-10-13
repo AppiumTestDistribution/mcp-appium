@@ -17,7 +17,7 @@ export default function deleteSession(server: any): void {
     execute: async (): Promise<any> => {
       try {
         const deleted = await safeDeleteSession();
-        
+
         if (deleted) {
           return {
             content: [

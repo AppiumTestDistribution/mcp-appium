@@ -15,7 +15,10 @@ import setValue from './interactions/setValue.js';
 import getText from './interactions/getText.js';
 import screenshot from './interactions/screenshot.js';
 import activateApp from './interactions/activateApp.js';
+import installApp from './interactions/installApp.js';
+import uninstallApp from './interactions/uninstallApp.js';
 import terminateApp from './interactions/terminateApp.js';
+import listApps from './interactions/listApps.js';
 
 export default function registerTools(server: FastMCP): void {
   selectPlatform(server);
@@ -29,12 +32,15 @@ export default function registerTools(server: FastMCP): void {
   scrollToElement(server);
 
   activateApp(server);
+  installApp(server);
+  uninstallApp(server);
   terminateApp(server);
+  listApps(server);
   findElement(server);
   clickElement(server);
   setValue(server);
   getText(server);
-  screenshot(server);
+  //screenshot(server);
   generateTest(server);
   console.log('All tools registered');
 }

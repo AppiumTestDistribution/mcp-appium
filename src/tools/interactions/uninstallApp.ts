@@ -2,7 +2,7 @@ import { FastMCP } from 'fastmcp/dist/FastMCP.js';
 import { z } from 'zod';
 import { getDriver, getPlatformName } from '../sessionStore.js';
 
-export default function terminateApp(server: FastMCP): void {
+export default function uninstallApp(server: FastMCP): void {
   const schema = z.object({
     id: z
       .string()
@@ -10,8 +10,8 @@ export default function terminateApp(server: FastMCP): void {
   });
 
   server.addTool({
-    name: 'appium_terminateApp',
-    description: 'Terminate an app on the device.',
+    name: 'appium_uninstallApp',
+    description: 'Uninstall an app from the device.',
     parameters: schema,
     execute: async (args: z.infer<typeof schema>) => {
       const { id } = args;
@@ -23,12 +23,12 @@ export default function terminateApp(server: FastMCP): void {
         const platform = getPlatformName(driver);
         const params =
           platform === 'Android' ? { appId: id } : { bundleId: id };
-        await (driver as any).execute('mobile: terminateApp', params);
+        await (driver as any).execute('mobile: removeApp', params);
         return {
           content: [
             {
               type: 'text',
-              text: 'App terminated successfully',
+              text: 'App uninstalled successfully',
             },
           ],
         };
@@ -37,7 +37,7 @@ export default function terminateApp(server: FastMCP): void {
           content: [
             {
               type: 'text',
-              text: `Failed to terminate app. err: ${err.toString()}`,
+              text: `Failed to uninstall app. err: ${err.toString()}`,
             },
           ],
         };

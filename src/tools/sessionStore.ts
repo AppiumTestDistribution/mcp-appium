@@ -49,11 +49,11 @@ export async function safeDeleteSession(): Promise<boolean> {
   try {
     console.log('Deleting current session');
     await driver.deleteSession();
-    
+
     // Clear the session from store
     driver = null;
     sessionId = null;
-    
+
     console.log('Session deleted successfully.');
     return true;
   } catch (error) {
