@@ -109,17 +109,9 @@ export class IOSManager {
 
   /**
    * Get all available iOS simulators
-   * Prioritizes booted simulators, but returns all if none are booted
-   * @returns Array of iOS simulators
+   * @returns Array of all iOS simulators (both booted and shutdown)
    */
   public async getAvailableSimulators(): Promise<IOSDevice[]> {
-    const bootedSimulators = await this.listBootedSimulators();
-
-    if (bootedSimulators.length > 0) {
-      return bootedSimulators;
-    }
-
-    // If no booted simulators, return all available simulators
     return await this.listSimulators();
   }
 

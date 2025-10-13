@@ -166,6 +166,12 @@ export default function createSession(server: any): void {
             ...(platformVersion && {
               'appium:platformVersion': platformVersion,
             }),
+            // Add WDA optimization for simulators
+            ...(deviceType === 'simulator' && {
+              'appium:usePrebuiltWDA': true,
+              'appium:wdaStartupRetries': 4,
+              'appium:wdaStartupRetryInterval': 20000,
+            }),
             ...customCapabilities,
           };
 
