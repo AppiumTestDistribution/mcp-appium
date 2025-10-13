@@ -1,9 +1,8 @@
 import { FastMCP } from 'fastmcp/dist/FastMCP.js';
 import { z } from 'zod';
 import { getDriver, getPlatformName } from '../sessionStore.js';
-import { InstalledApp } from '../robot.js';
 
-async function listAppsFromDevice(): Promise<InstalledApp[]> {
+async function listAppsFromDevice(): Promise<any[]> {
   const driver = await getDriver();
   if (!driver) {
     throw new Error('No driver found');
@@ -22,7 +21,7 @@ async function listAppsFromDevice(): Promise<InstalledApp[]> {
     'packages',
   ]);
 
-  const apps: InstalledApp[] = appPackages
+  const apps: any[] = appPackages
     .split('package:')
     .filter((s: any) => s.trim())
     .map((s: any) => ({

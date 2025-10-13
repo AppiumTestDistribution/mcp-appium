@@ -8,3 +8,4 @@ build
 ./test-reports
 ./test-results
 .DS_Store
+src/tools/robot.ts
