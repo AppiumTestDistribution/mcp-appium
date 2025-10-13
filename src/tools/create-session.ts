@@ -10,7 +10,7 @@ import {
   hasActiveSession,
   safeDeleteSession,
 } from './sessionStore.js';
-
+import { getSelectedDevice, clearSelectedDevice } from './select-device.js';
 // Define capabilities type
 interface Capabilities {
   platformName: string;
@@ -29,12 +29,12 @@ export default function createSession(server: any): void {
   server.addTool({
     name: 'create_session',
     description:
-      'Create a new mobile session with Android or iOS device (use select_platform first to choose your platform)',
+      'Create a new mobile session with Android or iOS device (MUST use select_platform tool first to ask the user which platform they want - DO NOT assume or default to any platform)',
     parameters: z.object({
       platform: z
         .enum(['ios', 'android'])
         .describe(
-          "REQUIRED: Specify the platform - 'android' for Android devices or 'ios' for iOS devices. Use select_platform tool first if you haven't chosen yet."
+          'REQUIRED: Must match the platform the user explicitly selected via the select_platform tool. DO NOT default to Android or iOS without asking the user first.'
         ),
       capabilities: z
         .object({})
@@ -84,12 +84,21 @@ export default function createSession(server: any): void {
           // Get platform-specific capabilities from config
           const androidCaps = configCapabilities.android || {};
 
+          // Get selected device UDID if available
+          const selectedDeviceUdid = getSelectedDevice();
+
           // Merge custom capabilities with defaults and config capabilities
           finalCapabilities = {
             ...defaultCapabilities,
             ...androidCaps,
+            ...(selectedDeviceUdid && { 'appium:udid': selectedDeviceUdid }),
             ...customCapabilities,
           };
+
+          // Clear selected device after use
+          if (selectedDeviceUdid) {
+            clearSelectedDevice();
+          }
 
           driver = new AndroidUiautomator2Driver();
         } else if (platform === 'ios') {
