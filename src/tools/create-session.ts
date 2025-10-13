@@ -10,7 +10,14 @@ import {
   hasActiveSession,
   safeDeleteSession,
 } from './sessionStore.js';
-import { getSelectedDevice, clearSelectedDevice } from './select-device.js';
+import {
+  getSelectedDevice,
+  getSelectedDeviceType,
+  getSelectedDeviceInfo,
+  clearSelectedDevice,
+} from './select-device.js';
+import { IOSManager } from '../devicemanager/ios-manager.js';
+
 // Define capabilities type
 interface Capabilities {
   platformName: string;
@@ -95,6 +102,13 @@ export default function createSession(server: any): void {
             ...customCapabilities,
           };
 
+          // Filter out any empty string values from capabilities
+          Object.keys(finalCapabilities).forEach(key => {
+            if (finalCapabilities[key] === '') {
+              delete finalCapabilities[key];
+            }
+          });
+
           // Clear selected device after use
           if (selectedDeviceUdid) {
             clearSelectedDevice();
@@ -102,6 +116,24 @@ export default function createSession(server: any): void {
 
           driver = new AndroidUiautomator2Driver();
         } else if (platform === 'ios') {
+          // Check for multiple devices and ensure one is selected
+          const iosManager = IOSManager.getInstance();
+          const deviceType = getSelectedDeviceType();
+
+          // If we have a selected device type, check if selection is needed
+          if (deviceType) {
+            const devices = await iosManager.getDevicesByType(deviceType);
+
+            if (devices.length > 1) {
+              const selectedDevice = getSelectedDevice();
+              if (!selectedDevice) {
+                throw new Error(
+                  `Multiple iOS ${deviceType === 'simulator' ? 'simulators' : 'devices'} found (${devices.length}). Please use the select_device tool to choose which device to use before creating a session.`
+                );
+              }
+            }
+          }
+
           defaultCapabilities = {
             platformName: 'iOS',
             'appium:automationName': 'XCUITest',
@@ -111,12 +143,43 @@ export default function createSession(server: any): void {
           // Get platform-specific capabilities from config
           const iosCaps = configCapabilities.ios || {};
 
+          // Get selected device UDID and info if available
+          const selectedDeviceUdid = getSelectedDevice();
+          const selectedDeviceInfo = getSelectedDeviceInfo();
+
+          console.log('Selected device info:', selectedDeviceInfo);
+
+          // Get iOS version from device platform info (already extracted in IOSManager)
+          const platformVersion =
+            selectedDeviceInfo?.platform &&
+            selectedDeviceInfo.platform.trim() !== ''
+              ? selectedDeviceInfo.platform
+              : undefined;
+
+          console.log('Platform version:', platformVersion);
+
           // Merge custom capabilities with defaults and config capabilities
           finalCapabilities = {
             ...defaultCapabilities,
             ...iosCaps,
+            ...(selectedDeviceUdid && { 'appium:udid': selectedDeviceUdid }),
+            ...(platformVersion && {
+              'appium:platformVersion': platformVersion,
+            }),
             ...customCapabilities,
           };
+
+          // Filter out any empty string values from capabilities
+          Object.keys(finalCapabilities).forEach(key => {
+            if (finalCapabilities[key] === '') {
+              delete finalCapabilities[key];
+            }
+          });
+
+          // Clear selected device after use
+          if (selectedDeviceUdid) {
+            clearSelectedDevice();
+          }
 
           driver = new XCUITestDriver();
         } else {
