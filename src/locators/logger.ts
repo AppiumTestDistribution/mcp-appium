@@ -10,6 +10,10 @@ class Logger {
   error(...args: any[]): void {
     console.error(...args);
   }
+
+  debug(...args: any[]): void {
+    console.debug(...args);
+  }
 }
 
 export const log = new Logger();
