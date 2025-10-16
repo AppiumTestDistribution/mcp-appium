@@ -8,6 +8,7 @@ import generateLocators from './locators.js';
 import selectPlatform from './select-platform.js';
 import selectDevice from './select-device.js';
 import bootSimulator from './boot-simulator.js';
+import setupWDA from './setup-wda.js';
 import generateTest from './generate-tests.js';
 import scroll from './scroll.js';
 import scrollToElement from './scroll-to-element.js';
@@ -26,6 +27,7 @@ export default function registerTools(server: FastMCP): void {
   selectPlatform(server);
   selectDevice(server);
   bootSimulator(server);
+  setupWDA(server);
   createSession(server);
   deleteSession(server);
   createCloudSession(server);

@@ -54,27 +54,20 @@ export default function bootSimulator(server: any): void {
           };
         }
 
-        console.log(`Booting iOS simulator: ${simulator.name} (${udid})...`);
-
         const simctl = new Simctl();
         simctl.udid = udid;
 
-        // Boot the device
+        // Boot the device and measure time
+        const bootStartTime = Date.now();
         await simctl.bootDevice();
-        console.log(
-          'Simulator boot initiated, waiting for boot to complete...'
-        );
-
-        // Wait for boot to complete with 2 minute timeout
         await simctl.startBootMonitor({ timeout: 120000 });
-
-        console.log(`Simulator "${simulator.name}" booted successfully!`);
+        const bootDuration = ((Date.now() - bootStartTime) / 1000).toFixed(1);
 
         return {
           content: [
             {
               type: 'text',
-              text: `✅ Simulator booted successfully!\n\nDevice: ${simulator.name}\nUDID: ${udid}\niOS Version: ${simulator.platform || 'Unknown'}\n\n🚀 The simulator is now ready for session creation. You can now use the create_session tool to start an Appium session.`,
+              text: `✅ Simulator booted successfully!\n\nDevice: ${simulator.name}\nUDID: ${udid}\niOS Version: ${simulator.platform || 'Unknown'}\nBoot Time: ${bootDuration} seconds\n\n🚀 The simulator is now ready for session creation. You can use the create_session tool to start an Appium session.`,
             },
           ],
         };
