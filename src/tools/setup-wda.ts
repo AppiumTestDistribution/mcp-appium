@@ -139,7 +139,7 @@ export default function setupWDA(server: any): void {
         const extractDir = path.join(versionCacheDir, 'extracted');
         const zipPath = path.join(
           versionCacheDir,
-          'WebDriverAgentRunner-Runner.zip'
+          `WebDriverAgentRunner-Build-Sim-${archStr}.zip`
         );
         const appPath = path.join(
           extractDir,
@@ -165,8 +165,8 @@ export default function setupWDA(server: any): void {
         fs.mkdirSync(versionCacheDir, { recursive: true });
         fs.mkdirSync(extractDir, { recursive: true });
 
-        // Download URL
-        const downloadUrl = `https://github.com/appium/WebDriverAgent/releases/download/v${wdaVersion}/WebDriverAgentRunner-Runner.zip`;
+        // Download URL - use architecture-specific filename
+        const downloadUrl = `https://github.com/appium/WebDriverAgent/releases/download/v${wdaVersion}/WebDriverAgentRunner-Build-Sim-${archStr}.zip`;
 
         console.log(
           `Downloading prebuilt WDA v${wdaVersion} for ${platform} simulator...`
@@ -190,7 +190,19 @@ export default function setupWDA(server: any): void {
           content: [
             {
               type: 'text',
-              text: `✅ WebDriverAgent downloaded and set up successfully!\n\nVersion: ${wdaVersion}\nPlatform: ${platform} (simulator only)\nArchitecture: ${archStr}\nLocation: ${appPath}\nCache: ~/.cache/appium-mcp/wda/${wdaVersion}\nDownload Time: ${duration} seconds\n\n🚀 WDA is now ready! Your next Appium session will start much faster without needing to build WDA from source.\n\nNote: This cached version will be reused on subsequent runs.`,
+              text: `${JSON.stringify(
+                {
+                  version: wdaVersion,
+                  platform: platform,
+                  architecture: archStr,
+                  wdaAppPath: appPath,
+                  wdaCachePath: `~/.cache/appium-mcp/wda/${wdaVersion}`,
+                  simulatorOnly: true,
+                  ready: true,
+                },
+                null,
+                2
+              )}`,
             },
           ],
         };

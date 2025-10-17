@@ -67,7 +67,15 @@ export default function bootSimulator(server: any): void {
           content: [
             {
               type: 'text',
-              text: `✅ Simulator booted successfully!\n\nDevice: ${simulator.name}\nUDID: ${udid}\niOS Version: ${simulator.platform || 'Unknown'}\nBoot Time: ${bootDuration} seconds\n\n🚀 The simulator is now ready for session creation. You can use the create_session tool to start an Appium session.`,
+              text: `${JSON.stringify(
+                {
+                  instruction:
+                    'You can now use the install_wda tool to install WDA on the simulator.',
+                  status: 'Simulator booted successfully!',
+                },
+                null,
+                2
+              )}`,
             },
           ],
         };

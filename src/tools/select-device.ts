@@ -31,8 +31,11 @@ export function clearSelectedDevice(): void {
 export default function selectDevice(server: any): void {
   server.addTool({
     name: 'select_device',
-    description:
-      'REQUIRED when multiple devices are found: Ask the user to select which specific device they want to use from the available devices. This tool lists all available devices and allows selection by UDID. You MUST use this tool when select_platform returns multiple devices before calling create_session.',
+    description: `REQUIRED when multiple devices are found: Ask the user to select which specific device they want to use from the available devices. 
+      This tool lists all available devices and allows selection by UDID. 
+      You MUST use this tool when select_platform returns multiple devices before calling create_session for android.
+      You MUST use this tool when select_platform returns multiple devices before calling boot_simulator for ios if the user has selected simulator device type.
+      `,
     parameters: z.object({
       platform: z
         .enum(['ios', 'android'])
@@ -84,7 +87,19 @@ export default function selectDevice(server: any): void {
               content: [
                 {
                   type: 'text',
-                  text: `✅ Device selected: ${deviceUdid}\n\n🚀 You can now create a session using the create_session tool with:\n• platform='android'\n• capabilities: { "appium:udid": "${deviceUdid}" }`,
+                  text: JSON.stringify(
+                    {
+                      message: `✅ Device selected: ${deviceUdid}`,
+                      instructions:
+                        '🚀 You can now create a session using the create_session tool with:',
+                      platform: 'android',
+                      capabilities: {
+                        'appium:udid': deviceUdid,
+                      },
+                    },
+                    null,
+                    2
+                  ),
                 },
               ],
             };
@@ -142,7 +157,19 @@ export default function selectDevice(server: any): void {
               content: [
                 {
                   type: 'text',
-                  text: `✅ Device selected: ${selectedDevice.name} (${deviceUdid})\n\n🚀 You can now create a session using the create_session tool with:\n• platform='ios'\n• capabilities: { "appium:udid": "${deviceUdid}" }`,
+                  text: JSON.stringify(
+                    {
+                      message: `✅ Device selected: ${selectedDevice.name} (${deviceUdid})`,
+                      instructions:
+                        '🚀 You can now call the setup_wda tool to setup WDA on the simulator.',
+                      platform: 'ios',
+                      capabilities: {
+                        'appium:udid': deviceUdid,
+                      },
+                    },
+                    null,
+                    2
+                  ),
                 },
               ],
             };
