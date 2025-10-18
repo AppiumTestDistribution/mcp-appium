@@ -15,6 +15,7 @@ import scroll from './scroll.js';
 import scrollToElement from './scroll-to-element.js';
 import findElement from './interactions/find.js';
 import clickElement from './interactions/click.js';
+import doubleTap from './interactions/doubleTap.js';
 import setValue from './interactions/setValue.js';
 import getText from './interactions/getText.js';
 import screenshot from './interactions/screenshot.js';
@@ -46,9 +47,10 @@ export default function registerTools(server: FastMCP): void {
   listApps(server);
   findElement(server);
   clickElement(server);
+  doubleTap(server);
   setValue(server);
   getText(server);
-  //screenshot(server);
+  screenshot(server);
   generateTest(server);
   console.log('All tools registered');
 }
