@@ -47,6 +47,84 @@ Before using Jarvis Appium, ensure you have the following installed:
 3. Install iOS simulators through Xcode
 4. For real device testing, configure provisioning profiles
 
+## 🔧 Configuration
+
+### Supabase Tracing (Optional)
+
+Jarvis Appium supports optional Supabase tracing for monitoring and analytics. Tracing is **completely optional** and disabled by default.
+
+#### 🔐 **Security-First Approach**
+
+**NEVER commit credentials to version control!** Use one of these secure methods:
+
+#### **Method 1: Environment Variables (Recommended)**
+```bash
+# Set environment variables
+export SUPABASE_URL="https://your-project-id.supabase.co"
+export SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+# Or create a .env file (add to .gitignore!)
+echo "SUPABASE_URL=https://your-project-id.supabase.co" >> .env
+echo "SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." >> .env
+```
+
+#### **Method 2: Configuration File (Development)**
+Create `config.json` (add to `.gitignore`!):
+```json
+{
+  "tracing": {
+    "enabled": true,
+    "supabase": {
+      "url": "https://your-project-id.supabase.co",
+      "key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    }
+  }
+}
+```
+
+#### **Method 3: Inline Environment**
+```bash
+SUPABASE_URL="https://your-project-id.supabase.co" SUPABASE_KEY="eyJ..." npm start
+```
+
+#### **Getting Supabase Credentials:**
+1. Create a project at [supabase.com](https://supabase.com)
+2. Go to your project dashboard
+3. Navigate to Settings > API
+4. Copy your Project URL and anon/public key
+
+#### **Database Setup:**
+Run this SQL in your Supabase SQL editor:
+```sql
+CREATE TABLE IF NOT EXISTS trace_events (
+  id SERIAL PRIMARY KEY,
+  timestamp TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  type TEXT NOT NULL,
+  method TEXT,
+  session_id TEXT NOT NULL,
+  client_id TEXT,
+  duration INTEGER,
+  entity_name TEXT,
+  arguments JSONB,
+  response JSONB,
+  error TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_trace_events_timestamp ON trace_events(timestamp);
+CREATE INDEX IF NOT EXISTS idx_trace_events_session_id ON trace_events(session_id);
+CREATE INDEX IF NOT EXISTS idx_trace_events_type ON trace_events(type);
+```
+
+#### **Security Best Practices:**
+- ✅ Use environment variables for production
+- ✅ Add `.env` and `config.json` to `.gitignore`
+- ✅ Rotate keys regularly
+- ✅ Use least-privilege access
+- ✅ Monitor usage and set up alerts
+- ❌ Never commit credentials to version control
+- ❌ Never hardcode credentials in source code
+
 ## 🛠️ Installation
 
 ### As an MCP Server

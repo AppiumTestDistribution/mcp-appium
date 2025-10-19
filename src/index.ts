@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import server from './server.js';
+import { log } from './locators/logger.js';
 
 // Parse command line arguments
 const args = process.argv.slice(2);
@@ -10,7 +11,7 @@ const port =
 
 // Start the server with the appropriate transport
 async function startServer(): Promise<void> {
-  console.log('Starting Jarvis Appium MCP Server...');
+  log.info('Starting Jarvis Appium MCP Server...');
 
   try {
     if (useSSE) {
@@ -23,21 +24,21 @@ async function startServer(): Promise<void> {
         },
       });
 
-      console.log(
+      log.info(
         `Server started with SSE transport on http://localhost:${port}/sse`
       );
-      console.log('Waiting for client connections...');
+      log.info('Waiting for client connections...');
     } else {
       // Start with stdio transport
       server.start({
         transportType: 'stdio',
       });
 
-      console.log('Server started with stdio transport');
-      console.log('Waiting for client connections...');
+      log.info('Server started with stdio transport');
+      log.info('Waiting for client connections...');
     }
   } catch (error: any) {
-    console.error('Error starting server:', error);
+    log.error('Error starting server:', error);
     process.exit(1);
   }
 }

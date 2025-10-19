@@ -4,6 +4,7 @@
 import { ADBManager } from '../devicemanager/adb-manager.js';
 import { IOSManager } from '../devicemanager/ios-manager.js';
 import { z } from 'zod';
+import { log } from '../locators/logger.js';
 
 export default function selectPlatform(server: any): void {
   server.addTool({
@@ -134,7 +135,7 @@ export default function selectPlatform(server: any): void {
           );
         }
 
-        console.log(`Platform selected: ${platform.toUpperCase()}`);
+        log.info(`Platform selected: ${platform.toUpperCase()}`);
 
         return {
           content: [
@@ -145,7 +146,9 @@ export default function selectPlatform(server: any): void {
           ],
         };
       } catch (error: any) {
-        console.error('Error selecting platform:', error);
+        log.error(
+          `[select_platform] ${error?.stack || error?.message || String(error)}`
+        );
         throw new Error(`Failed to select platform: ${error.message}`);
       }
     },

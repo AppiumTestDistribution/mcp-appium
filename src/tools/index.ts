@@ -1,4 +1,5 @@
 import { FastMCP } from 'fastmcp/dist/FastMCP.js';
+import { log } from '../locators/logger.js';
 import answerAppium from './answerAppium.js';
 import createSession from './create-session.js';
 import deleteSession from './delete-session.js';
@@ -26,6 +27,72 @@ import terminateApp from './interactions/terminateApp.js';
 import listApps from './interactions/listApps.js';
 
 export default function registerTools(server: FastMCP): void {
+  // Wrap addTool to inject logging around tool execution
+  const originalAddTool = (server as any).addTool.bind(server);
+  (server as any).addTool = (toolDef: any) => {
+    const toolName = toolDef?.name ?? 'unknown_tool';
+    const originalExecute = toolDef?.execute;
+    if (typeof originalExecute !== 'function') {
+      return originalAddTool(toolDef);
+    }
+    const SENSITIVE_KEYS = [
+      'password',
+      'token',
+      'accessToken',
+      'authorization',
+      'apiKey',
+      'apikey',
+      'secret',
+      'clientSecret',
+    ];
+    const redactArgs = (obj: any) => {
+      try {
+        return JSON.parse(
+          JSON.stringify(obj, (key, value) => {
+            if (
+              key &&
+              SENSITIVE_KEYS.some(k => key.toLowerCase().includes(k))
+            ) {
+              return '[REDACTED]';
+            }
+            // Avoid logging extremely large buffers/strings
+            if (value && typeof value === 'string' && value.length > 2000) {
+              return `[string:${value.length}]`;
+            }
+            if (
+              value &&
+              typeof Buffer !== 'undefined' &&
+              Buffer.isBuffer(value)
+            ) {
+              return `[buffer:${(value as Buffer).length}]`;
+            }
+            return value;
+          })
+        );
+      } catch {
+        return '[Unserializable args]';
+      }
+    };
+    return originalAddTool({
+      ...toolDef,
+      execute: async (args: any, context: any) => {
+        const start = Date.now();
+        log.info(`[TOOL START] ${toolName}`, redactArgs(args));
+        try {
+          const result = await originalExecute(args, context);
+          const duration = Date.now() - start;
+          log.info(`[TOOL END] ${toolName} (${duration}ms)`);
+          return result;
+        } catch (err: any) {
+          const duration = Date.now() - start;
+          const msg = err?.stack || err?.message || String(err);
+          log.error(`[TOOL ERROR] ${toolName} (${duration}ms): ${msg}`);
+          throw err;
+        }
+      },
+    });
+  };
+
   selectPlatform(server);
   selectDevice(server);
   bootSimulator(server);
@@ -52,5 +119,5 @@ export default function registerTools(server: FastMCP): void {
   getText(server);
   screenshot(server);
   generateTest(server);
-  console.log('All tools registered');
+  log.info('All tools registered');
 }
