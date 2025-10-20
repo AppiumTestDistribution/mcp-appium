@@ -9,3 +9,4 @@ build
 ./test-results
 .DS_Store
 src/tools/robot.ts
+package-lock.json
