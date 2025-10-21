@@ -2,7 +2,7 @@
   <img src="src/assets/jarvislogo.png" alt="Jarvis Appium Logo" width="500"/>
 </div>
 
-# Mobile Next - MCP server for Mobile Development and Automation | iOS, Android, Simulator, Emulator, and Real Devices
+# Jarvis Appium - MCP server for Mobile Development and Automation | iOS, Android, Simulator, Emulator, and Real Devices
 
 Jarvis Appium is an intelligent MCP (Model Context Protocol) server designed to empower AI assistants with a robust suite of tools for mobile automation. It streamlines mobile app testing by enabling natural language interactions, intelligent locator generation, and automated test creation for both Android and iOS platforms.
 
