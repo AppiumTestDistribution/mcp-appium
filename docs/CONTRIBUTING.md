@@ -8,6 +8,8 @@ Welcome! This guide will help you extend MCP Appium by adding new tools and reso
 - [Adding New Resources](#adding-new-resources)
 - [Code Style Guidelines](#code-style-guidelines)
 - [Formatting Best Practices](#formatting-best-practices)
+- [Tool Metadata with YAML](#tool-metadata-with-yaml)
+- [Code Style Guidelines](#code-style-guidelines)
 
 ---
 

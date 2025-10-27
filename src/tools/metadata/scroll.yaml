@@ -1,0 +1,24 @@
+# Tool metadata for appium_scroll
+# This file demonstrates the YAML-based tool metadata pattern
+
+name: appium_scroll
+description: Scrolls the current screen up or down on the mobile device
+
+parameters:
+  direction:
+    type: enum
+    options: ['up', 'down']
+    description: Direction to scroll (up or down)
+    required: false
+    default: 'down'
+
+annotations:
+  readOnly: false
+  openWorld: false
+
+# Platform-specific implementation notes
+notes: |
+  - Uses performActions for Android
+  - Uses mobile:scroll for iOS
+  - Scrolls from 80% to 20% of screen height for downward scroll
+  - Scrolls from 20% to 80% of screen height for upward scroll
