@@ -5,7 +5,9 @@ import { z } from 'zod';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import path from 'path';
-import fs from 'fs';
+import { access, mkdir, unlink } from 'fs/promises';
+import { constants } from 'fs';
+import fs from 'fs'; // Keep for createWriteStream
 import os from 'os';
 import https from 'https';
 
@@ -63,7 +65,7 @@ async function downloadFile(url: string, destPath: string): Promise<void> {
       .get(url, response => {
         if (response.statusCode === 302 || response.statusCode === 301) {
           file.close();
-          fs.unlinkSync(destPath);
+          unlink(destPath).catch(() => {});
           return downloadFile(response.headers.location!, destPath)
             .then(resolve)
             .catch(reject);
@@ -71,7 +73,7 @@ async function downloadFile(url: string, destPath: string): Promise<void> {
 
         if (response.statusCode !== 200) {
           file.close();
-          fs.unlinkSync(destPath);
+          unlink(destPath).catch(() => {});
           return reject(
             new Error(`Failed to download: ${response.statusCode}`)
           );
@@ -84,10 +86,13 @@ async function downloadFile(url: string, destPath: string): Promise<void> {
           resolve();
         });
       })
-      .on('error', err => {
+      .on('error', async err => {
         file.close();
-        if (fs.existsSync(destPath)) {
-          fs.unlinkSync(destPath);
+        try {
+          await access(destPath, constants.F_OK);
+          await unlink(destPath);
+        } catch {
+          // File doesn't exist or already deleted
         }
         reject(err);
       });
@@ -147,7 +152,8 @@ export default function setupWDA(server: any): void {
         );
 
         // Check if this version is already cached
-        if (fs.existsSync(appPath)) {
+        try {
+          await access(appPath, constants.F_OK);
           return {
             content: [
               {
@@ -156,14 +162,16 @@ export default function setupWDA(server: any): void {
               },
             ],
           };
+        } catch {
+          // File doesn't exist, continue to download
         }
 
         // Version not cached, download it
         const startTime = Date.now();
 
         // Create cache directories
-        fs.mkdirSync(versionCacheDir, { recursive: true });
-        fs.mkdirSync(extractDir, { recursive: true });
+        await mkdir(versionCacheDir, { recursive: true });
+        await mkdir(extractDir, { recursive: true });
 
         // Download URL - use architecture-specific filename
         const downloadUrl = `https://github.com/appium/WebDriverAgent/releases/download/v${wdaVersion}/WebDriverAgentRunner-Build-Sim-${archStr}.zip`;
@@ -180,7 +188,9 @@ export default function setupWDA(server: any): void {
         const duration = ((Date.now() - startTime) / 1000).toFixed(1);
 
         // Verify extraction
-        if (!fs.existsSync(appPath)) {
+        try {
+          await access(appPath, constants.F_OK);
+        } catch {
           throw new Error(
             'WebDriverAgent extraction failed - app bundle not found'
           );

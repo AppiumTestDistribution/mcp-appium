@@ -1,10 +1,22 @@
+/**
+ * Tools Registration Module
+ *
+ * This file registers all available MCP tools with the server.
+ *
+ * ADDING A NEW TOOL:
+ * 1. Create your tool file in src/tools/
+ * 2. Import it at the top of this file
+ * 3. Call it in the registerTools function below
+ *
+ * See docs/CONTRIBUTING.md for detailed instructions.
+ * See src/tools/README.md for tool organization.
+ * See src/tools/metadata/README.md for YAML metadata approach.
+ */
 import { FastMCP } from 'fastmcp/dist/FastMCP.js';
 import { log } from '../locators/logger.js';
 import answerAppium from './answerAppium.js';
 import createSession from './create-session.js';
 import deleteSession from './delete-session.js';
-import createCloudSession from './create-cloud-session.js';
-import uploadApp from './upload-app.js';
 import generateLocators from './locators.js';
 import selectPlatform from './select-platform.js';
 import selectDevice from './select-device.js';
@@ -100,8 +112,6 @@ export default function registerTools(server: FastMCP): void {
   installWDA(server);
   createSession(server);
   deleteSession(server);
-  createCloudSession(server);
-  uploadApp(server);
   generateLocators(server);
   answerAppium(server);
   scroll(server);

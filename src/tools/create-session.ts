@@ -2,7 +2,8 @@
  * Tool to create a new mobile session (Android or iOS)
  */
 import { z } from 'zod';
-import fs from 'fs';
+import { access, readFile } from 'fs/promises';
+import { constants } from 'fs';
 import { AndroidUiautomator2Driver } from 'appium-uiautomator2-driver';
 import { XCUITestDriver } from 'appium-xcuitest-driver';
 import {
@@ -72,9 +73,12 @@ export default function createSession(server: any): void {
         let configCapabilities: CapabilitiesConfig = { android: {}, ios: {} };
         const configPath = process.env.CAPABILITIES_CONFIG;
 
-        if (configPath && fs.existsSync(configPath)) {
+        if (configPath) {
           try {
-            const configContent = fs.readFileSync(configPath, 'utf8');
+            // Check if file exists
+            await access(configPath, constants.F_OK);
+            // Read file content
+            const configContent = await readFile(configPath, 'utf8');
             configCapabilities = JSON.parse(configContent);
           } catch (error) {
             console.warn(`Failed to parse capabilities config: ${error}`);

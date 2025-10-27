@@ -7,7 +7,7 @@ import { hasActiveSession, safeDeleteSession } from './tools/sessionStore.js';
 import { log } from './locators/logger.js';
 
 const server = new FastMCP({
-  name: 'Jarvis Appium',
+  name: 'MCP Appium',
   version: '1.0.0',
   instructions:
     'Intelligent MCP server providing AI assistants with powerful tools and resources for Appium mobile automation',

@@ -5,7 +5,9 @@ import { z } from 'zod';
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import path from 'path';
-import fs from 'fs';
+import { access, readdir, stat } from 'fs/promises';
+import { constants } from 'fs';
+import fs from 'fs'; // Keep for createWriteStream if used
 import os from 'os';
 
 const execAsync = promisify(exec);
@@ -17,25 +19,36 @@ function cachePath(folder: string): string {
 async function getLatestWDAVersion(): Promise<string> {
   // Scan the cache directory to find the latest version
   const wdaCacheDir = cachePath('wda');
-  if (!fs.existsSync(wdaCacheDir)) {
+
+  try {
+    await access(wdaCacheDir, constants.F_OK);
+  } catch {
     throw new Error('No WDA cache found. Please run setup_wda first.');
   }
 
-  const versions = fs
-    .readdirSync(wdaCacheDir)
-    .filter(dir => fs.statSync(path.join(wdaCacheDir, dir)).isDirectory())
+  const entries = await readdir(wdaCacheDir);
+  const versions = await Promise.all(
+    entries.map(async dir => {
+      const dirPath = path.join(wdaCacheDir, dir);
+      const stats = await stat(dirPath);
+      return stats.isDirectory() ? dir : null;
+    })
+  );
+
+  const filteredVersions = versions
+    .filter((v): v is string => v !== null)
     .sort((a, b) => {
       // Simple version comparison - you might want to use semver for more complex versions
       return b.localeCompare(a, undefined, { numeric: true });
     });
 
-  if (versions.length === 0) {
+  if (filteredVersions.length === 0) {
     throw new Error(
       'No WDA versions found in cache. Please run setup_wda first.'
     );
   }
 
-  return versions[0];
+  return filteredVersions[0];
 }
 
 async function getBootedSimulators(): Promise<string[]> {
@@ -188,7 +201,9 @@ export default function installWDA(server: any): void {
         }
 
         // Verify WDA app exists
-        if (!fs.existsSync(appPath)) {
+        try {
+          await access(appPath, constants.F_OK);
+        } catch {
           throw new Error(
             `WDA app not found at ${appPath}. Please run setup_wda first to download and cache WDA, or provide a valid appPath.`
           );

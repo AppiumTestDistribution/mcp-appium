@@ -1,5 +1,13 @@
 /**
  * Tool to get page source from the Android session
+ *
+ * TOOL EXTENSION GUIDE:
+ * This tool demonstrates the traditional approach where metadata is defined inline.
+ *
+ * ALTERNATIVE APPROACH: You can also use YAML metadata files for better separation.
+ * See src/tools/metadata/ for examples and src/tools/scroll-with-yaml.example.ts
+ *
+ * For detailed documentation on adding tools, see docs/CONTRIBUTING.md
  */
 import { z } from 'zod';
 import { getDriver } from './sessionStore.js';
