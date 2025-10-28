@@ -2,7 +2,8 @@
  * Tool to create a new mobile session (Android or iOS)
  */
 import { z } from 'zod';
-import fs from 'fs';
+import { access, readFile } from 'fs/promises';
+import { constants } from 'fs';
 import { AndroidUiautomator2Driver } from 'appium-uiautomator2-driver';
 import { XCUITestDriver } from 'appium-xcuitest-driver';
 import {
@@ -35,14 +36,15 @@ interface CapabilitiesConfig {
 export default function createSession(server: any): void {
   server.addTool({
     name: 'create_session',
-    description:
-      'Create a new mobile session with Android or iOS device (MUST use select_platform tool first to ask the user which platform they want - DO NOT assume or default to any platform)',
+    description: `Create a new mobile session with Android or iOS device.
+      MUST use select_platform tool first to ask the user which platform they want.
+      DO NOT assume or default to any platform.
+      `,
     parameters: z.object({
-      platform: z
-        .enum(['ios', 'android'])
-        .describe(
-          'REQUIRED: Must match the platform the user explicitly selected via the select_platform tool. DO NOT default to Android or iOS without asking the user first.'
-        ),
+      platform: z.enum(['ios', 'android']).describe(
+        `REQUIRED: Must match the platform the user explicitly selected via the select_platform tool.
+          DO NOT default to Android or iOS without asking the user first.`
+      ),
       capabilities: z
         .object({})
         .optional()
@@ -72,9 +74,12 @@ export default function createSession(server: any): void {
         let configCapabilities: CapabilitiesConfig = { android: {}, ios: {} };
         const configPath = process.env.CAPABILITIES_CONFIG;
 
-        if (configPath && fs.existsSync(configPath)) {
+        if (configPath) {
           try {
-            const configContent = fs.readFileSync(configPath, 'utf8');
+            // Check if file exists
+            await access(configPath, constants.F_OK);
+            // Read file content
+            const configContent = await readFile(configPath, 'utf8');
             configCapabilities = JSON.parse(configContent);
           } catch (error) {
             console.warn(`Failed to parse capabilities config: ${error}`);

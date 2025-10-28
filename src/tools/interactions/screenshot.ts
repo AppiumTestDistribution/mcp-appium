@@ -1,11 +1,14 @@
 import { FastMCP } from 'fastmcp/dist/FastMCP.js';
 import { z } from 'zod';
 import { getDriver } from '../sessionStore.js';
+import { writeFile } from 'fs/promises';
+import { join } from 'path';
 
 export default function screenshot(server: FastMCP): void {
   server.addTool({
     name: 'appium_screenshot',
-    description: 'Take a screenshot of the current screen in base64 format',
+    description:
+      'Take a screenshot of the current screen and return as PNG image',
     annotations: {
       readOnlyHint: false,
       openWorldHint: false,
@@ -17,12 +20,24 @@ export default function screenshot(server: FastMCP): void {
       }
 
       try {
-        const screenshot = await driver.getScreenshot();
+        const screenshotBase64 = await driver.getScreenshot();
+
+        // Convert base64 to buffer
+        const screenshotBuffer = Buffer.from(screenshotBase64, 'base64');
+
+        // Generate filename with timestamp
+        const timestamp = Date.now();
+        const filename = `screenshot_${timestamp}.png`;
+        const filepath = join(process.cwd(), filename);
+
+        // Save screenshot to disk
+        await writeFile(filepath, screenshotBuffer);
+
         return {
           content: [
             {
               type: 'text',
-              text: screenshot,
+              text: `Screenshot saved successfully to: ${filename}`,
             },
           ],
         };

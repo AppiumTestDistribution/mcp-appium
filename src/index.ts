@@ -11,7 +11,7 @@ const port =
 
 // Start the server with the appropriate transport
 async function startServer(): Promise<void> {
-  log.info('Starting Jarvis Appium MCP Server...');
+  log.info('Starting MCP Appium MCP Server...');
 
   try {
     if (useSSE) {

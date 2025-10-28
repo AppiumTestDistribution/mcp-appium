@@ -47,9 +47,7 @@ if (args.length > 0 && args[0]) {
   }
 } else {
   // Use default path to resources directory
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = path.dirname(__filename);
-  markdownPath = path.resolve(__dirname, '../resources');
+  markdownPath = path.resolve(process.cwd(), 'src/resources');
   console.log(`Using default resources directory: ${markdownPath}`);
 }
 

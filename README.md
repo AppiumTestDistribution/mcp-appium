@@ -1,10 +1,6 @@
-<div align="center">
-  <img src="src/assets/jarvislogo.png" alt="Jarvis Appium Logo" width="500"/>
-</div>
+# MCP Appium - MCP server for Mobile Development and Automation | iOS, Android, Simulator, Emulator, and Real Devices
 
-# Jarvis Appium - MCP server for Mobile Development and Automation | iOS, Android, Simulator, Emulator, and Real Devices
-
-Jarvis Appium is an intelligent MCP (Model Context Protocol) server designed to empower AI assistants with a robust suite of tools for mobile automation. It streamlines mobile app testing by enabling natural language interactions, intelligent locator generation, and automated test creation for both Android and iOS platforms.
+MCP Appium is an intelligent MCP (Model Context Protocol) server designed to empower AI assistants with a robust suite of tools for mobile automation. It streamlines mobile app testing by enabling natural language interactions, intelligent locator generation, and automated test creation for both Android and iOS platforms.
 
 ## Table of Contents
 
@@ -21,11 +17,9 @@ Jarvis Appium is an intelligent MCP (Model Context Protocol) server designed to 
 ## 🚀 Features
 
 - **Cross-Platform Support**: Automate tests for both Android (UiAutomator2) and iOS (XCUITest).
-- **Cloud Integration**: Seamlessly connect with the LambdaTest cloud platform for scalable testing.
 - **Intelligent Locator Generation**: AI-powered element identification using priority-based strategies.
-- **Interactive Session Management**: Easily create and manage sessions on local and cloud-based mobile devices.
+- **Interactive Session Management**: Easily create and manage sessions on local mobile devices.
 - **Smart Element Interactions**: Perform actions like clicks, text input, screenshots, and element finding.
-- **App Management**: Upload and manage mobile applications on cloud platforms.
 - **Automated Test Generation**: Generate Java/TestNG test code from natural language descriptions.
 - **Page Object Model Support**: Utilize built-in templates that follow industry best practices.
 - **Flexible Configuration**: Customize capabilities and settings for different environments.
@@ -63,17 +57,17 @@ Before you begin, ensure you have the following installed:
 
 ### As an MCP Server
 
-To integrate Jarvis Appium with your MCP client, add the following to your configuration:
+To integrate MCP Appium with your MCP client, add the following to your configuration:
 
 ```json
 {
   "mcpServers": {
-    "jarvis-appium": {
+    "mcp-appium": {
       "disabled": false,
       "timeout": 100,
       "type": "stdio",
       "command": "npx",
-      "args": ["jarvis-appium"],
+      "args": ["mcp-appium"],
       "env": {
         "ANDROID_HOME": "/path/to/android/sdk",
         "CAPABILITIES_CONFIG": "/path/to/your/capabilities.json"
@@ -114,31 +108,29 @@ Set the `CAPABILITIES_CONFIG` environment variable to point to your configuratio
 
 ### Session Management
 
--   `select_platform`: Choose between "android" or "ios".
--   `create_session`: Create a new mobile automation session.
--   `create_lambdatest_session`: Create a session on the LambdaTest cloud platform.
--   `upload_app_lambdatest`: Upload a mobile app to LambdaTest.
--   `appium_activate_app`: Activate a specified app.
--   `appium_terminate_app`: Terminate a specified app.
+- `select_platform`: Choose between "android" or "ios".
+- `create_session`: Create a new mobile automation session.
+- `appium_activate_app`: Activate a specified app.
+- `appium_terminate_app`: Terminate a specified app.
 
 ### Element Interaction
 
--   `generate_locators`: Generate intelligent locators for all interactive elements on the current screen.
--   `appium_find_element`: Find a specific element using various locator strategies.
--   `appium_click`: Click on an element.
--   `appium_set_value`: Enter text into an input field.
--   `appium_get_text`: Retrieve the text content of an element.
--   `appium_screenshot`: Capture a screenshot of the current screen.
--   `appium_scroll`: Scroll the screen vertically.
--   `appium_scroll_to_element`: Scroll until a specific element is found.
+- `generate_locators`: Generate intelligent locators for all interactive elements on the current screen.
+- `appium_find_element`: Find a specific element using various locator strategies.
+- `appium_click`: Click on an element.
+- `appium_set_value`: Enter text into an input field.
+- `appium_get_text`: Retrieve the text content of an element.
+- `appium_screenshot`: Capture a screenshot of the current screen.
+- `appium_scroll`: Scroll the screen vertically.
+- `appium_scroll_to_element`: Scroll until a specific element is found.
 
 ### Test Generation
 
--   `appium_generate_tests`: Generate automated test code from natural language scenarios.
+- `appium_generate_tests`: Generate automated test code from natural language scenarios.
 
 ## 🤖 Client Support
 
-Jarvis Appium is designed to be compatible with any MCP-compliant client.
+MCP Appium is designed to be compatible with any MCP-compliant client.
 
 ## 📚 Usage Examples
 
@@ -150,26 +142,7 @@ Here's an example prompt to test the Amazon mobile app checkout process:
 Open Amazon mobile app, search for "iPhone 15 Pro", select the first search result, add the item to cart, proceed to checkout, sign in with email "test@example.com" and password "testpassword123", select shipping address, choose payment method, review order details, and place the order. Use JAVA + TestNG for test generation.
 ```
 
-This example demonstrates a complete e-commerce checkout flow that can be automated using Jarvis Appium's intelligent locator generation and test creation capabilities.
-
-```
-
-### LambdaTest Cloud Testing
-
-1.  **Upload Your App**:
-    ```
-    Use upload_app_lambdatest with:
-    - appPath: "/path/to/your/app.apk"
-    - appName: "My Test App"
-    ```
-2.  **Create Cloud Session**:
-    ```
-    Use create_lambdatest_session with:
-    - platform: "android"
-    - deviceName: "Galaxy S21"
-    - platformVersion: "11.0"
-    - app: "lt://APP_ID_FROM_UPLOAD"
-    ```
+This example demonstrates a complete e-commerce checkout flow that can be automated using MCP Appium's intelligent locator generation and test creation capabilities.
 
 ## 🙌 Contributing
 
