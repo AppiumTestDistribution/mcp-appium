@@ -1,3 +1,9 @@
+## [1.1.2](https://github.com/AppiumTestDistribution/mcp-appium/compare/v1.1.1...v1.1.2) (2025-10-28)
+
+### Bug Fixes
+
+* address mykola review comments ([#20](https://github.com/AppiumTestDistribution/mcp-appium/issues/20)) ([9855dfb](https://github.com/AppiumTestDistribution/mcp-appium/commit/9855dfb755df99ceaf46981a36e3a5194f8fbb57))
+
 ## [1.1.1](https://github.com/AppiumTestDistribution/mcp-appium/compare/v1.1.0...v1.1.1) (2025-10-21)
 
 ### Bug Fixes
