@@ -6,8 +6,8 @@ Welcome! This guide will help you extend MCP Appium by adding new tools and reso
 
 - [Adding New Tools](#adding-new-tools)
 - [Adding New Resources](#adding-new-resources)
-- [Tool Metadata with YAML](#tool-metadata-with-yaml)
 - [Code Style Guidelines](#code-style-guidelines)
+- [Formatting Best Practices](#formatting-best-practices)
 
 ---
 
@@ -250,99 +250,6 @@ export default function registerResources(server: any) {
 
 ---
 
-## Tool Metadata with YAML
-
-For better maintainability, tool metadata can be defined in YAML files.
-
-### YAML File Structure
-
-Create a YAML file for your tool metadata:
-
-```yaml
-# src/tools/metadata/my-tool.yaml
-name: appium_my_tool
-description: |
-  This is a detailed description of what the tool does.
-  It can span multiple lines.
-
-parameters:
-  param1:
-    type: string
-    description: Description of the first parameter
-    required: true
-  param2:
-    type: number
-    description: Description of the second parameter
-    required: false
-
-annotations:
-  readOnly: false
-  openWorld: false
-
-# Instructions for prompt-based tools (optional)
-instructions: |
-  ## Instructions for AI
-  - Point 1
-  - Point 2
-```
-
-### Using YAML Metadata
-
-```typescript
-// src/tools/my-tool.ts
-import { loadToolMetadata } from './metadata-loader.js';
-import yaml from 'js-yaml';
-import fs from 'fs';
-import { z } from 'zod';
-
-export default function myTool(server: FastMCP): void {
-  // Load YAML metadata
-  const yamlPath = './src/tools/metadata/my-tool.yaml';
-  const metadata = yaml.load(fs.readFileSync(yamlPath, 'utf8'));
-
-  // Convert YAML schema to Zod schema
-  const parameters = buildZodSchema(metadata.parameters);
-
-  server.addTool({
-    name: metadata.name,
-    description: metadata.description,
-    parameters,
-    annotations: {
-      readOnlyHint: metadata.annotations.readOnly,
-      openWorldHint: metadata.annotations.openWorld,
-    },
-    execute: async (args: any, context: any): Promise<any> => {
-      // Tool implementation
-      // You can access metadata.instructions if needed
-    },
-  });
-}
-```
-
-### Benefits of YAML
-
-1. **Maintainability**: Metadata separated from implementation
-2. **Clarity**: Easier to read and understand tool definitions
-3. **Version Control**: Track metadata changes independently
-4. **Internationalization**: Easier to translate descriptions
-5. **Documentation**: Auto-generate docs from YAML
-
-### When to Use YAML
-
-**Use YAML when:**
-
-- Tool has complex instructions or descriptions
-- Multiple tools share similar metadata
-- You want to version metadata separately
-- You need to generate documentation automatically
-
-**Use inline metadata when:**
-
-- Tool is simple and straightforward
-- Metadata is tightly coupled with implementation
-- You prefer keeping everything in one place
-
----
 
 ## Code Style Guidelines
 
@@ -350,7 +257,6 @@ export default function myTool(server: FastMCP): void {
 
 - Tools: `kebab-case.ts` (e.g., `boot-simulator.ts`)
 - Resources: `kebab-case.ts` (e.g., `java-template.ts`)
-- YAML files: `tool-name.yaml`
 
 ### 2. Function Exports
 
@@ -435,6 +341,45 @@ After adding a new tool:
 2. Run linter: `npm run lint`
 3. Test the tool with an MCP client
 4. Verify the tool appears in the tools list
+
+---
+
+---
+
+## Formatting Best Practices
+
+### Long Descriptions
+
+For better readability when descriptions are long, use template literals with proper indentation:
+
+**Bad (hard to read):**
+```typescript
+description: 'REQUIRED: First ASK THE USER which mobile platform they want to use (Android or iOS) before creating a session. DO NOT assume or default to any platform. You MUST explicitly prompt the user to choose between Android or iOS. This is mandatory before proceeding to use the create_session tool.',
+```
+
+**Good (readable):**
+```typescript
+description: `REQUIRED: First ASK THE USER which mobile platform they want to use (Android or iOS) before creating a session.
+  DO NOT assume or default to any platform.
+  You MUST explicitly prompt the user to choose between Android or iOS.
+  This is mandatory before proceeding to use the create_session tool.
+  `,
+```
+
+### Parameter Descriptions
+
+For long parameter descriptions, also use template literals:
+
+```typescript
+parameters: z.object({
+  platform: z
+    .enum(['ios', 'android'])
+    .describe(
+      `REQUIRED: Must match the platform the user explicitly selected via the select_platform tool.
+      DO NOT default to Android or iOS without asking the user first.`
+    ),
+})
+```
 
 ---
 

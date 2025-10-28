@@ -8,14 +8,13 @@ import { IOSManager } from '../devicemanager/ios-manager.js';
 export default function bootSimulator(server: any): void {
   server.addTool({
     name: 'boot_simulator',
-    description:
-      'Boot an iOS simulator and wait for it to be ready. This speeds up subsequent session creation by ensuring the simulator is already running.',
+    description: `Boot an iOS simulator and wait for it to be ready.
+      This speeds up subsequent session creation by ensuring the simulator is already running.`,
     parameters: z.object({
-      udid: z
-        .string()
-        .describe(
-          'The UDID of the iOS simulator to boot. Use select_platform and select_device tools first to get the UDID.'
-        ),
+      udid: z.string().describe(
+        `The UDID of the iOS simulator to boot.
+          Use select_platform and select_device tools first to get the UDID.`
+      ),
     }),
     annotations: {
       readOnlyHint: false,

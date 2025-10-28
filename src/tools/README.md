@@ -107,15 +107,6 @@ export default function registerTools(server: FastMCP): void {
 }
 ```
 
-## Using YAML Metadata (Optional)
-
-For better maintainability, you can store tool metadata in YAML files:
-
-1. Create `src/tools/metadata/my-tool.yaml`
-2. Use `loadToolMetadata()` to load metadata
-3. See `metadata/README.md` for YAML schema
-4. Example: `scroll-with-yaml.example.ts`
-
 ## Best Practices
 
 1. **Always check for active session**: Use `getDriver()` and check for null

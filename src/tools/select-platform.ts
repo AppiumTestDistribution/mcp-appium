@@ -9,8 +9,11 @@ import { log } from '../locators/logger.js';
 export default function selectPlatform(server: any): void {
   server.addTool({
     name: 'select_platform',
-    description:
-      'REQUIRED: First ASK THE USER which mobile platform they want to use (Android or iOS) before creating a session. DO NOT assume or default to any platform. You MUST explicitly prompt the user to choose between Android or iOS. This is mandatory before proceeding to use the create_session tool.',
+    description: `REQUIRED: First ASK THE USER which mobile platform they want to use (Android or iOS) before creating a session.
+      DO NOT assume or default to any platform.
+      You MUST explicitly prompt the user to choose between Android or iOS.
+      This is mandatory before proceeding to use the create_session tool.
+      `,
     parameters: z.object({
       platform: z
         .enum(['ios', 'android'])

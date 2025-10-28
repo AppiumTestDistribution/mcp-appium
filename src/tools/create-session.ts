@@ -36,13 +36,16 @@ interface CapabilitiesConfig {
 export default function createSession(server: any): void {
   server.addTool({
     name: 'create_session',
-    description:
-      'Create a new mobile session with Android or iOS device (MUST use select_platform tool first to ask the user which platform they want - DO NOT assume or default to any platform)',
+    description: `Create a new mobile session with Android or iOS device.
+      MUST use select_platform tool first to ask the user which platform they want.
+      DO NOT assume or default to any platform.
+      `,
     parameters: z.object({
       platform: z
         .enum(['ios', 'android'])
         .describe(
-          'REQUIRED: Must match the platform the user explicitly selected via the select_platform tool. DO NOT default to Android or iOS without asking the user first.'
+          `REQUIRED: Must match the platform the user explicitly selected via the select_platform tool.
+          DO NOT default to Android or iOS without asking the user first.`
         ),
       capabilities: z
         .object({})

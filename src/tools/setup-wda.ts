@@ -106,15 +106,20 @@ async function unzipFile(zipPath: string, destDir: string): Promise<void> {
 export default function setupWDA(server: any): void {
   server.addTool({
     name: 'setup_wda',
-    description:
-      'Download and setup prebuilt WebDriverAgent (WDA) for iOS/tvOS simulators only (not for real devices). This significantly speeds up the first Appium session by avoiding the need to build WDA from source. Downloads the latest version from GitHub and caches it locally.',
+    description: `Download and setup prebuilt WebDriverAgent (WDA) for iOS/tvOS simulators only (not for real devices).
+      This significantly speeds up the first Appium session by avoiding the need to build WDA from source.
+      Downloads the latest version from GitHub and caches it locally.
+      `,
     parameters: z.object({
       platform: z
         .enum(['ios', 'tvos'])
         .optional()
         .default('ios')
         .describe(
-          'The simulator platform to download WDA for. Default is "ios". Use "tvos" for Apple TV simulators. Note: This tool only works with simulators, not real devices.'
+          `The simulator platform to download WDA for.
+          Default is "ios".
+          Use "tvos" for Apple TV simulators.
+          Note: This tool only works with simulators, not real devices.`
         ),
     }),
     annotations: {

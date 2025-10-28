@@ -10,7 +10,9 @@ import {
 export default function answerAppium(server: any): void {
   server.addTool({
     name: 'appium_documentation_query',
-    description: `Query Appium documentation using RAG (Retrieval-Augmented Generation). This tool searches through indexed Appium documentation to answer questions about Appium features, setup, configuration, drivers, and usage.`,
+    description: `Query Appium documentation using RAG (Retrieval-Augmented Generation).
+      This tool searches through indexed Appium documentation to answer questions about Appium features, setup, configuration, drivers, and usage.
+      `,
     parameters: z.object({
       query: z
         .string()
