@@ -34,7 +34,6 @@
     "@langfuse/tracing": "^4.2.0",
     "@modelcontextprotocol/sdk": "^1.11.0",
     "@opentelemetry/sdk-node": "^0.206.0",
-    "@supabase/supabase-js": "^2.45.4",
     "@xenova/transformers": "^2.17.2",
     "@xmldom/xmldom": "^0.9.8",
     "appium-adb": "^12.12.1",
