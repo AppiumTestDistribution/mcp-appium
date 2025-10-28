@@ -41,12 +41,10 @@ export default function createSession(server: any): void {
       DO NOT assume or default to any platform.
       `,
     parameters: z.object({
-      platform: z
-        .enum(['ios', 'android'])
-        .describe(
-          `REQUIRED: Must match the platform the user explicitly selected via the select_platform tool.
+      platform: z.enum(['ios', 'android']).describe(
+        `REQUIRED: Must match the platform the user explicitly selected via the select_platform tool.
           DO NOT default to Android or iOS without asking the user first.`
-        ),
+      ),
       capabilities: z
         .object({})
         .optional()
