@@ -24,9 +24,18 @@ function transformElementWithLocators(
   element: JSONElement,
   locators: [string, string][]
 ): ElementWithLocators {
+  // Filter out any undefined or invalid entries before converting to object
+  const validLocators = locators.filter(
+    (locator): locator is [string, string] =>
+      Array.isArray(locator) &&
+      locator.length === 2 &&
+      typeof locator[0] === 'string' &&
+      typeof locator[1] === 'string'
+  );
+
   return {
     tagName: element.tagName,
-    locators: Object.fromEntries(locators),
+    locators: Object.fromEntries(validLocators),
     text: element.attributes.text || '',
     contentDesc: element.attributes['content-desc'] || '',
     resourceId: element.attributes['resource-id'] || '',
