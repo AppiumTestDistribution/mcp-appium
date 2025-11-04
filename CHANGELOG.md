@@ -1,3 +1,9 @@
+## [1.1.3](https://github.com/AppiumTestDistribution/mcp-appium/compare/v1.1.2...v1.1.3) (2025-11-04)
+
+### Bug Fixes
+
+* Refactor as per Mykola comments ([#21](https://github.com/AppiumTestDistribution/mcp-appium/issues/21)) ([56ff593](https://github.com/AppiumTestDistribution/mcp-appium/commit/56ff593651b66a2137cda0bc649ed763e9959df4))
+
 ## [1.1.2](https://github.com/AppiumTestDistribution/mcp-appium/compare/v1.1.1...v1.1.2) (2025-10-28)
 
 ### Bug Fixes
