@@ -12,34 +12,35 @@
 
 import { answerAppiumQuery } from '../tools/documentation/index.js';
 
-// Log embeddings provider that will be used
-console.log('Using sentence-transformers embeddings (no API key required)');
-console.log(
-  'Note: This script will return relevant documentation chunks without generating responses'
-);
+/**
+ * Main function to handle the documentation query process
+ */
+async function main(): Promise<void> {
+  console.log('Using sentence-transformers embeddings (no API key required)');
+  console.log(
+    'Note: This script will return relevant documentation chunks without generating responses'
+  );
 
-// Get query from command line arguments
-console.log('process.argv:', process.argv);
-const args = process.argv.slice(2);
-console.log('args:', args);
-let query = '';
+  console.log('process.argv:', process.argv);
+  const args = process.argv.slice(2);
+  console.log('args:', args);
+  let query = '';
 
-// Check if any arguments were provided
-if (args.length > 0) {
-  query = args.join(' ');
-  console.log(`Using provided query: "${query}"`);
-} else {
-  query = 'What is Appium and how do I get started?';
-  console.log(`No query provided, using default query: "${query}"`);
-}
+  if (args.length > 0) {
+    query = args.join(' ');
+    console.log(`Using provided query: "${query}"`);
+  } else {
+    query = 'What is Appium and how do I get started?';
+    console.log(`No query provided, using default query: "${query}"`);
+  }
 
-console.log(`Querying in-memory vector store with: "${query}"`);
+  console.log(`Querying in-memory vector store with: "${query}"`);
 
-// Run the query
-answerAppiumQuery({
-  query,
-})
-  .then((result: any) => {
+  try {
+    const result = await answerAppiumQuery({
+      query,
+    });
+
     console.log('\n--- ANSWER ---\n');
     console.log(result.answer);
 
@@ -51,8 +52,10 @@ answerAppiumQuery({
     }
 
     process.exit(0);
-  })
-  .catch((error: any) => {
+  } catch (error: any) {
     console.error('Query failed:', error);
     process.exit(1);
-  });
+  }
+}
+
+main();

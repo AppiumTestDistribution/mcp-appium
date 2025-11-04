@@ -153,22 +153,6 @@ if (getPlatformName(driver) === 'Android') {
 }
 ```
 
-### Element Operations
-
-```typescript
-import { elementUUIDScheme } from '../schema.js';
-import { checkIsValidElementId } from '../utils.js';
-
-// In parameters
-parameters: z.object({
-  elementUUID: elementUUIDScheme,
-});
-
-// In execute
-checkIsValidElementId(args.elementUUID);
-await driver.click(args.elementUUID);
-```
-
 ## Testing
 
 After adding a new tool:

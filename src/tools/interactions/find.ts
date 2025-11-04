@@ -1,7 +1,6 @@
 import { FastMCP } from 'fastmcp/dist/FastMCP.js';
 import { z } from 'zod';
 import { getDriver } from '../sessionStore.js';
-import { checkIsValidElementId } from '../../utils.js';
 
 export const findElementSchema = z.object({
   strategy: z.enum([

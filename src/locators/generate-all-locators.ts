@@ -3,18 +3,10 @@
 
 import { getSuggestedLocators } from './locator-generation.js';
 import { xmlToJSON, JSONElement } from './source-parsing.js';
+import { shouldIncludeElement, FilterOptions } from './element-filter.js';
 import * as fs from 'fs';
 
-interface FilterOptions {
-  includeTagNames?: string[];
-  excludeTagNames?: string[];
-  requireAttributes?: string[];
-  minAttributeCount?: number;
-  fetchableOnly?: boolean;
-  clickableOnly?: boolean;
-}
-
-interface ElementWithLocators {
+export interface ElementWithLocators {
   tagName: string;
   locators: Record<string, string>;
   text: string;
@@ -25,201 +17,124 @@ interface ElementWithLocators {
   displayed: boolean;
 }
 
-// Main function to generate locators for all elements
-function generateAllElementLocators(
+/**
+ * Transforms a JSONElement with locators into ElementWithLocators format
+ */
+function transformElementWithLocators(
+  element: JSONElement,
+  locators: [string, string][]
+): ElementWithLocators {
+  return {
+    tagName: element.tagName,
+    locators: Object.fromEntries(locators),
+    text: element.attributes.text || '',
+    contentDesc: element.attributes['content-desc'] || '',
+    resourceId: element.attributes['resource-id'] || '',
+    clickable: element.attributes.clickable === 'true',
+    enabled: element.attributes.enabled === 'true',
+    displayed: element.attributes.displayed === 'true',
+  };
+}
+
+/**
+ * Processes a single element: generates locators if it passes filters
+ */
+function processElement(
+  element: JSONElement,
+  sourceXML: string,
+  isNative: boolean,
+  automationName: string,
+  filters: FilterOptions,
+  results: ElementWithLocators[]
+): void {
+  if (!shouldIncludeElement(element, filters, isNative, automationName)) {
+    return;
+  }
+
+  try {
+    const strategyMap = getSuggestedLocators(
+      element,
+      sourceXML,
+      isNative,
+      automationName
+    );
+    results.push(transformElementWithLocators(element, strategyMap));
+  } catch (error) {
+    console.error(
+      `Error generating locators for element at path ${element.path}:`,
+      error
+    );
+  }
+}
+
+/**
+ * Recursively traverses the element tree and processes each element
+ */
+function traverseAndProcessElements(
+  element: JSONElement | null,
+  sourceXML: string,
+  isNative: boolean,
+  automationName: string,
+  filters: FilterOptions,
+  results: ElementWithLocators[]
+): void {
+  if (!element) {
+    return;
+  }
+
+  // Process current element
+  processElement(
+    element,
+    sourceXML,
+    isNative,
+    automationName,
+    filters,
+    results
+  );
+
+  // Recursively process children (even if parent was filtered out)
+  if (element.children && element.children.length > 0) {
+    element.children.forEach(child =>
+      traverseAndProcessElements(
+        child,
+        sourceXML,
+        isNative,
+        automationName,
+        filters,
+        results
+      )
+    );
+  }
+}
+
+/**
+ * Main function to generate locators for all elements from sourceXML
+ *
+ * @param sourceXML - The XML page source to process
+ * @param isNative - Whether this is a native context
+ * @param automationName - The automation driver name (uiautomator2, xcuitest, etc.)
+ * @param filters - Optional filters to apply when selecting elements
+ * @returns Array of elements with their generated locators
+ */
+export function generateAllElementLocators(
   sourceXML: string,
   isNative: boolean = true,
   automationName: string,
   filters: FilterOptions = {}
 ): ElementWithLocators[] {
-  const {
-    includeTagNames = [],
-    excludeTagNames = ['hierarchy'],
-    requireAttributes = [],
-    minAttributeCount = 0,
-    fetchableOnly = false,
-    clickableOnly = false,
-  } = filters;
-
   const sourceJSON = xmlToJSON(sourceXML);
-  const allElementsWithLocators: ElementWithLocators[] = [];
+  const results: ElementWithLocators[] = [];
 
-  function shouldIncludeElement(element: JSONElement): boolean {
-    // Apply filtering logic
-    if (
-      includeTagNames.length > 0 &&
-      !includeTagNames.includes(element.tagName)
-    ) {
-      return false;
-    }
-
-    if (excludeTagNames.includes(element.tagName)) {
-      return false;
-    }
-
-    if (requireAttributes.length > 0) {
-      const hasRequiredAttr = requireAttributes.some(
-        attr => element.attributes && element.attributes[attr]
-      );
-      if (!hasRequiredAttr) return false;
-    }
-
-    if (
-      element.attributes &&
-      Object.keys(element.attributes).length < minAttributeCount
-    ) {
-      return false;
-    }
-
-    if (clickableOnly && element.attributes?.clickable !== 'true') {
-      return false;
-    }
-
-    if (fetchableOnly) {
-      const interactableTags =
-        isNative && automationName === 'uiautomator2'
-          ? [
-              'EditText',
-              'Button',
-              'ImageButton',
-              'CheckBox',
-              'RadioButton',
-              'Switch',
-              'ToggleButton',
-              'TextView',
-            ]
-          : [
-              'XCUIElementTypeTextField',
-              'XCUIElementTypeSecureTextField',
-              'XCUIElementTypeButton',
-              'XCUIElementTypeImage',
-              'XCUIElementTypeSwitch',
-              'XCUIElementTypeStaticText',
-              'XCUIElementTypeTextView',
-              'XCUIElementTypeCell',
-              'XCUIElementTypeLink',
-            ];
-      const isInteractable =
-        interactableTags.some(tag => element.tagName.includes(tag)) ||
-        element.attributes?.clickable === 'true' ||
-        element.attributes?.focusable === 'true';
-
-      if (!isInteractable) return false;
-    }
-
-    return true;
-  }
-
-  function traverseElements(element: JSONElement): void {
-    if (!element || !shouldIncludeElement(element)) {
-      // Still traverse children even if parent is filtered out
-      if (element && element.children) {
-        element.children.forEach(child => traverseElements(child));
-      }
-      return;
-    }
-
-    try {
-      // Generate locators for current element
-      const strategyMap = getSuggestedLocators(
-        element,
-        sourceXML,
-        isNative,
-        automationName
-      );
-
-      // Store element with its locators and path
-      allElementsWithLocators.push({
-        tagName: element.tagName,
-        locators: Object.fromEntries(strategyMap),
-        text: element.attributes.text || '',
-        contentDesc: element.attributes['content-desc'] || '',
-        resourceId: element.attributes['resource-id'] || '',
-        clickable: element.attributes.clickable === 'true',
-        enabled: element.attributes.enabled === 'true',
-        displayed: element.attributes.displayed === 'true',
-      });
-    } catch (error) {
-      console.error(
-        `Error generating locators for element at path ${element.path}:`,
-        error
-      );
-    }
-
-    // Recursively process children
-    if (element.children && element.children.length > 0) {
-      element.children.forEach(child => traverseElements(child));
-    }
-  }
-
-  // Start traversal from root
   if (sourceJSON) {
-    traverseElements(sourceJSON);
+    traverseAndProcessElements(
+      sourceJSON,
+      sourceXML,
+      isNative,
+      automationName,
+      filters,
+      results
+    );
   }
 
-  return allElementsWithLocators;
+  return results;
 }
-
-// Export results to different formats
-function exportResults(
-  results: ElementWithLocators[],
-  format: string = 'json',
-  filename: string = 'all-locators'
-): string {
-  let content: string;
-  let extension: string;
-
-  switch (format.toLowerCase()) {
-    case 'json':
-      content = JSON.stringify(results, null, 2);
-      extension = 'json';
-      break;
-    case 'csv':
-      const headers = [
-        'Path',
-        'TagName',
-        'Text',
-        'ContentDesc',
-        'ResourceId',
-        'Bounds',
-        'Clickable',
-        'XPath',
-        'ID',
-        'ClassName',
-        'AccessibilityId',
-        'UiAutomator',
-      ];
-      const rows = results.map(item => [
-        item.tagName,
-        item.text,
-        item.contentDesc,
-        item.resourceId,
-        item.clickable.toString(),
-        item.locators.xpath || '',
-        item.locators.id || '',
-        item.locators['class name'] || '',
-        item.locators['accessibility id'] || '',
-        item.locators['-android uiautomator'] || '',
-      ]);
-      content = [headers, ...rows]
-        .map(row => row.map(cell => `"${cell}"`).join(','))
-        .join('\n');
-      extension = 'csv';
-      break;
-    default:
-      throw new Error(`Unsupported format: ${format}`);
-  }
-
-  const outputFile = `${filename}.${extension}`;
-  fs.writeFileSync(outputFile, content, 'utf8');
-  console.log(`Results exported to ${outputFile}`);
-  return outputFile;
-}
-
-// Export functions for use as module
-export {
-  generateAllElementLocators,
-  exportResults,
-  type FilterOptions,
-  type ElementWithLocators,
-};

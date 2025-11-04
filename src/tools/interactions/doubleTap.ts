@@ -1,7 +1,6 @@
 import { FastMCP } from 'fastmcp/dist/FastMCP.js';
 import { z } from 'zod';
 import { getDriver, getPlatformName } from '../sessionStore.js';
-import { checkIsValidElementId } from '../../utils.js';
 import { elementUUIDScheme } from '../../schema.js';
 
 export default function doubleTap(server: FastMCP): void {
@@ -24,8 +23,6 @@ export default function doubleTap(server: FastMCP): void {
       }
 
       try {
-        checkIsValidElementId(args.elementUUID);
-
         const platform = getPlatformName(driver);
 
         if (platform === 'Android') {

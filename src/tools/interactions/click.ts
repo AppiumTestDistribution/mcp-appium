@@ -1,7 +1,6 @@
 import { FastMCP } from 'fastmcp/dist/FastMCP.js';
 import { z } from 'zod';
 import { getDriver } from '../sessionStore.js';
-import { checkIsValidElementId } from '../../utils.js';
 import { elementUUIDScheme } from '../../schema.js';
 
 export default function generateTest(server: FastMCP): void {
@@ -24,7 +23,6 @@ export default function generateTest(server: FastMCP): void {
       }
 
       try {
-        checkIsValidElementId(args.elementUUID);
         await driver.click(args.elementUUID);
         return {
           content: [

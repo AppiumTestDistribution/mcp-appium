@@ -2,7 +2,7 @@ import { FastMCP } from 'fastmcp';
 import registerTools from './tools/index.js';
 import registerResources from './resources/index.js';
 import { hasActiveSession, safeDeleteSession } from './tools/sessionStore.js';
-import { log } from './locators/logger.js';
+import log from './locators/logger.js';
 
 const server = new FastMCP({
   name: 'MCP Appium',

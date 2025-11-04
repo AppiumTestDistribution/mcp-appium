@@ -140,23 +140,7 @@ const driver = getDriver();
 // Use driver...
 ```
 
-#### 2. Element Interaction Tools
-
-```typescript
-import { checkIsValidElementId } from '../../utils.js';
-import { elementUUIDScheme } from '../../schema.js';
-
-// In parameters:
-parameters: z.object({
-  elementUUID: elementUUIDScheme,
-});
-
-// In execute:
-checkIsValidElementId(args.elementUUID);
-await driver.click(args.elementUUID);
-```
-
-#### 3. Platform-Specific Tools
+#### 2. Platform-Specific Tools
 
 ```typescript
 import { getPlatformName } from './sessionStore.js';
@@ -253,7 +237,6 @@ export default function registerResources(server: any) {
 
 ---
 
-
 ## Code Style Guidelines
 
 ### 1. File Naming
@@ -347,6 +330,52 @@ After adding a new tool:
 
 ---
 
+## Pre-Release Checklist
+
+Before releasing a new version, ensure documentation submodules are up to date:
+
+### Updating Documentation Submodules
+
+This project uses Git submodules to automatically sync documentation from the official Appium repositories. Before each release, you must update the submodules to ensure you have the latest documentation files (.md and image files).
+
+**Required steps before each release:**
+
+1. **Update all submodules to latest commits:**
+
+   ```bash
+   ./scripts/update-submodules.sh
+   ```
+
+   This script will:
+
+   - Update all Git submodules to their latest commits
+   - Reapply sparse-checkout to only fetch `.md` and image files (`.png`, `.jpg`, `.jpeg`, `.gif`, `.svg`)
+   - Ensure you have the latest documentation without downloading entire repositories
+
+2. **Re-index the documentation (if needed):**
+
+   ```bash
+   npm run build
+   npm run index-docs
+   ```
+
+3. **Commit the updated submodule references:**
+   ```bash
+   git add .gitmodules src/resources/submodules
+   git commit -m "chore: update documentation submodules"
+   ```
+
+### Why This Is Important
+
+- **Fresh Documentation**: Ensures RAG indexing uses the latest Appium documentation
+- **Smaller Repository**: Sparse-checkout keeps repository size manageable by only fetching documentation files
+- **Automatic Sync**: Submodules automatically track upstream repository commits
+- **Reproducibility**: Submodule commits are tracked, ensuring consistent documentation across environments
+
+See [SUBMODULES.md](../docs/SUBMODULES.md) for detailed information about submodule setup and usage.
+
+---
+
 ---
 
 ## Formatting Best Practices
@@ -356,11 +385,13 @@ After adding a new tool:
 For better readability when descriptions are long, use template literals with proper indentation:
 
 **Bad (hard to read):**
+
 ```typescript
 description: 'REQUIRED: First ASK THE USER which mobile platform they want to use (Android or iOS) before creating a session. DO NOT assume or default to any platform. You MUST explicitly prompt the user to choose between Android or iOS. This is mandatory before proceeding to use the create_session tool.',
 ```
 
 **Good (readable):**
+
 ```typescript
 description: `REQUIRED: First ASK THE USER which mobile platform they want to use (Android or iOS) before creating a session.
   DO NOT assume or default to any platform.
@@ -375,13 +406,11 @@ For long parameter descriptions, also use template literals:
 
 ```typescript
 parameters: z.object({
-  platform: z
-    .enum(['ios', 'android'])
-    .describe(
-      `REQUIRED: Must match the platform the user explicitly selected via the select_platform tool.
+  platform: z.enum(['ios', 'android']).describe(
+    `REQUIRED: Must match the platform the user explicitly selected via the select_platform tool.
       DO NOT default to Android or iOS without asking the user first.`
-    ),
-})
+  ),
+});
 ```
 
 ---
