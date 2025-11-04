@@ -20,81 +20,74 @@
 
 import * as path from 'path';
 import * as fs from 'fs';
-import { fileURLToPath } from 'url';
 import {
   indexMarkdown,
   indexAllMarkdownFiles,
 } from '../tools/documentation/simple-pdf-indexer.js';
 
-// Parse command line arguments
-const args = process.argv.slice(2);
-let markdownPath: string;
-let chunkSize = 1000; // Default chunk size
-let chunkOverlap = 200; // Default overlap
-let indexSingleFile = false;
+/**
+ * Main function to handle the documentation indexing process
+ */
+async function main(): Promise<void> {
+  // Parse command line arguments
+  const args = process.argv.slice(2);
+  let markdownPath: string;
+  let chunkSize = 1000; // Default chunk size
+  let chunkOverlap = 200; // Default overlap
+  let indexSingleFile = false;
 
-// Get Markdown path or directory path
-if (args.length > 0 && args[0]) {
-  // Use provided path
-  markdownPath = path.resolve(process.cwd(), args[0]);
+  if (args.length > 0 && args[0]) {
+    markdownPath = path.resolve(process.cwd(), args[0]);
 
-  // Check if the provided path is a file or directory
-  if (fs.existsSync(markdownPath) && fs.statSync(markdownPath).isFile()) {
-    indexSingleFile = true;
-    console.log(`Using provided file path: ${markdownPath}`);
+    if (fs.existsSync(markdownPath) && fs.statSync(markdownPath).isFile()) {
+      indexSingleFile = true;
+      console.log(`Using provided file path: ${markdownPath}`);
+    } else {
+      console.log(`Using provided directory path: ${markdownPath}`);
+    }
   } else {
-    console.log(`Using provided directory path: ${markdownPath}`);
+    // Default to submodules directory which contains the git submodules
+    markdownPath = path.resolve(process.cwd(), 'src/resources/submodules');
+    console.log(`Using default submodules directory: ${markdownPath}`);
   }
-} else {
-  // Use default path to resources directory
-  markdownPath = path.resolve(process.cwd(), 'src/resources');
-  console.log(`Using default resources directory: ${markdownPath}`);
-}
 
-// Get chunk size if provided
-if (args.length > 1 && !isNaN(Number(args[1]))) {
-  chunkSize = Number(args[1]);
-  console.log(`Using chunk size: ${chunkSize}`);
-}
+  if (args.length > 1 && !isNaN(Number(args[1]))) {
+    chunkSize = Number(args[1]);
+    console.log(`Using chunk size: ${chunkSize}`);
+  }
 
-// Get overlap if provided
-if (args.length > 2 && !isNaN(Number(args[2]))) {
-  chunkOverlap = Number(args[2]);
-  console.log(`Using overlap: ${chunkOverlap}`);
-}
+  if (args.length > 2 && !isNaN(Number(args[2]))) {
+    chunkOverlap = Number(args[2]);
+    console.log(`Using overlap: ${chunkOverlap}`);
+  }
 
-// Log embeddings provider that will be used
-console.log('Using sentence-transformers embeddings (no API key required)');
+  console.log('Using sentence-transformers embeddings (no API key required)');
 
-// Run the indexing process
-console.log(
-  'Starting simplified documentation indexing process with in-memory vector store...'
-);
+  console.log(
+    'Starting simplified documentation indexing process with in-memory vector store...'
+  );
 
-if (indexSingleFile) {
-  // Index a single Markdown file
-  console.log(`Indexing single Markdown file: ${markdownPath}`);
-  indexMarkdown(markdownPath, chunkSize, chunkOverlap)
-    .then(() => {
+  try {
+    if (indexSingleFile) {
+      console.log(`Indexing single Markdown file: ${markdownPath}`);
+      await indexMarkdown(markdownPath, chunkSize, chunkOverlap);
       console.log('Documentation indexing completed successfully');
-      process.exit(0);
-    })
-    .catch((error: any) => {
-      console.error('Documentation indexing failed:', error);
-      process.exit(1);
-    });
-} else {
-  // Index all Markdown files in the directory
-  console.log(`Indexing all Markdown files in directory: ${markdownPath}`);
-  indexAllMarkdownFiles(markdownPath, chunkSize, chunkOverlap)
-    .then((indexedFiles: string[]) => {
+    } else {
+      console.log(`Indexing all Markdown files in directory: ${markdownPath}`);
+      const indexedFiles = await indexAllMarkdownFiles(
+        markdownPath,
+        chunkSize,
+        chunkOverlap
+      );
       console.log(
         `Documentation indexing completed successfully for ${indexedFiles.length} Markdown files`
       );
-      process.exit(0);
-    })
-    .catch((error: any) => {
-      console.error('Documentation indexing failed:', error);
-      process.exit(1);
-    });
+    }
+    process.exit(0);
+  } catch (error: any) {
+    console.error('Documentation indexing failed:', error);
+    process.exit(1);
+  }
 }
+
+main();

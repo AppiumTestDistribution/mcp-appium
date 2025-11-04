@@ -2,36 +2,36 @@ name: Code Quality and Tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   lint-format-and-test:
     name: ESLint, Prettier, and Tests
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '22'
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm install --no-package-lock --force
-      
-    - name: List installed packages
-      run: npm list --depth=0
-      
-    - name: Run ESLint
-      run: npm run lint
-      
-    - name: Run Prettier check
-      run: npm run format:check
-        
-    - name: Run Locator Tests
-      run: npm run test:locators
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install --no-package-lock --force
+
+      - name: List installed packages
+        run: npm list --depth=0
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run Prettier check
+        run: npm run format:check
+
+      - name: Run Locator Tests
+        run: npm run test:locators

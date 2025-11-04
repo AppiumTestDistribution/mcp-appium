@@ -2,7 +2,7 @@ import _ from 'lodash';
 import * as XPath from 'xpath';
 const xpathSelect = XPath.select;
 
-import { log } from './logger.js';
+import log from './logger.js';
 import {
   childNodesOf,
   domToXML,
@@ -206,7 +206,17 @@ export function getSuggestedLocators(
     }
   }
 
-  return [sortedLocators[0]];
+  // Return all valid locators, or empty array if none found
+  // Filter out any undefined entries
+  return sortedLocators.filter(
+    (locator): locator is [string, string] =>
+      Array.isArray(locator) &&
+      locator.length === 2 &&
+      typeof locator[0] === 'string' &&
+      typeof locator[1] === 'string' &&
+      locator[0] !== undefined &&
+      locator[1] !== undefined
+  );
 }
 
 /**

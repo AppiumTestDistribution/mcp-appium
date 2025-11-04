@@ -2,7 +2,6 @@ import { FastMCP } from 'fastmcp/dist/FastMCP.js';
 import { z } from 'zod';
 import { getDriver } from '../sessionStore.js';
 import { elementUUIDScheme } from '../../schema.js';
-import { checkIsValidElementId } from '../../utils.js';
 
 export default function getText(server: FastMCP): void {
   const getTextSchema = z.object({
@@ -24,7 +23,6 @@ export default function getText(server: FastMCP): void {
       }
 
       try {
-        checkIsValidElementId(args.elementUUID);
         const text = await driver.getText(args.elementUUID);
         return {
           content: [

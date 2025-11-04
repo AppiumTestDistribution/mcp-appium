@@ -13,7 +13,7 @@
  * See src/tools/metadata/README.md for YAML metadata approach.
  */
 import { FastMCP } from 'fastmcp/dist/FastMCP.js';
-import { log } from '../locators/logger.js';
+import log from '../locators/logger.js';
 import answerAppium from './answerAppium.js';
 import createSession from './create-session.js';
 import deleteSession from './delete-session.js';

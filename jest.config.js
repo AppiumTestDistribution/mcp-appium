@@ -4,6 +4,8 @@ export default {
   extensionsToTreatAsEsm: ['.ts'],
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
+    // Mock @appium/support to avoid ESM/CommonJS issues with uuid
+    '^@appium/support$': '<rootDir>/src/tests/__mocks__/@appium/support.ts',
   },
   transform: {
     '^.+\\.tsx?$': [
@@ -14,7 +16,8 @@ export default {
     ],
   },
   // Add this to ensure Jest can handle ESM
+  // Exclude ES modules from transformation
   transformIgnorePatterns: [
-    'node_modules/(?!(@xmldom|fast-xml-parser|xpath)/)'
+    'node_modules/(?!(@xmldom|fast-xml-parser|xpath|uuid)/)',
   ],
 };
