@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { getDriver, getPlatformName } from './sessionStore.js';
+import { getDriver, getPlatformName } from './session-store.js';
 
 export default function scroll(server: any): void {
   server.addTool({

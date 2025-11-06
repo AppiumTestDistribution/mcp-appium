@@ -26,7 +26,7 @@ Here's a minimal example of adding a new tool:
 // src/tools/my-new-tool.ts
 import { FastMCP } from 'fastmcp/dist/FastMCP.js';
 import { z } from 'zod';
-import { getDriver } from './sessionStore.js';
+import { getDriver } from './session-store.js';
 
 export default function myNewTool(server: FastMCP): void {
   server.addTool({
@@ -129,7 +129,7 @@ import {
   getDriver,
   hasActiveSession,
   safeDeleteSession,
-} from './sessionStore.js';
+} from './session-store.js';
 
 // Check for active session
 if (!hasActiveSession()) {
@@ -143,7 +143,7 @@ const driver = getDriver();
 #### 2. Platform-Specific Tools
 
 ```typescript
-import { getPlatformName } from './sessionStore.js';
+import { getPlatformName } from './session-store.js';
 
 const platform = getPlatformName(driver);
 if (platform === 'Android') {

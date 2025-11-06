@@ -14,7 +14,7 @@
  */
 import { FastMCP } from 'fastmcp/dist/FastMCP.js';
 import log from '../locators/logger.js';
-import answerAppium from './answerAppium.js';
+import answerAppium from './answer-appium.js';
 import createSession from './create-session.js';
 import deleteSession from './delete-session.js';
 import generateLocators from './locators.js';
@@ -28,15 +28,15 @@ import scroll from './scroll.js';
 import scrollToElement from './scroll-to-element.js';
 import findElement from './interactions/find.js';
 import clickElement from './interactions/click.js';
-import doubleTap from './interactions/doubleTap.js';
-import setValue from './interactions/setValue.js';
-import getText from './interactions/getText.js';
+import doubleTap from './interactions/double-tap.js';
+import setValue from './interactions/set-value.js';
+import getText from './interactions/get-text.js';
 import screenshot from './interactions/screenshot.js';
-import activateApp from './interactions/activateApp.js';
-import installApp from './interactions/installApp.js';
-import uninstallApp from './interactions/uninstallApp.js';
-import terminateApp from './interactions/terminateApp.js';
-import listApps from './interactions/listApps.js';
+import activateApp from './interactions/activate-app.js';
+import installApp from './interactions/install-app.js';
+import uninstallApp from './interactions/uninstall-app.js';
+import terminateApp from './interactions/terminate-app.js';
+import listApps from './interactions/list-apps.js';
 
 export default function registerTools(server: FastMCP): void {
   // Wrap addTool to inject logging around tool execution

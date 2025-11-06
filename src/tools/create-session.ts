@@ -10,7 +10,7 @@ import {
   setSession,
   hasActiveSession,
   safeDeleteSession,
-} from './sessionStore.js';
+} from './session-store.js';
 import {
   getSelectedDevice,
   getSelectedDeviceType,

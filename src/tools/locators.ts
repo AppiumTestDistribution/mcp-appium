@@ -10,7 +10,7 @@
  * For detailed documentation on adding tools, see docs/CONTRIBUTING.md
  */
 import { z } from 'zod';
-import { getDriver } from './sessionStore.js';
+import { getDriver } from './session-store.js';
 import { generateAllElementLocators } from '../locators/generate-all-locators.js';
 
 export default function generateLocators(server: any): void {

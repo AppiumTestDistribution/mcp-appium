@@ -2,7 +2,7 @@
  * Tool to delete the current mobile session and clean up resources
  */
 import { z } from 'zod';
-import { safeDeleteSession } from './sessionStore.js';
+import { safeDeleteSession } from './session-store.js';
 
 export default function deleteSession(server: any): void {
   server.addTool({

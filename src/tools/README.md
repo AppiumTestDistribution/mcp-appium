@@ -22,15 +22,15 @@ This directory contains all MCP tools available in MCP Appium.
 - `interactions/` - Direct appium interactions
   - `find.ts` - Find elements
   - `click.ts` - Click elements
-  - `doubleTap.ts` - Double tap elements
-  - `setValue.ts` - Enter text
-  - `getText.ts` - Get element text
+  - `double-tap.ts` - Double tap elements
+  - `set-value.ts` - Enter text
+  - `get-text.ts` - Get element text
   - `screenshot.ts` - Capture screenshots
-  - `activateApp.ts` - Activate apps
-  - `terminateApp.ts` - Terminate apps
-  - `installApp.ts` - Install apps
-  - `uninstallApp.ts` - Uninstall apps
-  - `listApps.ts` - List installed apps
+  - `activate-app.ts` - Activate apps
+  - `terminate-app.ts` - Terminate apps
+  - `install-app.ts` - Install apps
+  - `uninstall-app.ts` - Uninstall apps
+  - `list-apps.ts` - List installed apps
 
 ### Navigation
 
@@ -41,7 +41,7 @@ This directory contains all MCP tools available in MCP Appium.
 
 - `generate_locators.ts` - Generate page locators
 - `generate-tests.ts` - Generate test code from scenarios
-- `answerAppium.ts` - Answer Appium questions
+- `answer-appium.ts` - Answer Appium questions
 
 ## Adding a New Tool
 
@@ -59,7 +59,7 @@ Quick steps:
 ```typescript
 import { FastMCP } from 'fastmcp/dist/FastMCP.js';
 import { z } from 'zod';
-import { getDriver } from './sessionStore.js';
+import { getDriver } from './session-store.js';
 
 export default function myTool(server: FastMCP): void {
   server.addTool({
@@ -118,14 +118,14 @@ export default function registerTools(server: FastMCP): void {
 
 ## Session Store
 
-Tools interact with the session through `sessionStore.ts`:
+Tools interact with the session through `session-store.ts`:
 
 ```typescript
 import {
   getDriver,
   hasActiveSession,
   safeDeleteSession,
-} from './sessionStore.js';
+} from './session-store.js';
 
 // Check if session exists
 if (!hasActiveSession()) {
@@ -144,7 +144,7 @@ await driver.someMethod();
 ### Platform-Specific Logic
 
 ```typescript
-import { getPlatformName } from './sessionStore.js';
+import { getPlatformName } from './session-store.js';
 
 if (getPlatformName(driver) === 'Android') {
   // Android implementation
