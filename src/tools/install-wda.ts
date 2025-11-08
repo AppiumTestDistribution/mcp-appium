@@ -9,6 +9,7 @@ import { access, readdir, stat } from 'fs/promises';
 import { constants } from 'fs';
 import fs from 'fs'; // Keep for createWriteStream if used
 import os from 'os';
+import log from '../locators/logger.js';
 
 const execAsync = promisify(exec);
 
@@ -228,7 +229,7 @@ export default function installWDA(server: any): void {
           );
         }
 
-        console.log(
+        log.info(
           `Installing WDA from ${appPath} on simulator ${targetSimulator}...`
         );
 
@@ -250,14 +251,14 @@ export default function installWDA(server: any): void {
         // Install the app (only if not already installed)
         if (!isInstalled) {
           await installAppOnSimulator(appPath, targetSimulator);
-          console.log('WDA app installed successfully');
+          log.info('WDA app installed successfully');
         } else {
-          console.log('WDA app already installed, skipping installation');
+          log.info('WDA app already installed, skipping installation');
         }
 
         // Get bundle ID and launch the app
         const bundleId = await getAppBundleId(appPath);
-        console.log(`Launching WDA with bundle ID: ${bundleId}`);
+        log.info(`Launching WDA with bundle ID: ${bundleId}`);
         await launchAppOnSimulator(bundleId, targetSimulator);
 
         return {
@@ -269,7 +270,7 @@ export default function installWDA(server: any): void {
           ],
         };
       } catch (error: any) {
-        console.error('Error installing WDA:', error);
+        log.error('Error installing WDA:', error);
         throw new Error(`Failed to install WebDriverAgent: ${error.message}`);
       }
     },

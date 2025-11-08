@@ -8,6 +8,7 @@
 
 import { Document } from 'langchain/document';
 import { queryVectorStore } from './simple-pdf-indexer.js';
+import log from '../../locators/logger.js';
 
 /**
  * Reasoning task types supported by the system
@@ -77,9 +78,9 @@ export class ReasoningRAG {
       );
       this.transformers = await importTransformers();
       this.isInitialized = true;
-      console.log('Xenova transformers initialized for reasoning');
+      log.info('Xenova transformers initialized for reasoning');
     } catch (error) {
-      console.error('Error importing @xenova/transformers:', error);
+      log.error('Error importing @xenova/transformers:', error);
       throw new Error(
         `Failed to import @xenova/transformers: ${error instanceof Error ? error.message : String(error)}`
       );
@@ -98,7 +99,7 @@ export class ReasoningRAG {
 
     await this.initializeTransformers();
 
-    console.log(`Loading model for ${config.task}: ${config.modelName}`);
+    log.info(`Loading model for ${config.task}: ${config.modelName}`);
 
     try {
       const model = await this.transformers.pipeline(
@@ -106,10 +107,10 @@ export class ReasoningRAG {
         config.modelName
       );
       this.models.set(modelKey, model);
-      console.log(`Successfully loaded model: ${config.modelName}`);
+      log.info(`Successfully loaded model: ${config.modelName}`);
       return model;
     } catch (error) {
-      console.error(`Error loading model ${config.modelName}:`, error);
+      log.error(`Error loading model ${config.modelName}:`, error);
       throw new Error(
         `Failed to load model: ${error instanceof Error ? error.message : String(error)}`
       );
@@ -190,7 +191,7 @@ export class ReasoningRAG {
         },
       };
     } catch (error) {
-      console.error(`Error performing reasoning with ${config.task}:`, error);
+      log.error(`Error performing reasoning with ${config.task}:`, error);
       return {
         originalChunk: text,
         reasoningOutput: `Error during reasoning: ${error instanceof Error ? error.message : String(error)}`,
@@ -230,7 +231,7 @@ export class ReasoningRAG {
 
       // Log progress for large batches
       if (chunks.length > batchSize) {
-        console.log(
+        log.info(
           `Processed reasoning for ${Math.min(i + batchSize, chunks.length)}/${chunks.length} chunks`
         );
       }
@@ -295,10 +296,10 @@ export class ReasoningRAG {
     } = options;
 
     try {
-      console.log(`Starting reasoning-enhanced RAG query: "${query}"`);
+      log.info(`Starting reasoning-enhanced RAG query: "${query}"`);
 
       // Step 1: Retrieve relevant chunks using existing RAG
-      console.log(`Retrieving top ${topK} relevant chunks...`);
+      log.info(`Retrieving top ${topK} relevant chunks...`);
       const retrievedChunks = await queryVectorStore(query, topK);
 
       if (!retrievedChunks || retrievedChunks.length === 0) {
@@ -312,7 +313,7 @@ export class ReasoningRAG {
         };
       }
 
-      console.log(`Retrieved ${retrievedChunks.length} chunks for reasoning`);
+      log.info(`Retrieved ${retrievedChunks.length} chunks for reasoning`);
 
       // Step 2: Configure reasoning models
       const configs: ReasoningConfig[] = customConfigs || [
@@ -336,7 +337,7 @@ export class ReasoningRAG {
       );
 
       // Step 3: Perform reasoning on retrieved chunks
-      console.log(
+      log.info(
         `Performing reasoning with ${filteredConfigs.length} different models...`
       );
       const reasoningResults = await this.processChunksWithReasoning(
@@ -346,7 +347,7 @@ export class ReasoningRAG {
       );
 
       // Step 4: Generate comprehensive summary
-      console.log('Generating comprehensive summary...');
+      log.info('Generating comprehensive summary...');
       const summary = await this.generateComprehensiveSummary(
         reasoningResults,
         query
@@ -379,7 +380,7 @@ export class ReasoningRAG {
             source && arr.indexOf(source) === index
         );
 
-      console.log(
+      log.info(
         `Reasoning-enhanced RAG completed. Generated ${reasoningResults.length} reasoning results from ${sources.length} sources`
       );
 
@@ -392,7 +393,7 @@ export class ReasoningRAG {
         sources,
       };
     } catch (error) {
-      console.error('Error in reasoning-enhanced RAG:', error);
+      log.error('Error in reasoning-enhanced RAG:', error);
       throw new Error(
         `Reasoning-enhanced RAG failed: ${error instanceof Error ? error.message : String(error)}`
       );
@@ -426,7 +427,7 @@ export class ReasoningRAG {
    */
   async cleanup(): Promise<void> {
     this.models.clear();
-    console.log('Reasoning RAG resources cleaned up');
+    log.info('Reasoning RAG resources cleaned up');
   }
 }
 

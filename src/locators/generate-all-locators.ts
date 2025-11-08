@@ -5,6 +5,7 @@ import { getSuggestedLocators } from './locator-generation.js';
 import { xmlToJSON, JSONElement } from './source-parsing.js';
 import { shouldIncludeElement, FilterOptions } from './element-filter.js';
 import * as fs from 'fs';
+import log from './logger.js';
 
 export interface ElementWithLocators {
   tagName: string;
@@ -69,7 +70,7 @@ function processElement(
     );
     results.push(transformElementWithLocators(element, strategyMap));
   } catch (error) {
-    console.error(
+    log.error(
       `Error generating locators for element at path ${element.path}:`,
       error
     );

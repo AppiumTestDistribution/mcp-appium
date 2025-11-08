@@ -16,6 +16,7 @@ import { fileURLToPath } from 'url';
 
 // Initialize embeddings using sentence-transformers (no API key required)
 import { SentenceTransformersEmbeddings } from './sentence-transformers-embeddings.js';
+import log from '../../locators/logger.js';
 
 let embeddings: SentenceTransformersEmbeddings | null = null;
 
@@ -30,11 +31,11 @@ function getEmbeddings(): SentenceTransformersEmbeddings {
 
   try {
     // Use local sentence-transformers (no API key required)
-    console.log('Using local sentence-transformers embeddings');
+    log.info('Using local sentence-transformers embeddings');
     const modelName =
       process.env.SENTENCE_TRANSFORMERS_MODEL || 'Xenova/all-MiniLM-L6-v2';
     embeddings = new SentenceTransformersEmbeddings({ modelName });
-    console.log(`Using sentence-transformers model: ${modelName}`);
+    log.info(`Using sentence-transformers model: ${modelName}`);
   } catch (error) {
     throw new Error(
       `Failed to initialize embeddings: ${
@@ -85,12 +86,12 @@ async function saveDocuments(
         if (existingContent) {
           const existingSerialized = JSON.parse(existingContent);
           allSerialized = [...existingSerialized, ...serializedNew];
-          console.log(
+          log.info(
             `Appending ${serializedNew.length} documents to existing ${existingSerialized.length} documents`
           );
         }
       } catch (readError) {
-        console.warn(
+        log.warn(
           'Error reading existing documents, overwriting instead:',
           readError
         );
@@ -99,13 +100,13 @@ async function saveDocuments(
 
     // Write to file
     fs.writeFileSync(DOCUMENTS_PATH, JSON.stringify(allSerialized));
-    console.log(
+    log.info(
       `${
         append ? 'Appended to' : 'Saved'
       } documents in ${DOCUMENTS_PATH} (total: ${allSerialized.length})`
     );
   } catch (error) {
-    console.error('Error saving documents:', error);
+    log.error('Error saving documents:', error);
     throw error;
   }
 }
@@ -117,10 +118,10 @@ async function clearDocumentsFile(): Promise<void> {
   try {
     if (fs.existsSync(DOCUMENTS_PATH)) {
       fs.writeFileSync(DOCUMENTS_PATH, JSON.stringify([]));
-      console.log(`Cleared documents file at ${DOCUMENTS_PATH}`);
+      log.info(`Cleared documents file at ${DOCUMENTS_PATH}`);
     }
   } catch (error) {
-    console.error('Error clearing documents file:', error);
+    log.error('Error clearing documents file:', error);
     throw error;
   }
 }
@@ -132,7 +133,7 @@ async function clearDocumentsFile(): Promise<void> {
 async function loadDocuments(): Promise<Document[] | null> {
   try {
     if (!fs.existsSync(DOCUMENTS_PATH)) {
-      console.log('No saved documents found');
+      log.info('No saved documents found');
       return null;
     }
 
@@ -148,10 +149,10 @@ async function loadDocuments(): Promise<Document[] | null> {
         })
     );
 
-    console.log(`${documents.length} documents loaded from ${DOCUMENTS_PATH}`);
+    log.info(`${documents.length} documents loaded from ${DOCUMENTS_PATH}`);
     return documents;
   } catch (error) {
-    console.error('Error loading documents:', error);
+    log.error('Error loading documents:', error);
     return null;
   }
 }
@@ -166,7 +167,7 @@ async function extractTextFromMarkdown(markdownPath: string): Promise<string> {
     const text = fs.readFileSync(markdownPath, 'utf-8');
     return text;
   } catch (error) {
-    console.error('Error extracting text from Markdown:', error);
+    log.error('Error extracting text from Markdown:', error);
     throw new Error(
       `Failed to extract text from Markdown: ${
         error instanceof Error ? error.message : String(error)
@@ -188,13 +189,13 @@ export async function initializeVectorStore(
   chunkOverlap: number = 200
 ): Promise<MemoryVectorStore> {
   try {
-    console.log(`Initializing vector store for Markdown: ${markdownPath}`);
-    console.log(`Using chunk size: ${chunkSize}, overlap: ${chunkOverlap}`);
+    log.info(`Initializing vector store for Markdown: ${markdownPath}`);
+    log.info(`Using chunk size: ${chunkSize}, overlap: ${chunkOverlap}`);
 
     // Extract text from Markdown
-    console.log('Extracting text from Markdown...');
+    log.info('Extracting text from Markdown...');
     const markdownText = await extractTextFromMarkdown(markdownPath);
-    console.log(`Extracted ${markdownText.length} characters from Markdown`);
+    log.info(`Extracted ${markdownText.length} characters from Markdown`);
 
     // Create text splitter
     const textSplitter = new RecursiveCharacterTextSplitter({
@@ -203,12 +204,12 @@ export async function initializeVectorStore(
     });
 
     // Split text into documents
-    console.log('Splitting text into chunks...');
+    log.info('Splitting text into chunks...');
     const documents = await textSplitter.createDocuments([markdownText]);
-    console.log(`Created ${documents.length} document chunks`);
+    log.info(`Created ${documents.length} document chunks`);
 
     // Store documents in memory vector store
-    console.log('Storing documents in memory vector store...');
+    log.info('Storing documents in memory vector store...');
     const vectorStore = await MemoryVectorStore.fromDocuments(
       documents,
       getEmbeddings()
@@ -220,10 +221,10 @@ export async function initializeVectorStore(
     // Save documents to file for persistence
     await saveDocuments(documents, false); // Don't append for single file indexing
 
-    console.log('Successfully stored documents in memory vector store');
+    log.info('Successfully stored documents in memory vector store');
     return vectorStore;
   } catch (error) {
-    console.error('Error initializing vector store:', error);
+    log.error('Error initializing vector store:', error);
     throw error;
   }
 }
@@ -242,7 +243,7 @@ export async function getMarkdownFilesInDirectory(
 
     // Check if directory exists
     if (!fs.existsSync(dirPath)) {
-      console.error(`Directory does not exist: ${dirPath}`);
+      log.error(`Directory does not exist: ${dirPath}`);
       return [];
     }
 
@@ -268,10 +269,10 @@ export async function getMarkdownFilesInDirectory(
     }
 
     await scanDirectory(dirPath);
-    console.log(`Found ${markdownFiles.length} Markdown files in ${dirPath}`);
+    log.info(`Found ${markdownFiles.length} Markdown files in ${dirPath}`);
     return markdownFiles;
   } catch (error) {
-    console.error('Error getting Markdown files:', error);
+    log.error('Error getting Markdown files:', error);
     return [];
   }
 }
@@ -288,14 +289,14 @@ export async function indexMarkdown(
   chunkOverlap: number = 200
 ): Promise<void> {
   try {
-    console.log('Starting Markdown indexing process...');
+    log.info('Starting Markdown indexing process...');
 
     // Initialize vector store
     await initializeVectorStore(markdownPath, chunkSize, chunkOverlap);
 
-    console.log('Markdown indexing completed successfully');
+    log.info('Markdown indexing completed successfully');
   } catch (error) {
-    console.error('Markdown indexing failed:', error);
+    log.error('Markdown indexing failed:', error);
     throw error;
   }
 }
@@ -313,7 +314,7 @@ export async function indexAllMarkdownFiles(
   chunkOverlap: number = 200
 ): Promise<string[]> {
   try {
-    console.log(
+    log.info(
       `Starting indexing of all Markdown files in directory: ${dirPath}`
     );
 
@@ -321,7 +322,7 @@ export async function indexAllMarkdownFiles(
     const markdownFiles = await getMarkdownFilesInDirectory(dirPath);
 
     if (markdownFiles.length === 0) {
-      console.log('No Markdown files found in the directory');
+      log.info('No Markdown files found in the directory');
       return [];
     }
 
@@ -333,14 +334,14 @@ export async function indexAllMarkdownFiles(
     for (let i = 0; i < markdownFiles.length; i++) {
       const markdownFile = markdownFiles[i];
       try {
-        console.log(
+        log.info(
           `Indexing Markdown ${i + 1}/${markdownFiles.length}: ${markdownFile}`
         );
 
         // Extract text from Markdown
-        console.log('Extracting text from Markdown...');
+        log.info('Extracting text from Markdown...');
         const markdownText = await extractTextFromMarkdown(markdownFile);
-        console.log(
+        log.info(
           `Extracted ${markdownText.length} characters from Markdown`
         );
 
@@ -351,9 +352,9 @@ export async function indexAllMarkdownFiles(
         });
 
         // Split text into documents
-        console.log('Splitting text into chunks...');
+        log.info('Splitting text into chunks...');
         const documents = await textSplitter.createDocuments([markdownText]);
-        console.log(`Created ${documents.length} document chunks`);
+        log.info(`Created ${documents.length} document chunks`);
 
         // Add file metadata to each document
         const filename = path.basename(markdownFile);
@@ -368,7 +369,7 @@ export async function indexAllMarkdownFiles(
         });
 
         // Store documents in memory vector store
-        console.log('Storing documents in memory vector store...');
+        log.info('Storing documents in memory vector store...');
         if (i === 0) {
           // For the first Markdown file, create a new vector store
           memoryVectorStore = await MemoryVectorStore.fromDocuments(
@@ -384,19 +385,19 @@ export async function indexAllMarkdownFiles(
         await saveDocuments(documents, i > 0);
 
         indexedFiles.push(markdownFile);
-        console.log(`Successfully indexed Markdown: ${filename}`);
+        log.info(`Successfully indexed Markdown: ${filename}`);
       } catch (error) {
-        console.error(`Error indexing Markdown ${markdownFile}:`, error);
+        log.error(`Error indexing Markdown ${markdownFile}:`, error);
         // Continue with next file even if one fails
       }
     }
 
-    console.log(
+    log.info(
       `Successfully indexed ${indexedFiles.length} out of ${markdownFiles.length} Markdown files`
     );
     return indexedFiles;
   } catch (error) {
-    console.error('Error indexing all Markdown files:', error);
+    log.error('Error indexing all Markdown files:', error);
     throw error;
   }
 }
@@ -419,7 +420,7 @@ export async function queryVectorStore(
 
       // If documents exist, create a new vector store
       if (documents && documents.length > 0) {
-        console.log('Creating vector store from saved documents...');
+        log.info('Creating vector store from saved documents...');
         memoryVectorStore = await MemoryVectorStore.fromDocuments(
           documents,
           getEmbeddings()
@@ -436,7 +437,7 @@ export async function queryVectorStore(
 
     return results;
   } catch (error) {
-    console.error('Error querying vector store:', error);
+    log.error('Error querying vector store:', error);
     throw error;
   }
 }
@@ -477,32 +478,32 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   }
 
   // Log embeddings provider that will be used
-  console.log('Using sentence-transformers embeddings (no API key required)');
+  log.info('Using sentence-transformers embeddings (no API key required)');
 
   // Run the indexing process
   if (indexSingleFile) {
     // Index a single Markdown file
-    console.log(`Indexing single Markdown file: ${markdownPath}`);
+    log.info(`Indexing single Markdown file: ${markdownPath}`);
     indexMarkdown(markdownPath, chunkSize, chunkOverlap)
       .then(() => {
         process.exit(0);
       })
       .catch(error => {
-        console.error('Indexing failed:', error);
+        log.error('Indexing failed:', error);
         process.exit(1);
       });
   } else {
     // Index all Markdown files in the directory
-    console.log(`Indexing all Markdown files in directory: ${markdownPath}`);
+    log.info(`Indexing all Markdown files in directory: ${markdownPath}`);
     indexAllMarkdownFiles(markdownPath, chunkSize, chunkOverlap)
       .then(indexedFiles => {
-        console.log(
+        log.info(
           `Successfully indexed ${indexedFiles.length} Markdown files`
         );
         process.exit(0);
       })
       .catch(error => {
-        console.error('Indexing failed:', error);
+        log.error('Indexing failed:', error);
         process.exit(1);
       });
   }
