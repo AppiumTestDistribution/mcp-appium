@@ -67,7 +67,7 @@ To integrate MCP Appium with your MCP client, add the following to your configur
       "timeout": 100,
       "type": "stdio",
       "command": "npx",
-      "args": ["mcp-appium"],
+      "args": ["appium-mcp"],
       "env": {
         "ANDROID_HOME": "/path/to/android/sdk",
         "CAPABILITIES_CONFIG": "/path/to/your/capabilities.json"
