@@ -31,6 +31,7 @@ import clickElement from './interactions/click.js';
 import doubleTap from './interactions/double-tap.js';
 import setValue from './interactions/set-value.js';
 import getText from './interactions/get-text.js';
+import getPageSource from './interactions/get-page-source.js';
 import screenshot from './interactions/screenshot.js';
 import activateApp from './interactions/activate-app.js';
 import installApp from './interactions/install-app.js';
@@ -127,6 +128,7 @@ export default function registerTools(server: FastMCP): void {
   doubleTap(server);
   setValue(server);
   getText(server);
+  getPageSource(server);
   screenshot(server);
   generateTest(server);
   log.info('All tools registered');

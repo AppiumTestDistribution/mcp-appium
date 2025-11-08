@@ -25,6 +25,7 @@ This directory contains all MCP tools available in MCP Appium.
   - `double-tap.ts` - Double tap elements
   - `set-value.ts` - Enter text
   - `get-text.ts` - Get element text
+  - `get-page-source.ts` - Get page source (XML) from current screen
   - `screenshot.ts` - Capture screenshots
   - `activate-app.ts` - Activate apps
   - `terminate-app.ts` - Terminate apps
