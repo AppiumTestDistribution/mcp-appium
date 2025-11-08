@@ -1,3 +1,9 @@
+## [1.1.4](https://github.com/appium/mcp-appium/compare/v1.1.3...v1.1.4) (2025-11-08)
+
+### Miscellaneous Chores
+
+* rename the package name to not conflict with others ([#23](https://github.com/appium/mcp-appium/issues/23)) ([a50190d](https://github.com/appium/mcp-appium/commit/a50190d5678d1d8e876462eba32e6c862841d123))
+
 ## [1.1.3](https://github.com/AppiumTestDistribution/mcp-appium/compare/v1.1.2...v1.1.3) (2025-11-04)
 
 ### Bug Fixes
