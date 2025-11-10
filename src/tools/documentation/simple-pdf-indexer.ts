@@ -341,9 +341,7 @@ export async function indexAllMarkdownFiles(
         // Extract text from Markdown
         log.info('Extracting text from Markdown...');
         const markdownText = await extractTextFromMarkdown(markdownFile);
-        log.info(
-          `Extracted ${markdownText.length} characters from Markdown`
-        );
+        log.info(`Extracted ${markdownText.length} characters from Markdown`);
 
         // Create text splitter
         const textSplitter = new RecursiveCharacterTextSplitter({
@@ -497,9 +495,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     log.info(`Indexing all Markdown files in directory: ${markdownPath}`);
     indexAllMarkdownFiles(markdownPath, chunkSize, chunkOverlap)
       .then(indexedFiles => {
-        log.info(
-          `Successfully indexed ${indexedFiles.length} Markdown files`
-        );
+        log.info(`Successfully indexed ${indexedFiles.length} Markdown files`);
         process.exit(0);
       })
       .catch(error => {
