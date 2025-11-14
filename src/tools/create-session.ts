@@ -148,9 +148,10 @@ async function buildIOSCapabilities(
 
   const capabilities = {
     ...defaultCaps,
+    // Auto-detected platform version as fallback (before config)
+    ...(platformVersion && { 'appium:platformVersion': platformVersion }),
     ...configCaps,
     ...(selectedDeviceUdid && { 'appium:udid': selectedDeviceUdid }),
-    ...(platformVersion && { 'appium:platformVersion': platformVersion }),
     ...(deviceType === 'simulator' && {
       'appium:usePrebuiltWDA': true,
       'appium:wdaStartupRetries': 4,
