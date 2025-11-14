@@ -1,3 +1,9 @@
+## [1.1.6](https://github.com/appium/appium-mcp/compare/v1.1.5...v1.1.6) (2025-11-14)
+
+### Bug Fixes
+
+* replace console logs with appium logger ([#26](https://github.com/appium/appium-mcp/issues/26)) ([82cd06c](https://github.com/appium/appium-mcp/commit/82cd06cdcaf2d6e37393a2adbe4b473f5319986e))
+
 ## [1.1.5](https://github.com/appium/appium-mcp/compare/v1.1.4...v1.1.5) (2025-11-14)
 
 ### Bug Fixes
