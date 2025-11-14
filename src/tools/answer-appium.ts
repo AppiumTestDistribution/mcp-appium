@@ -6,6 +6,7 @@ import {
   answerAppiumQuery,
   initializeAppiumDocumentation,
 } from './documentation/index.js';
+import log from '../locators/logger.js';
 
 export default function answerAppium(server: any): void {
   server.addTool({
@@ -45,7 +46,7 @@ export default function answerAppium(server: any): void {
       } catch (docError) {
         // If documentation query fails, try to initialize and retry once
         try {
-          console.log('Documentation not initialized, initializing now...');
+          log.info('Documentation not initialized, initializing now...');
           await initializeAppiumDocumentation();
           const result = await answerAppiumQuery({ query });
           return {

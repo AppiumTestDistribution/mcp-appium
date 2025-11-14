@@ -1,5 +1,6 @@
 import { AndroidUiautomator2Driver } from 'appium-uiautomator2-driver';
 import { XCUITestDriver } from 'appium-xcuitest-driver';
+import log from '../locators/logger.js';
 
 let driver: any = null;
 let sessionId: string | null = null;
@@ -33,13 +34,13 @@ export function hasActiveSession(): boolean {
 export async function safeDeleteSession(): Promise<boolean> {
   // Check if there's no session to delete
   if (!driver || !sessionId) {
-    console.log('No active session to delete.');
+    log.info('No active session to delete.');
     return false;
   }
 
   // Check if deletion is already in progress
   if (isDeletingSession) {
-    console.log('Session deletion already in progress, skipping...');
+    log.info('Session deletion already in progress, skipping...');
     return false;
   }
 
@@ -47,17 +48,17 @@ export async function safeDeleteSession(): Promise<boolean> {
   isDeletingSession = true;
 
   try {
-    console.log('Deleting current session');
+    log.info('Deleting current session');
     await driver.deleteSession();
 
     // Clear the session from store
     driver = null;
     sessionId = null;
 
-    console.log('Session deleted successfully.');
+    log.info('Session deleted successfully.');
     return true;
   } catch (error) {
-    console.error('Error deleting session:', error);
+    log.error('Error deleting session:', error);
     throw error;
   } finally {
     // Always release lock

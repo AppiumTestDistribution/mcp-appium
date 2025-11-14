@@ -12,6 +12,7 @@
 import { z } from 'zod';
 import { getDriver } from './session-store.js';
 import { generateAllElementLocators } from '../locators/generate-all-locators.js';
+import log from '../locators/logger.js';
 
 export default function generateLocators(server: any): void {
   server.addTool({
@@ -33,8 +34,6 @@ export default function generateLocators(server: any): void {
             'No active driver session. Please create a session first.'
           );
         }
-
-        console.log('Getting page source');
 
         try {
           // Get the page source from the driver
@@ -71,11 +70,11 @@ export default function generateLocators(server: any): void {
             ],
           };
         } catch (parseError: any) {
-          console.error('Error parsing XML:', parseError);
+          log.error('Error parsing XML:', parseError);
           throw new Error(`Failed to parse XML: ${parseError.message}`);
         }
       } catch (error: any) {
-        console.error('Error getting page source:', error);
+        log.error('Error getting page source:', error);
         throw new Error(`Failed to get page source: ${error.message}`);
       }
     },

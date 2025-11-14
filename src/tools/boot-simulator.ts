@@ -4,6 +4,7 @@
 import { z } from 'zod';
 import { Simctl } from 'node-simctl';
 import { IOSManager } from '../devicemanager/ios-manager.js';
+import log from '../locators/logger.js';
 
 export default function bootSimulator(server: any): void {
   server.addTool({
@@ -79,7 +80,7 @@ export default function bootSimulator(server: any): void {
           ],
         };
       } catch (error: any) {
-        console.error('Error booting simulator:', error);
+        log.error('Error booting simulator:', error);
         throw new Error(`Failed to boot simulator: ${error.message}`);
       }
     },

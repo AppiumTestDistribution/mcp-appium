@@ -10,6 +10,7 @@ import {
   indexAllMarkdownFiles,
 } from './simple-pdf-indexer.js';
 import * as path from 'path';
+import log from '../../locators/logger.js';
 
 /**
  * Interface for the query response
@@ -31,11 +32,11 @@ export async function initializeAppiumDocumentation(
     // Default to submodules directory if not specified
     const docsPath =
       resourcesPath || path.resolve(__dirname, '../../resources/submodules');
-    console.log(`Initializing Appium documentation from: ${docsPath}`);
+    log.info(`Initializing Appium documentation from: ${docsPath}`);
     await indexAllMarkdownFiles(docsPath);
-    console.log('Appium documentation indexing completed');
+    log.info('Appium documentation indexing completed');
   } catch (error) {
-    console.error('Error initializing Appium documentation:', error);
+    log.error('Error initializing Appium documentation:', error);
     throw error;
   }
 }
@@ -50,7 +51,7 @@ export async function answerAppiumQuery(options: {
 }): Promise<QueryResponse> {
   try {
     const { query } = options;
-    console.log(`Querying vector store for: "${query}"`);
+    log.info(`Querying vector store for: "${query}"`);
     const results = await queryVectorStore(query); // Get relevant chunks
 
     if (!results || results.length === 0) {
@@ -75,7 +76,7 @@ export async function answerAppiumQuery(options: {
           source && arr.indexOf(source) === index
       ); // Remove duplicates
 
-    console.log(
+    log.info(
       `Found ${results.length} relevant chunks from ${sources.length} sources`
     );
 
@@ -91,7 +92,7 @@ export async function answerAppiumQuery(options: {
       chunks,
     };
   } catch (error) {
-    console.error('Error querying Appium documentation:', error);
+    log.error('Error querying Appium documentation:', error);
     throw error;
   }
 }

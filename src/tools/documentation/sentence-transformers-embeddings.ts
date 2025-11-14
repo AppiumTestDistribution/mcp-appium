@@ -5,6 +5,8 @@
  * This is perfect for self-hosted MCP servers and eliminates external dependencies.
  */
 
+import log from '../../locators/logger.js';
+
 /**
  * LangChain-compatible embeddings class using sentence-transformers
  */
@@ -34,7 +36,7 @@ export class SentenceTransformersEmbeddings {
       );
       this.transformers = await importTransformers();
     } catch (error) {
-      console.error('Error importing @xenova/transformers:', error);
+      log.error('Error importing @xenova/transformers:', error);
       throw new Error(
         `Failed to import @xenova/transformers: ${error instanceof Error ? error.message : String(error)}`
       );
@@ -51,18 +53,18 @@ export class SentenceTransformersEmbeddings {
 
     await this.initializeTransformers();
 
-    console.log(`Initializing sentence-transformers model: ${this.modelName}`);
+    log.info(`Initializing sentence-transformers model: ${this.modelName}`);
     try {
       this.model = await this.transformers.pipeline(
         'feature-extraction',
         this.modelName
       );
       this.isInitialized = true;
-      console.log(
+      log.info(
         `Successfully initialized sentence-transformers model: ${this.modelName}`
       );
     } catch (error) {
-      console.error('Error initializing sentence-transformers model:', error);
+      log.error('Error initializing sentence-transformers model:', error);
       throw new Error(
         `Failed to initialize sentence-transformers model: ${error instanceof Error ? error.message : String(error)}`
       );
@@ -89,7 +91,7 @@ export class SentenceTransformersEmbeddings {
       const embeddings = Array.from(result.data) as number[];
       return embeddings;
     } catch (error) {
-      console.error('Error generating embeddings:', error);
+      log.error('Error generating embeddings:', error);
       throw new Error(
         `Failed to generate embeddings: ${error instanceof Error ? error.message : String(error)}`
       );
@@ -125,7 +127,7 @@ export class SentenceTransformersEmbeddings {
 
         // Log progress for large batches
         if (texts.length > batchSize) {
-          console.log(
+          log.info(
             `Processed ${Math.min(i + batchSize, texts.length)}/${texts.length} documents`
           );
         }
@@ -133,7 +135,7 @@ export class SentenceTransformersEmbeddings {
 
       return embeddings;
     } catch (error) {
-      console.error('Error generating document embeddings:', error);
+      log.error('Error generating document embeddings:', error);
       throw new Error(
         `Failed to generate document embeddings: ${error instanceof Error ? error.message : String(error)}`
       );

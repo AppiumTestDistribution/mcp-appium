@@ -3,6 +3,7 @@
  */
 import { z } from 'zod';
 import { safeDeleteSession } from './session-store.js';
+import log from '../locators/logger.js';
 
 export default function deleteSession(server: any): void {
   server.addTool({
@@ -38,7 +39,7 @@ export default function deleteSession(server: any): void {
           };
         }
       } catch (error: any) {
-        console.error(`Error deleting session`, error);
+        log.error(`Error deleting session`, error);
         throw new Error(`Failed to delete session: ${error.message}`);
       }
     },

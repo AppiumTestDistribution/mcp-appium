@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { getDriver, getPlatformName } from './session-store.js';
+import log from '../locators/logger.js';
 
 export default function scroll(server: any): void {
   server.addTool({
@@ -25,7 +26,7 @@ export default function scroll(server: any): void {
 
       try {
         const { width, height } = await driver.getWindowSize();
-        console.log('Device screen size:', { width, height });
+        log.info('Device screen size:', { width, height });
         const startX = Math.floor(width / 2);
         // calculate start and end Y positions for scrolling depending on the direction
         // startY is at 80% of the height, endY is at 20% of the height for downward scroll
@@ -42,8 +43,8 @@ export default function scroll(server: any): void {
             ? Math.floor(height * 0.2)
             : Math.floor(height * 0.8);
 
-        console.log('Going to scroll from:', { startX, startY });
-        console.log('Going to scroll to:', { startX, endY });
+        log.info('Going to scroll from:', { startX, startY });
+        log.info('Going to scroll to:', { startX, endY });
 
         if (getPlatformName(driver) === 'Android') {
           await driver.performActions([
@@ -60,7 +61,7 @@ export default function scroll(server: any): void {
               ],
             },
           ]);
-          console.log('Scroll action completed successfully.');
+          log.info('Scroll action completed successfully.');
         } else if (getPlatformName(driver) === 'iOS') {
           await driver.execute('mobile: scroll', {
             direction: args.direction,

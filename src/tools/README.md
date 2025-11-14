@@ -113,7 +113,7 @@ export default function registerTools(server: FastMCP): void {
 1. **Always check for active session**: Use `getDriver()` and check for null
 2. **Provide helpful errors**: Give clear error messages
 3. **Use proper types**: Leverage TypeScript and Zod for type safety
-4. **Add logging**: Use `console.log` for debugging
+4. **Add logging**: Use the logger from `../locators/logger.js` for debugging. Import with: `import log from '../locators/logger.js'`. Use `log.info()`, `log.error()`, `log.warn()` instead of `console.log/error/warn` to maintain JSON-RPC compatibility
 5. **Handle errors**: Always wrap risky operations in try-catch
 6. **Return proper format**: Always return content in expected MCP format
 
