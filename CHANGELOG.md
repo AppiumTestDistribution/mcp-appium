@@ -1,3 +1,9 @@
+## [1.1.5](https://github.com/appium/appium-mcp/compare/v1.1.4...v1.1.5) (2025-11-14)
+
+### Bug Fixes
+
+* add appium_get_page_source tool ([#25](https://github.com/appium/appium-mcp/issues/25)) ([e8a2e33](https://github.com/appium/appium-mcp/commit/e8a2e33fa21767f8714b28aa1f8ac3d84ba0e470))
+
 ## [1.1.4](https://github.com/appium/mcp-appium/compare/v1.1.3...v1.1.4) (2025-11-08)
 
 ### Miscellaneous Chores
